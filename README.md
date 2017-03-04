@@ -1,21 +1,43 @@
-# upintheair
+# Up in the Air
 
 > Flight collection, analysis, social and more!
 
-## Build Setup
+Site Url: http://upintheair.web.engr.illinois.edu/
 
-``` bash
-# install dependencies
-npm install
+## Development
 
-# serve with hot reload at localhost:8080
-npm run dev
+  - Install Dependencies
 
-# build for production with minification
-npm run build
+    ``` bash
+    $ npm install
+    ```
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+  - Run a php dev server on localhost. You can specify the port.
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+    ``` bash
+    $ php -S localhost:8000
+    ```
+
+## Deployment
+
+  - Commit and push your changes.
+
+  - `ssh` on cpanel
+
+    ``` bash
+    $ ssh <NetID>@webhost.engr.illinois.edu
+    ```
+
+  - Switch to `upintheair` user.
+
+    ``` bash
+    $ sudo -i -u upintheair
+    ```
+
+  - In `public_html` directory, pull the updates.
+
+    ``` bash
+    \# git pull
+    ```
+
+    Now you are all set!
