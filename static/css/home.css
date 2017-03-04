@@ -1,0 +1,9 @@
+#logo-container {
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+
+#logo-container img {
+  height: 42px;
+}
