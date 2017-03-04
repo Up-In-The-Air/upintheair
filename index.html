@@ -9,7 +9,7 @@
   <link href="static/css/home.css" type="text/css" rel="stylesheet" />
   <link href="static/css/style.css" type="text/css" rel="stylesheet" />
 </head>
-<body>
+<body id="app">
   <div class="navbar-fixed">
     <nav class="grey lighten-5" role="navigation">
       <div class="nav-wrapper container">
@@ -109,7 +109,6 @@
     </div>
   </div>
 
-
   <div class="parallax-container valign-wrapper">
     <div class="section no-pad-bot">
       <div class="container">
@@ -151,29 +150,29 @@
       <form class="col s12">
         <div class="row">
           <div class="input-field col s6">
-            <input id="first_name" type="text" class="validate">
+            <input id="first_name" type="text" class="validate" v-model="firstName">
             <label for="first_name">First Name</label>
           </div>
           <div class="input-field col s6">
-            <input id="last_name" type="text" class="validate">
+            <input id="last_name" type="text" class="validate" v-model="lastName">
             <label for="last_name">Last Name</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <input id="email" type="email" class="validate">
-            <label for="email">Email</label>
+            <input id="email" type="email" class="validate" v-model="email">
+            <label for="email" data-error="Please enter valid E-mail address!">Email</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <input id="password" type="password" class="validate">
+            <input id="password" type="password" class="validate" v-model="password">
             <label for="password">Password</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <input id="password" type="password" class="validate">
+            <input id="password" type="password" class="validate" v-model="confirmedPassword">
             <label for="password">Confirm Password</label>
           </div>
         </div>
@@ -181,7 +180,7 @@
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+      <button class="modal-action modal-close waves-effect waves-green btn-flat" @click="onSubmitSignup">Submit</button>
     </div>
   </div>
 
@@ -212,5 +211,6 @@
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
   <script src="static/js/init.js"></script>
+  <script src="static/js/home.js"></script>
 </body>
 </html>
