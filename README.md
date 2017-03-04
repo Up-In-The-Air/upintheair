@@ -37,7 +37,7 @@ Site Url: http://upintheair.web.engr.illinois.edu/
   - In `public_html` directory, pull the updates.
 
     ``` bash
-    \# git pull
+    $ git pull
     ```
 
     Now you are all set!
