@@ -8,20 +8,13 @@
     "Tianhao Chi <>",
     "Zhuo Li <zhuol2@illinois.edu>"
   ],
-  "scripts": {
-    "build": "webpack"
-  },
+  "scripts": {},
   "dependencies": {
-    "fis3-parser-babel": "^1.2.4",
-    "material-ui-vue": "^0.1.4",
-    "vue": "^1.0.16",
-    "vue-material-components": "^0.3.4"
+    "jquery": "^3.1.1",
+    "materialize-css": "^0.98.0",
+    "vue": "^1.0.16"
   },
-  "devDependencies": {
-    "fis-parser-less": "^0.1.3",
-    "fis-preprocessor-browserify": "^0.2.1",
-    "fis3": "^3.4.24"
-  },
+  "devDependencies": {},
   "engines": {
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
