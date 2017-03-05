@@ -7,3 +7,85 @@
 #logo-container img {
   height: 42px;
 }
+
+#sidenav-overlay {
+  z-index: 996;
+}
+
+nav ul a {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.button-collapse {
+  color: #444;
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+.parallax-container .section {
+  width: 100%;
+}
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+
+#background-map {
+  filter: brightness(75%) blur(2px);
+}
+
+.input-field label {
+  width: 100%;
+}
+
+.input-field label:after {
+  font-size: 0.85em;
+}
+
+.modal-footer .switch-modal {
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  height: 100%;
+}
+.modal-footer .switch-modal span {
+  margin: 0 10px;
+}
+
+#modal-login .modal-footer {
+  border-top: 1px solid rgba(0,0,0,0.1);
+}

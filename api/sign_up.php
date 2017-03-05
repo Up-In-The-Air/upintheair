@@ -1,4 +1,6 @@
 <?php
+  // TODO: 1. Session should be used to check login status
+  // TODO: 2. Database munipulations should be implemented in a separate class.
   $server_name = 'localhost';
   $username = 'upintheair_admin';
   $password = 'admin411';
@@ -23,7 +25,6 @@
   } else {
     $value_str = join("', '", [$first_name, $last_name, $email, $password]);
     $sql = "INSERT INTO user (first_name, last_name, email, password) VALUES ('" . $value_str . "')";
-    echo $sql;
     if ($conn->query($sql) === TRUE) {
       $resp = [
         'status' => 'success',

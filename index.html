@@ -7,7 +7,6 @@
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
   <link href="static/css/home.css" type="text/css" rel="stylesheet" />
-  <link href="static/css/style.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="app">
   <div class="navbar-fixed">
@@ -32,7 +31,7 @@
     <div class="section no-pad-bot">
       <div class="container">
         <br><br>
-        <h1 class="header center teal-text text-accent-2">Flights and More!</h1>
+        <h1 class="header center teal-text text-accent-3">Flights and More!</h1>
         <div class="row center">
           <h5 class="header col s12 light">A flight recorder and analyzer. Build up your network in the air.</h5>
         </div>
@@ -43,7 +42,7 @@
 
       </div>
     </div>
-    <div class="parallax"><img src="static/images/background.jpg" alt="Unsplashed background img 1"></div>
+    <div class="parallax"><img src="static/images/background.jpg" alt="background"></div>
   </div>
 
 
@@ -92,7 +91,7 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="static/images/background_map.png" alt="Unsplashed background img 2"></div>
+    <div class="parallax"><img src="static/images/background_map.png" alt="background map" id="background-map"></div>
   </div>
 
   <div class="container">
@@ -117,7 +116,7 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="static/images/background3.jpg" alt="Unsplashed background img 3"></div>
+    <div class="parallax"><img src="static/images/background3.jpg" alt="background-photo"></div>
   </div>
 
   <footer class="page-footer teal">
@@ -145,65 +144,77 @@
     </div>
   </footer>
 
-  <div id="modal-signup" class="modal">
-    <div class="row">
-      <form class="col s12">
-        <div class="row">
-          <div class="input-field col s6">
-            <input id="first_name" type="text" class="validate" v-model="firstName">
-            <label for="first_name">First Name</label>
+  <div id="modal-signup" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col m6 s12">
+              <input id="first_name" type="text" :class="{invalid: !isFirstNameValid}" v-model="firstName" required>
+              <label for="first_name">First Name</label>
+            </div>
+            <div class="input-field col m6 s12">
+              <input id="last_name" type="text" :class="{invalid: !isLastNameValid}" v-model="lastName" required>
+              <label for="last_name">Last Name</label>
+            </div>
           </div>
-          <div class="input-field col s6">
-            <input id="last_name" type="text" class="validate" v-model="lastName">
-            <label for="last_name">Last Name</label>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="email" type="email" class="validate" :class="{invalid: !isEmailValid}" v-model="email" required>
+              <label for="email" data-error="Please enter valid email address.">Email</label>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="email" type="email" class="validate" v-model="email">
-            <label for="email" data-error="Please enter valid E-mail address!">Email</label>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="password" type="password" :class="{invalid: !isPasswordValid}"v-model="password" required>
+              <label for="password">Password</label>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="password" type="password" class="validate" v-model="password">
-            <label for="password">Password</label>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="password" type="password" :class="{invalid: !isConfirmPasswordValid}" v-model="confirmedPassword" required>
+              <label for="password" data-error="Passwords do not match.">Confirm Password</label>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="password" type="password" class="validate" v-model="confirmedPassword">
-            <label for="password">Confirm Password</label>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <button class="modal-action modal-close waves-effect waves-green btn-flat" @click="onSubmitSignup">Submit</button>
+      <span class="switch-modal">
+        <span>Already have an account?</span>
+        <a href="javascript:void(0)" @click="onSwitchLogIn">Log In</a>
+      </span>
+      <a href="javascript:void(0)" class="modal-action waves-effect waves-green btn-flat" @click="onCancelModal('#modal-signup')">Cancel</a>
+      <button class="modal-action waves-effect waves-green btn-flat" @click="onSubmitSignup">Submit</button>
     </div>
   </div>
 
   <div id="modal-login" class="modal">
-    <div class="row">
-      <form class="col s12">
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="email" type="email" class="validate">
-            <label for="email">Email</label>
+    <div class="modal-content">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="email" type="email" class="validate">
+              <label for="email">Email</label>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="password" type="password" class="validate">
-            <label for="password">Password</label>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="password" type="password" class="validate">
+              <label for="password">Password</label>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+      <span class="switch-modal">
+        <span>Do not have an account?</span>
+        <a href="javascript:void(0)" @click="onSwitchSignUp">Sign Up</a>
+      </span>
+      <a href="javascript:void(0)" class="modal-action waves-effect waves-green btn-flat" @click="onCancelModal('#modal-login')">Cancel</a>
+      <a href="javascript:void(0)" class="modal-action waves-effect waves-green btn-flat" @click="onSubmitLogin">Submit</a>
     </div>
   </div>
 
