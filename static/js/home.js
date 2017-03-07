@@ -69,7 +69,7 @@ var app = new Vue({
             Materialize.toast(resp.message, 4000);
             return;
           }
-          Materialize.toast('Sign up successfully!', 3000, '', function() {
+          Materialize.toast('Sign up successfully! Redirecting...', 3000, '', function() {
             location.href = '/profile.html';
           });
         }
