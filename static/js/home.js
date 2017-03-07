@@ -69,8 +69,8 @@ var app = new Vue({
             Materialize.toast(resp.message, 4000);
             return;
           }
-          Materialize.toast('Sign up successfully!', 4000, '', function() {
-            // TODO: Success signed up, redirect to profile
+          Materialize.toast('Sign up successfully!', 3000, '', function() {
+            location.href = '/profile.html';
           });
         }
       })
@@ -96,7 +96,7 @@ var app = new Vue({
             document.cookie = 'upintheairAuth=' + JSON.stringify({ id: resp.data.cookie.id, key: resp.data.cookie.key }) + ' ; expires=' + new Date(resp.data.cookie.expires * 1000);
           }
           Materialize.toast('Log in successfully!', 4000, '', function() {
-            // TODO: Success signed up, redirect to profile
+            location.href = '/profile.html';
           });
         }
       })
