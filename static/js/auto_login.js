@@ -3,8 +3,8 @@
   var cookieObj = {};
   cookies.forEach(function(cookieStr) {
     var cookieName = cookieStr.split('=')[0];
-    var cookieContent = JSON.parse(cookieStr.split('=')[1]);
-    cookieObj[cookieName] = cookieContent;
+    var cookieContent = cookieStr.split('=')[1];
+    cookieObj[cookieName] = cookieName === 'upintheairAuth' ? JSON.parse(cookieContent) : cookieContent;
   });
   if (cookieObj.hasOwnProperty('upintheairAuth')) {
     $.ajax({
