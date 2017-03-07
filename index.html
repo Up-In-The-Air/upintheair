@@ -166,7 +166,7 @@
           </div>
           <div class="row">
             <div class="input-field col s12">
-              <input id="password" type="password" :class="{invalid: !isPasswordValid}"v-model="password" required>
+              <input id="password" type="password" :class="{invalid: !isPasswordValid}" v-model="password" required>
               <label for="password">Password</label>
             </div>
           </div>
@@ -195,14 +195,20 @@
         <form class="col s12">
           <div class="row">
             <div class="input-field col s12">
-              <input id="email" type="email" class="validate">
+              <input id="email" type="email" class="validate" v-model="loginEmail">
               <label for="email">Email</label>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
-              <input id="password" type="password" class="validate">
+              <input id="password" type="password" class="validate" v-model="loginPassword">
               <label for="password">Password</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <input type="checkbox" id="test5" v-model="autoLogin"/>
+              <label for="test5">Remember Me</label>
             </div>
           </div>
         </form>

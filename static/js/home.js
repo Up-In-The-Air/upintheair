@@ -1,3 +1,6 @@
+// For Debug Mode
+Vue.config.devtools = true;
+
 var app = new Vue({
   el: '#app',
   data: function() {
@@ -12,8 +15,11 @@ var app = new Vue({
       isLastNameValid: true,
       isEmailValid: true,
       isPasswordValid: true,
-      isConfirmPasswordValid: true
-      // TODO: For log in
+      isConfirmPasswordValid: true,
+      // For log in
+      loginEmail: '',
+      loginPassword: '',
+      autoLogin: false
     }
   },
   methods: {
@@ -70,7 +76,30 @@ var app = new Vue({
       })
     },
     onSubmitLogin: function() {
-      // TODO
+      var _this = this;
+      $.ajax({
+        method: 'POST',
+        url: 'api/log_in.php',
+        data: {
+          email: this.loginEmail,
+          password: this.loginPassword,
+          auto_login: this.autoLogin
+        },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          $('#modal-login').modal('close');
+          // Set cookie
+          if (_this.autoLogin && resp.data.cookie) {
+            document.cookie = 'upintheairAuth=' + JSON.stringify({ id: resp.data.cookie.id, key: resp.data.cookie.key }) + ' ; expires=' + new Date(resp.data.cookie.expires * 1000);
+          }
+          Materialize.toast('Log in successfully!', 4000, '', function() {
+            // TODO: Success signed up, redirect to profile
+          });
+        }
+      })
     }
   },
   watch: {
