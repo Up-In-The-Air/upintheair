@@ -14,13 +14,18 @@
       <div class="nav-wrapper container">
         <a id="logo-container" href="#" class="brand-logo"><img src="static/images/logo_color.png" /></a>
         <ul class="right hide-on-med-and-down">
-          <li><a href="#modal-signup">Sign Up</a></li>
-          <li><a href="#modal-login">Log In</a></li>
+          <li v-if="user.email"><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li v-if="user.email"><a href="/profile.html">Profile</a></li>
+          <li v-if="user.email"><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+          <li v-if="!user.email"><a href="#modal-signup">Sign Up</a></li>
+          <li v-if="!user.email"><a href="#modal-login">Log In</a></li>
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
-          <li><a href="#modal-signup">Sign Up</a></li>
-          <li><a href="#modal-login">Log In</a></li>
+          <li v-if="user.email"><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li v-if="user.email"><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+          <li v-if="!user.email"><a href="#modal-signup">Sign Up</a></li>
+          <li v-if="!user.email"><a href="#modal-login">Log In</a></li>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
       </div>
