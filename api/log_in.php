@@ -1,5 +1,5 @@
 <?php
-  $server_name = 'localhost';
+  $server_name = '127.0.0.1';
   $username = 'upintheair_admin';
   $password = 'admin411';
   $db_name = 'upintheair_default';
