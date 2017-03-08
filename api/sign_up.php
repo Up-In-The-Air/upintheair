@@ -1,7 +1,6 @@
 <?php
   // TODO: 1. Session should be used to check login status
   // TODO: 2. Database munipulations should be implemented in a separate class.
-  // TODO: 3. Do not check already registered email yet.
   $server_name = '127.0.0.1';
   $username = 'upintheair_admin';
   $password = 'admin411';
@@ -24,22 +23,43 @@
       'message' => 'Passwords do not match!'
     ];
   } else {
-    $value_str = join("', '", [$first_name, $last_name, $email, $password]);
-    $sql = "INSERT INTO user (first_name, last_name, email, password) VALUES ('".$value_str."')";
-    if ($conn->query($sql) === TRUE) {
-      $resp = [
-        'status' => 'success',
-        'data' => [
-          'first_name' => $first_name,
-          'last_name' => $last_name,
-          'email' => $email
-        ]
-      ];
-    } else {
+    $sql = "SELECT * FROM user WHERE email = '".$email."'";
+
+    if ($conn->query($sql)->num_rows !== 0) {
       $resp = [
         'status' => 'fail',
-        'message' => 'Error: '. $conn->error
+        'message' => $email.' has already been registered.'
       ];
+    } else {
+      // Session for Login Status
+      $session_key = md5($email);
+
+      $value_str = join("', '", [$first_name, $last_name, $email, $password, $session_key]);
+      $sql = "INSERT INTO user (first_name, last_name, email, password, session_key, session_expire) VALUES ('".$value_str."', DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL 30 DAY))";
+
+      if ($conn->query($sql) === TRUE) {
+        $sql = "SELECT * FROM user WHERE email = '".$email."'";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $resp = [
+          'status' => 'success',
+          'data' => [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'cookie' => [
+              'id' => $row['id'],
+              'key' => $session_key,
+              'expires' => $row['session_expire']
+            ]
+          ]
+        ];
+      } else {
+        $resp = [
+          'status' => 'fail',
+          'message' => 'Error: '. $conn->error
+        ];
+      }
     }
   }
   $conn->close();

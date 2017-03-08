@@ -144,7 +144,7 @@
     </div>
   </footer>
 
-  <div id="modal-signup" class="modal modal-fixed-footer">
+  <div id="modal-signup" class="modal">
     <div class="modal-content">
       <div class="row">
         <form class="col s12">
@@ -157,24 +157,21 @@
               <input id="last_name" type="text" :class="{invalid: !isLastNameValid}" v-model="lastName" required>
               <label for="last_name">Last Name</label>
             </div>
-          </div>
-          <div class="row">
             <div class="input-field col s12">
               <input id="email" type="email" class="validate" :class="{invalid: !isEmailValid}" v-model="email" required>
               <label for="email" data-error="Please enter valid email address.">Email</label>
             </div>
-          </div>
-          <div class="row">
             <div class="input-field col s12">
               <input id="password" type="password" :class="{invalid: !isPasswordValid}" v-model="password" required>
               <label for="password">Password</label>
             </div>
-          </div>
-          <div class="row">
             <div class="input-field col s12">
               <input id="password" type="password" :class="{invalid: !isConfirmPasswordValid}" v-model="confirmedPassword" required>
               <label for="password" data-error="Passwords do not match.">Confirm Password</label>
             </div>
+          </div>
+          <div>
+            <div class="red-text center-align">{{signupError}}</div>
           </div>
         </form>
       </div>

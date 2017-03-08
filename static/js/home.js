@@ -16,6 +16,7 @@ var app = new Vue({
       isEmailValid: true,
       isPasswordValid: true,
       isConfirmPasswordValid: true,
+      signupError: '',
       // For log in
       loginEmail: '',
       loginPassword: '',
@@ -53,6 +54,7 @@ var app = new Vue({
         return;
       }
 
+      var _this = this;
       $.ajax({
         method: 'POST',
         url: 'api/sign_up.php',
@@ -64,10 +66,13 @@ var app = new Vue({
           confirmed_password: this.confirmedPassword
         },
         success: function(resp) {
-          $('#modal-signup').modal('close');
           if (!resp || resp.status !== 'success') {
-            Materialize.toast(resp.message, 4000);
+            _this.signupError = resp.message;
             return;
+          }
+          $('#modal-signup').modal('close');
+          if (resp.data.cookie) {
+            document.cookie = 'upintheairAuth=' + JSON.stringify({ id: resp.data.cookie.id, key: resp.data.cookie.key }) + ' ; expires=' + new Date(resp.data.cookie.expires * 1000);
           }
           Materialize.toast('Sign up successfully! Redirecting...', 3000, '', function() {
             location.href = '/profile.html';
@@ -103,10 +108,25 @@ var app = new Vue({
     }
   },
   watch: {
-    firstName: function() { this.isFirstNameValid = true; },
-    lastName: function() { this.isLastNameValid = true; },
-    email: function() { this.isEmailValid = true; },
-    password: function() { this.isPasswordValid = true; },
-    confirmedPassword: function() { this.isConfirmPasswordValid = true; }
+    firstName: function() {
+      this.isFirstNameValid = true;
+      this.signupError = '';
+    },
+    lastName: function() {
+      this.isLastNameValid = true;
+      this.signupError = '';
+    },
+    email: function() {
+      this.isEmailValid = true;
+      this.signupError = '';
+    },
+    password: function() {
+      this.isPasswordValid = true;
+      this.signupError = '';
+    },
+    confirmedPassword: function() {
+      this.isConfirmPasswordValid = true;
+      this.signupError = '';
+    }
   }
 });

@@ -86,6 +86,7 @@ footer.page-footer {
   margin: 0 10px;
 }
 
-#modal-login .modal-footer {
+#modal-login .modal-footer,
+#modal-signup .modal-footer {
   border-top: 1px solid rgba(0,0,0,0.1);
 }
