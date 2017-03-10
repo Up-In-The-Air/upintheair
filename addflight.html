@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Up in the Air</title>
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="48x48">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/home.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/profile.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/lib/materialize.clockpicker.css" type="text/css" rel="stylesheet" />
+</head>
+
+<nav class="grey lighten-5" role="navigation">
+  <div class="nav-wrapper container">
+    <a id="logo-container" href="/" class="brand-logo"><img src="static/images/logo_color.png" /></a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+      <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+      <li><a href="profile.html">Return</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- <nav>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo">Add Flight</a>
+    <a href="home.html"class="waves-effect waves-light btn">Button</a>
+  </div>
+</nav> -->
+<div id="tabs">
+  <ul class="tabs">
+     <li class="tab col s3"><a class="active" href="#test-swipe-1">BASIC INFO</a></li>
+     <li class="tab col s3"><a class="active" href="#test-swipe-2">FLIGHT INFO</a></li>
+     <li class="tab col s3"><a class="active" href="#test-swipe-3">TICKET INFO</a></li>
+     <li class="tab col s3"><a  class="active" href="#test-swipe-4">RATE & REVIEW</a></li>
+   </ul>
+   <div id="test-swipe-1" class="col s12">
+    <div class="row">
+     <form class="col s12">
+     <div class="col s12">
+      <div class="input-field col s8">
+        <p>  Departure Date*</p>
+        <i class="material-icons prefix">av_timer</i>
+        <input id="departure_date" type="date" class="datepicker">
+      </div>
+       </div>
+     </form>
+     <form class="col s12">
+      <div class="col s12">
+      <div class="input-field col s8">
+        <p>Flight Number</p>
+        <i class="material-icons prefix">flight</i>
+        <input id="flight_number" type="tel" class="validate">
+      </div>
+     </div>
+     </form>
+     <form class="col s12">
+      <div class="col s12">
+      <div class="input-field col s8">
+        <a id="btnContinue"  class="waves-effect waves-light btn" href='#test-swipe-2'>continue</a>
+      </div>
+     </div>
+     </form>
+   </div>
+ </div>
+
+ <div id="test-swipe-2" class="col s12">
+  <div class="row">
+   <form class="col s12">
+    <div class="col s12">
+     <div class="input-field col s8">
+      <p>Departure Airport*</p>
+      <i class="material-icons prefix">location_on</i>
+      <input id="arrival_airport" type="tel" class="validate">
+     </div>
+    </div>
+   </form>
+   <form class="col s12">
+    <div class="col s12">
+     <div class="input-field col s8">
+      <p>Arrival Airport*</p>
+      <i class="material-icons prefix">location_on</i>
+      <input id="arrival_airport" type="tel" class="validate">
+     </div>
+    </div>
+   </form>
+
+   <form class="col s12">
+    <div class="col s12">
+     <!-- <div class="input-field col s4">
+      <p>Departure Time</p>
+      <i class="material-icons prefix">av_timer</i>
+      <input id="departure_time" type="time" class="timepicker">
+     </div> -->
+
+    <p>Departure Time</p>
+     <div class="input-field col s4">
+       <i class="material-icons prefix">av_timer</i>
+       <label for="timepicker">Time</label>
+       <input id="timepicker" data-default="00:00:00" class="timepicker" type="time">
+     </div>
+   </div>
+  </form>
+</div>
+</div>
+
+<div id="test-swipe-3" class="col s12">
+ <div class="row">
+  <form class="col s12">
+   <div class="col s12">
+    <div class="input-field col s6">
+     <p> Flight Class </p>
+       <select multiple>
+         <option value="" disabled selected>Choose class</option>
+         <option value="1">Economy+</option>
+         <option value="2">Economy</option>
+         <option value="3">Business</option>
+         <option value="4">First</option>
+         <option value="5">Private</option>
+       </select>
+    </div>
+   </div>
+  </form>
+
+  <form class="col s12">
+   <div class="col s12">
+    <div class="input-field col s6">
+     <p> Flight Seat Number </p>
+     <i class="material-icons prefix">mode_edit</i>
+     <input id="seat_number" type="tel" class="validate">
+    </div>
+   </div>
+  </form>
+
+  <form class="col s12">
+   <div class="col s12">
+    <div class="input-field col s6">
+     <a id="btnContinue"  class="waves-effect waves-light btn" href='#test-swipe-4'>continue</a>
+    </div>
+   </div>
+  </form>
+ </div>
+</div>
+
+<div id="test-swipe-4" class="col s12">
+  <div class="row">
+   <form class="col s12">
+    <div class="row">
+     <div class="input-field col s8">
+      <i class="material-icons prefix">comment</i>
+      <textarea id="textarea1" class="materialize-textarea" data-length="300"></textarea>
+      <label for="icon_prefix2">Your comments</label>
+     </div>
+    </form>
+
+   <form class="col s12">
+    <div class="col s12">
+     <div class="input-field col s8">
+      <p>Upload Images</p>
+       <form action="#">
+        <div class="file-field input-field">
+         <div class="btn">
+         <span>File</span>
+         <input type="file" multiple>
+         </div>
+        <div class="file-path-wrapper">
+         <input class="file-path validate" type="text" placeholder="Upload one or more files">
+        </div>
+       </div>
+      </form>
+    </div>
+   </div>
+  </form>
+
+ </div>
+</div>
+</div>
+</div>
+
+<script src="static/js/lib/jquery.min.js"></script>
+<script src="static/js/lib/materialize.min.js"></script>
+<script src="static/js/lib/materialize.clockpicker.js"></script>
+<script src="static/js/init.js"></script>
+<script src="static/js/home.js"></script>
+<script src="static/js/addflight.js"></script>
+
+</body>
+</html>
