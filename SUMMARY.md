@@ -15,4 +15,5 @@
 
 * [Sign Up/Log In/Log Out](docs/sign-uplog-inlog-out.md)
 * [Profile](docs/profile.md)
+* [Flight Records](docs/flight-records.md)
 

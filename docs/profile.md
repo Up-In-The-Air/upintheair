@@ -1,15 +1,15 @@
 # Profile
 
-### 
+### Top Airports
 
-* **URL**: api/get_top_airports.php
+* **URL**: api/get\_top\_airports.php
 * **Method**: GET
 * **Description**: Get top frequent airports
 * **Upstream Data**
 
   ```js
   {
-    id: 1
+    user_id: 1
   }
   ```
 
