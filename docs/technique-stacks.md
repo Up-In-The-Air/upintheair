@@ -6,18 +6,19 @@ Here we listed the tech stacks we have chosen. Further code style and API docume
 
 ### Front-End
 
-- [npm](https://www.npmjs.com/)
-- [jQuery](https://jquery.com/)
-- [Vue.js](https://vuejs.org/)
-- [Materialize](http://materializecss.com/)
+- [npm](https://www.npmjs.com/) for package management
+- [jQuery](https://jquery.com/) for DOM manipulation
+- [Vue.js](https://vuejs.org/) for view-model
+- [Materialize](http://materializecss.com/) for UI
 
 ### Back-End
 
-- [PHP](http://php.net/)
+- [PHP](http://php.net/) for REST API
+- [Postman](https://www.getpostman.com/) for debugging
 
 ### Database
 
-- [MySQL](https://www.mysql.com/)
+- [MySQL](https://www.mysql.com/) for data storage and management
 
 ## Related Readings
 
