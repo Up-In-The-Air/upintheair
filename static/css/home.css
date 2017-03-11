@@ -1,29 +1,3 @@
-#logo-container {
-  height: 64px;
-  display: flex;
-  align-items: center;
-}
-
-#logo-container img {
-  height: 42px;
-}
-
-#sidenav-overlay {
-  z-index: 996;
-}
-
-nav ul a {
-  color: #444;
-}
-
-p {
-  line-height: 2rem;
-}
-
-.button-collapse {
-  color: #444;
-}
-
 .parallax-container {
   min-height: 380px;
   line-height: 0;
@@ -50,15 +24,8 @@ p {
   }
 }
 
-.icon-block {
-  padding: 0 15px;
-}
-.icon-block .material-icons {
-  font-size: inherit;
-}
-
 footer.page-footer {
-  margin: 0;
+  padding-top: 20px !important;
 }
 
 #background-map {

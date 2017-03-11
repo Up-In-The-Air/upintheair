@@ -134,7 +134,7 @@ var app = new Vue({
           if (_this.autoLogin && resp.data.cookie) {
             document.cookie = 'upintheairAuth=' + JSON.stringify({ id: resp.data.cookie.id, key: resp.data.cookie.key }) + ' ; expires=' + new Date(resp.data.cookie.expires * 1000);
           }
-          Materialize.toast('Log in successfully!', 4000, '', function() {
+          Materialize.toast('Log in successfully! Redirecting...', 3000, '', function() {
             location.href = '/profile.html';
           });
         }
@@ -144,7 +144,7 @@ var app = new Vue({
       $.ajax({
         method: 'POST',
         url: 'api/log_out.php',
-        data: { email: this.user.email },
+        data: { user_id: this.user.id },
         success: function(resp) {
           if (!resp || resp.status !== 'success') {
             Materialize.toast(resp.message, 4000);

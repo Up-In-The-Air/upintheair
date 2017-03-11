@@ -9,9 +9,9 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $email = $_POST['email'];
+  $id = $_POST['user_id'];
 
-  $sql = "UPDATE user SET session_key=NULL, session_expire=NULL  WHERE email='".$email."'";
+  $sql = "UPDATE user SET session_key=NULL, session_expire=NULL  WHERE id='".$id."'";
 
   if ($conn->query($sql) === TRUE) {
     $resp = [ 'status' => 'success' ];

@@ -29,7 +29,10 @@ var app = new Vue({
         seat: '30L(W)',
         comment: ''
       }],
-      editMode: false
+      editMode: false,
+      editIndex: 0,
+      updateDate: '',
+      updateFlightNum: ''
     }
   },
   ready: function() {
@@ -67,10 +70,13 @@ var app = new Vue({
     this.getFlightLists();
   },
   methods: {
+    isRecordEditting: function(index) {
+      return this.editMode && index == this.editIndex;
+    },
     getFlightLists: function() {
       var _this = this;
       // $.ajax({
-      //   method: 'POST',
+      //   method: 'GET',
       //   url: 'api/get_flights.php',
       //   data: { id: this.user.id },
       //   success: function(resp) {
@@ -85,10 +91,37 @@ var app = new Vue({
       //   }
       // });
     },
-    onFlightRecordEdit: function(flightId) {
-
+    onFlightRecordEditClick: function(index, flightId) {
+      this.editMode = true;
+      this.editIndex = index;
+      this.updateDate = this.flightList[index].date;
+      this.updateFlightNum = this.flightList[index].flight_num;
     },
-    onFlightRecordDelete: function(flightId) {
+    onFlightRecordUpdateConfirm: function() {
+      var _this = this;
+      // $.ajax({
+      //   method: 'POST',
+      //   url: 'api/update_flight.php',
+      //   data: {
+      //     flight_id: this.flightList[editIndex].flight_id,
+      //     date: this.updateDate,
+      //     flight_num: this.updateFlightNum
+      //   },
+      //   success: function(resp) {
+      //     if (!resp || resp.status !== 'success') {
+      //       Materialize.toast(resp.message, 4000);
+      //       return;
+      //     }
+      //     Materialize.toast('Update record successfully', 4000);
+      //   },
+      //   error: function() {
+      //     Materialize.toast('Fail to update the record', 4000);
+      //   }
+      // });
+      this.editMode = false;
+      this.editIndex = 0;
+    },
+    onFlightRecordDeleteClick: function(flightId) {
       var _this = this;
       // $.ajax({
       //   method: 'POST',

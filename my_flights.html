@@ -6,7 +6,8 @@
   <link rel="icon" type="image/png" href="favicon.png" sizes="48x48">
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
-  <link href="static/css/profile_common.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/common.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/my_filght.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="app">
   <div class="navbar-fixed">
@@ -49,9 +50,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="flight in flightList">
-              <td>{{flight.date}}</td>
-              <td>{{flight.flight_num}}</td>
+            <tr v-for="(index, flight) in flightList">
+              <td>
+                <span v-show="!isRecordEditting(index)">{{flight.date}}</span>
+                <span v-show="isRecordEditting(index)"><input type="date" class="datepicker" v-model="updateDate"></span>
+              </td>
+              <td>
+                <span v-show="!isRecordEditting(index)">{{flight.flight_num}}</span>
+                <span v-show="isRecordEditting(index)"><input type="text" v-model="updateFlightNum"></span>
+              </td>
               <td>{{flight.from}}</td>
               <td>{{flight.to}}</td>
               <td>{{flight.dep_time}}</td>
@@ -61,8 +68,9 @@
               <td>{{flight.seat}}</td>
               <td>{{flight.comment}}</td>
               <td>
-                <span @click="onFlightRecordEdit(flight.id)"><i class="material-icons">mode_edit</i></span>
-                <span @click="onFlightRecordDelete(flight.id)"><i class="material-icons">delete</i></span>
+                <span v-show="!isRecordEditting(index)" @click="onFlightRecordEditClick(index, flight.id)"><i class="material-icons">mode_edit</i></span>
+                <span v-show="!isRecordEditting(index)" @click="onFlightRecordDeleteClick(flight.id)"><i class="material-icons">delete</i></span>
+                <span v-show="isRecordEditting(index)" @click="onFlightRecordUpdateConfirm"><i class="material-icons">done</i></span>
               </td>
             </tr>
           </tbody>
@@ -84,5 +92,6 @@
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
   <script src="static/js/my_flights.js"></script>
+  <script src="static/js/my_flights.jq.js"></script>
 </body>
 </html>

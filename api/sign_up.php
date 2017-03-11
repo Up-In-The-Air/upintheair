@@ -1,5 +1,4 @@
 <?php
-  // TODO: 1. Session should be used to check login status
   // TODO: 2. Database munipulations should be implemented in a separate class.
   $server_name = '127.0.0.1';
   $username = 'upintheair_admin';
