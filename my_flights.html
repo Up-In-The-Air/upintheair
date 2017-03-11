@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="favicon.png" sizes="48x48">
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
-  <link href="static/css/profile.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/profile_common.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="app">
   <div class="navbar-fixed">
@@ -21,41 +21,49 @@
     </nav>
   </div>
 
-  <div class="row">
+  <div class="row content">
     <div class="col s12 m4 l3">
       <div class="collection">
-        <a href="#!" class="collection-item">Profile</a>
+        <a href="profile.html" class="collection-item">Profile</a>
         <a href="#!" class="collection-item">Add Flights</a>
         <a href="#!" class="collection-item active">My Flights</a>
       </div>
     </div>
 
     <div class="col s12 m8 l9">
-      <div>
-        <table>
+      <div class="right-pane">
+        <table class="highlight">
           <thead>
             <tr>
-                <th data-field="id">Name</th>
-                <th data-field="name">Item Name</th>
-                <th data-field="price">Item Price</th>
+                <th>Date</th>
+                <th>Fight#</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Dep.</th>
+                <th>Arr.</th>
+                <th>Airline</th>
+                <th>Aircraft</th>
+                <th>Seat</th>
+                <th>Comment</th>
+                <th>Operations</th>
             </tr>
           </thead>
-
           <tbody>
-            <tr>
-              <td>Alvin</td>
-              <td>Eclair</td>
-              <td>$0.87</td>
-            </tr>
-            <tr>
-              <td>Alan</td>
-              <td>Jellybean</td>
-              <td>$3.76</td>
-            </tr>
-            <tr>
-              <td>Jonathan</td>
-              <td>Lollipop</td>
-              <td>$7.00</td>
+            <tr v-for="flight in flightList">
+              <td>{{flight.date}}</td>
+              <td>{{flight.flight_num}}</td>
+              <td>{{flight.from}}</td>
+              <td>{{flight.to}}</td>
+              <td>{{flight.dep_time}}</td>
+              <td>{{flight.arr_time}}</td>
+              <td>{{flight.airline}}</td>
+              <td>{{flight.aircraft}}</td>
+              <td>{{flight.seat}}</td>
+              <td>{{flight.comment}}</td>
+              <td>
+                <span @click="onFlightRecordEdit(flight.id)"><i class="material-icons">mode_edit</i></span>
+                <span @click="onFlightRecordDelete(flight.id)"><i class="material-icons">delete</i></span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -75,7 +83,6 @@
   <script src="static/js/lib/vue.min.js"></script>
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
-  <!-- <script src="static/js/init_profile.js"></script> -->
   <script src="static/js/my_flights.js"></script>
 </body>
 </html>

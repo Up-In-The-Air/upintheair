@@ -3,45 +3,45 @@
   display: flex;
   align-items: center;
 }
-
 #logo-container img {
   height: 42px;
 }
-
 #sidenav-overlay {
   z-index: 996;
 }
-
 nav ul a {
   color: #444;
 }
-
 p {
   line-height: 2rem;
 }
-
 .button-collapse {
   color: #444;
 }
-
-@media only screen and (max-width : 600px) {
+@media only screen and (max-width: 600px) {
   #index-banner .section {
     top: 0;
   }
 }
-
 .icon-block {
   padding: 0 15px;
 }
 .icon-block .material-icons {
   font-size: inherit;
 }
-
 footer.page-footer {
   margin: 0;
   padding: 0;
 }
-
 .side-nav.right-aligned {
   right: 0px;
+}
+.content {
+  min-height: calc(100vh - 130px);
+}
+.right-pane {
+  margin: .5rem 0 1rem 0;
+  border: 1px solid #e0e0e0;
+  padding: 10px 20px;
+  overflow: auto;
 }

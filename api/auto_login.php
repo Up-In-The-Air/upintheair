@@ -24,7 +24,8 @@
         'data' => [
           'first_name' => $row['first_name'],
           'last_name' => $row['last_name'],
-          'email' => $row['email']
+          'email' => $row['email'],
+          'id' => $row['id']
         ]
       ];
     } else {

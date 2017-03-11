@@ -49,7 +49,8 @@ var app = new Vue({
           _this.user = {
             firstName: resp.data.first_name,
             lastName: resp.data.last_name,
-            email: resp.data.email
+            email: resp.data.email,
+            id: resp.data.id
           };
         },
         error: function() { location.href = '/'; }
