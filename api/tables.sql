@@ -43,6 +43,8 @@ CREATE TABLE `Airline` (
 CREATE TABLE `Aircraft` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(128) CHARACTER SET ascii DEFAULT NULL,
+  'aircraft_type' varchar(16) CHARACTER SET ascii DEFAULT NULL,
+  'aircraft_reg' varchar(16) CHARACTER SET ascii DEFAULT NULL,
   `iata` char(2) CHARACTER SET ascii DEFAULT NULL,
   `icao` char(3) CHARACTER SET ascii DEFAULT NULL,
   `model` varchar(128) CHARACTER SET ascii DEFAULT NULL,
