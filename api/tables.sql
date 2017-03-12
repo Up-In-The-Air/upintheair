@@ -14,9 +14,9 @@ CREATE TABLE 'user' (
 CREATE TABLE `flight_record` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `flight_number` varchar(8) CHARACTER SET ascii DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `dep_time` time DEFAULT NULL,
-  `arr_time` time DEFAULT NULL,
+  `date` varchar(12) CHARACTER SET ascii DEFAULT NULL,
+  `dep_time` varchar(8) CHARACTER SET ascii DEFAULT NULL,
+  `arr_time` varchar(8) CHARACTER SET ascii DEFAULT NULL,
   `class` varchar(8) CHARACTER SET ascii DEFAULT NULL,
   `seat` char(2) CHARACTER SET ascii DEFAULT NULL,
   `purpose` varchar(256) CHARACTER SET ascii DEFAULT NULL,
@@ -24,7 +24,6 @@ CREATE TABLE `flight_record` (
   `photourl` varchar(2083) CHARACTER SET ascii DEFAULT NULL,
   `source_airport_id` int(11) DEFAULT NULL,
   `des_airport_id` int(11) DEFAULT NULL,
-  -- `stops` int(2) DEFAULT '0',
   `userid` int(11) DEFAULT NULL,
   `aircraft_id` int(11) DEFAULT NULL,
   `airline_id` int(11) DEFAULT NULL,
@@ -62,14 +61,3 @@ CREATE TABLE `Airport` (
   `longitude` decimal(9,6) DEFAULT '0.000000',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE `Flight` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `airlineid` int(5) unsigned DEFAULT NULL,
-  `source_airport_id` int(5) unsigned DEFAULT NULL,
-  `dest_airport_id` int(5) unsigned DEFAULT NULL,
-  `codeshare` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `stops` int(1) DEFAULT '0',
-  `equipment` varchar(32) CHARACTER SET ascii DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;

@@ -10,17 +10,17 @@
   }
 
   $flight_number = $_POST['flight_number'];
-  $date = date ("Y-m-d", $_POST['date'];
+  $date = $_POST['date'];
   $userid = $_POST['userid'];
 
   if($flight_number == null){
-    $sql = "SELECT * FROM flight_records where date = $date and userid = $userid";
+    $sql = "SELECT * FROM flight_record where date = '$date' and userid = $userid";
   }
   if($date == null){
-    $sql = "SELECT * FROM flight_records where flight_number = '$flight_number' and userid = $userid";
+    $sql = "SELECT * FROM flight_record where flight_number = '$flight_number' and userid = $userid";
   }
   if($flight_number != null && $date != null){
-    $sql = "SELECT * FROM flight_records where date = $date and userid = $userid and flight_number = '$flight_number'";
+    $sql = "SELECT * FROM flight_record where date = '$date' and userid = $userid and flight_number = '$flight_number'";
   }
 
   $result = $conn->query($sql);
@@ -31,25 +31,28 @@
         'message' => 'no match'
       ];
   }else{
-      $resp = [
+    $i = 0;
+    while($row = $result->fetch_assoc()){
+        $resp[$i] = [
         'status' => 'success',
         'data' => [
-          'id' => $row['id'];
+          'id' => $row['id'],
           'flight_number' => $row['flight_number'],
           'date' => $row['date'],
           'class' => $row['class'],
           'seat' => $row['seat'],
-          'note' => $row['note']
+          'note' => $row['note'],
           'purpose' => $row['purpose'],
           'photourl' => $row['photourl'],
           'source_airport_id' => $row['source_airport_id'],
           'des_airport_id' => $row['des_airport_id'],
-          'stops' => $row['stops'],
           'userid' => $row['userid'],
           'aircraft_id' => $row['aircraft_id'],
-          'airline_id' => $row['airline_id'],
+          'airline_id' => $row['airline_id']
         ]
-      ]
+      ];
+      $i += 1;
+    }
   }
   header('Content-Type: application/json');
   echo json_encode($resp);

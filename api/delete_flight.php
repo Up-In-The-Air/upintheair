@@ -11,13 +11,20 @@
 
   $id = $_POST['id'];
 
-  $sql = "DELETE FROM table_name WHERE id = $id ";
+  $sql = "DELETE FROM flight_record WHERE id = $id ";
 
   if ($conn->query($sql) === TRUE) {
-      echo "delete successfully";
+      $resp = [
+        'status' => 'success',
+        'message' => 'delete successfully'
+      ];
   } else {
-      echo "Error: " . $sql . "<br>" . $conn->error;
+      $resp = [
+        'status' => 'fail',
+        'message' => 'delete fail(error)'
+      ];
   }
-
+  header('Content-Type: application/json');
+  echo json_encode($resp);
   $conn->close();
 ?>

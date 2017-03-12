@@ -9,6 +9,8 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
+  $id = $_POST['id'];
+
   $flight_number = $_POST['flight_number'];
   $date = $_POST['date'];
   $dep_time = $_POST['dep_time'];
@@ -41,8 +43,22 @@
   $sql4 = "SELECT id FROM Aircraft where name = '$aircraft'";
   $row = $conn->query($sql4)->fetch_assoc();
   $aircraft_id= $row['id'];
-// check for duplicate adds
-  
+
+  // check for no flight
+
+  $sql_test = "SELECT * FROM flight_record where id = $id";
+
+  $result = $conn->query($sql_test);
+
+  if ($result -> num_rows == 0){
+      $resp = [
+        'status' => 'fail',
+        'message' => 'flight not exist'
+      ];
+      header('Content-Type: application/json');
+      echo json_encode($resp);
+      exit();
+  }
 
   if($dep_time == null) $dep_time = 'no';
   if($arr_time == null) $arr_time = 'no';
@@ -56,34 +72,17 @@
   if($aircraft_id == null) $aircraft_id = 0;
   if($airline_id == null) $airline_id = 0;
 
-
-  $sql_test = "SELECT * FROM flight_record WHERE userid = $userid and flight_number = '$flight_number' and date = '$date'";
-
-  $result = $conn->query($sql_test);
-
-  if ($result -> num_rows != 0){
-      $resp = [
-        'status' => 'fail',
-        'message' => 'flight already existed'
-      ];
-      header('Content-Type: application/json');
-      echo json_encode($resp);
-      exit();
-  }
-  // add flights
-
-  $sql = "INSERT INTO flight_record (flight_number, date, dep_time, arr_time, class, seat, purpose, note, photourl, source_airport_id, des_airport_id, userid, aircraft_id, airline_id) VALUES ('$flight_number', '$date', '$dep_time', '$arr_time', '$class', '$seat', '$purpose', '$note', '$photourl', $source_airport_id, $des_airport_id, $userid, $aircraft_id, $airline_id)";
-  
+  $sql = "UPDATE flight_record SET flight_number = '$flight_number', date = '$date', dep_time = '$dep_time', arr_time = '$arr_time', class = '$class', seat = '$seat', purpose = '$purpose', note = '$note', photourl = '$photourl', source_airport_id = $source_airport_id, des_airport_id = $des_airport_id, userid = $userid, aircraft_id = $aircraft_id, airline_id = $airline_id WHERE id = $id";
 
   if ($conn->query($sql) === TRUE) {
       $resp = [
         'status' => 'success',
-        'message' => 'new flight record created successfully'
+        'message' => 'record updated successfully'
       ];
   } else {
       $resp = [
         'status' => 'fail',
-        'message' => 'add fail(error)'
+        'message' => 'update fail(error)'
       ];
   }
   header('Content-Type: application/json');
