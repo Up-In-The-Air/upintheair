@@ -17,6 +17,12 @@
           <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
           <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
         </ul>
+
+        <ul id="nav-mobile" class="side-nav">
+          <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
       </div>
     </nav>
   </div>
@@ -73,7 +79,7 @@
   <script src="static/js/lib/vue.min.js"></script>
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
+  <script src="static/js/profile.jq.js"></script>
   <script src="static/js/profile.js"></script>
-  <script src="static/js/addflight.js">
 </body>
 </html>
