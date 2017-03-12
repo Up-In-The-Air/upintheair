@@ -138,6 +138,21 @@ var app = new Vue({
       //     Materialize.toast('Fail to delete the record', 4000);
       //   }
       // });
+    },
+    onLogoutClick: function() {
+      $.ajax({
+        method: 'POST',
+        url: 'api/log_out.php',
+        data: { email: this.user.email },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          document.cookie = 'upintheairAuth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          location.href = '/';
+        }
+      });
     }
   }
 });

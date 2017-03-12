@@ -18,6 +18,12 @@
           <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
           <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
         </ul>
+
+        <ul id="nav-mobile" class="side-nav">
+          <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
       </div>
     </nav>
   </div>
@@ -26,8 +32,8 @@
     <div class="col s12 m4 l3">
       <div class="collection">
         <a href="profile.html" class="collection-item">Profile</a>
-        <a href="#!" class="collection-item">Add Flights</a>
-        <a href="#!" class="collection-item active">My Flights</a>
+        <a href="add_flight.html" class="collection-item">Add Flights</a>
+        <a href="my_flights.html" class="collection-item active">My Flights</a>
       </div>
     </div>
 
@@ -65,7 +71,16 @@
               <td>{{flight.arr_time}}</td>
               <td>{{flight.airline}}</td>
               <td>{{flight.aircraft}}</td>
-              <td>{{flight.seat}}</td>
+              <td>
+                <span v-show="!isRecordEditting(index)">{{flight.seat}}</span>
+                <span v-show="isRecordEditting(index)">
+                  <select>
+                    <option value="0">Window</option>
+                    <option value="1">Middle</option>
+                    <option value="2">Aisle</option>
+                  </select>
+                </span>
+              </td>
               <td>{{flight.comment}}</td>
               <td>
                 <span v-show="!isRecordEditting(index)" @click="onFlightRecordEditClick(index, flight.id)"><i class="material-icons">mode_edit</i></span>
@@ -77,7 +92,6 @@
         </table>
       </div>
     </div>
-
   </div>
 
   <footer class="page-footer teal">
