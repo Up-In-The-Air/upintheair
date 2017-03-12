@@ -172,8 +172,8 @@
               <label for="password">Password</label>
             </div>
             <div class="input-field col s12">
-              <input id="password" type="password" :class="{invalid: !isConfirmPasswordValid}" v-model="confirmedPassword" required>
-              <label for="password" data-error="Passwords do not match.">Confirm Password</label>
+              <input id="confirm_password" type="password" :class="{invalid: !isConfirmPasswordValid}" v-model="confirmedPassword" required>
+              <label for="confirm_password" data-error="Passwords do not match.">Confirm Password</label>
             </div>
           </div>
           <div>
@@ -230,7 +230,7 @@
   <script src="static/js/lib/vue.min.js"></script>
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
-  <script src="static/js/init.js"></script>
+  <script src="static/js/home.jq.js"></script>
   <script src="static/js/home.js"></script>
 </body>
 </html>

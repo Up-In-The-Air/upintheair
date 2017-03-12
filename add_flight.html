@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Up in the Air</title>
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="48x48">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/lib/materialize.clockpicker.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/common.css" type="text/css" rel="stylesheet" />
+</head>
+<body id="app">
+  <div class="navbar-fixed">
+    <nav class="grey lighten-5" role="navigation">
+      <div class="nav-wrapper container">
+        <a id="logo-container" href="/" class="brand-logo"><img src="static/images/logo_color.png" /></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+        </ul>
+
+        <ul id="nav-mobile" class="side-nav">
+          <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="row content">
+    <div class="col s12 m4 l3">
+      <div class="collection">
+        <a href="profile.html" class="collection-item">Profile</a>
+        <a href="add_flight.html" class="collection-item active">Add Flights</a>
+        <a href="my_flights.html" class="collection-item">My Flights</a>
+      </div>
+    </div>
+
+    <div class="col s12 m8 l9">
+      <div class="right-pane">
+        <div class="row">
+          <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#test-swipe-1">BASIC INFO</a></li>
+            <li class="tab col s3"><a href="#test-swipe-2">FLIGHT INFO</a></li>
+            <li class="tab col s3"><a href="#test-swipe-3">TICKET INFO</a></li>
+            <li class="tab col s3"><a href="#test-swipe-4">RATE & REVIEW</a></li>
+          </ul>
+        </div>
+        <div class="row">
+          <div id="test-swipe-1" class="col s12">
+            <div class="row">
+              <div class="input-field col s6">
+                <i class="material-icons prefix">today</i>
+                <input id="flight_date" type="date" class="datepicker">
+                <label for="flight_date">Departure Date</label>
+              </div>
+              <div class="input-field col s6">
+                <i class="material-icons prefix">flight</i>
+                <input id="flight_number" type="text" class="validate">
+                <label for="flight_number">Flight Number</label>
+              </div>
+            </div>
+            <div class="row">
+              <a class="left waves-effect waves-light btn">back</a>
+              <a class="right waves-effect waves-light btn">continue</a>
+            </div>
+          </div>
+
+          <div id="test-swipe-2" class="col s12">
+            <div class="row">
+              <div class="input-field col s6">
+                <i class="material-icons prefix">location_on</i>
+                <input id="dep_airport" type="text">
+                <label for="dep_airport">Departure Airport</label>
+              </div>
+              <div class="input-field col s6">
+                <i class="material-icons prefix">av_timer</i>
+                <input id="dep_time" data-default="00:00:00" class="timepicker" type="time">
+                <label for="dep_time">Departure Time</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <i class="material-icons prefix">location_on</i>
+                <input id="arr_airport" type="text">
+                <label for="arr_airport">Arrival Airport</label>
+              </div>
+              <div class="input-field col s6">
+                <i class="material-icons prefix">av_timer</i>
+                <input id="arr_time" data-default="00:00:00" class="timepicker" type="time">
+                <label for="arr_time">Arrival Time</label>
+              </div>
+            </div>
+            <div class="row">
+              <a class="left waves-effect waves-light btn">back</a>
+              <a class="right waves-effect waves-light btn">continue</a>
+            </div>
+          </div>
+
+          <div id="test-swipe-3" class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <label>Flight Class</label>
+                <ul>
+                  <li>
+                    <input class="with-gap" name="class" type="radio" id="class-economy"  />
+                    <label for="class-economy">Economy</label>
+                  </li>
+                  <li>
+                    <input class="with-gap" name="class" type="radio" id="class-economy-plus"  />
+                    <label for="class-economy-plus">Economy+</label>
+                  </li>
+                  <li>
+                    <input class="with-gap" name="class" type="radio" id="class-business"  />
+                    <label for="class-business">Business</label>
+                  </li>
+                  <li>
+                    <input class="with-gap" name="class" type="radio" id="class-first"  />
+                    <label for="class-first">First</label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <label>Flight Reason</label>
+                <ul>
+                  <li>
+                    <input class="with-gap" name="reason" type="radio" id="reason-leisure"  />
+                    <label for="reason-leisure">Leisure</label>
+                  </li>
+                  <li>
+                    <input class="with-gap" name="reason" type="radio" id="reason-business"  />
+                    <label for="reason-business">Business</label>
+                  </li>
+                  <li>
+                    <input class="with-gap" name="reason" type="radio" id="reason-crew"  />
+                    <label for="reason-crew">Crew</label>
+                  </li>
+                  <li>
+                    <input class="with-gap" name="reason" type="radio" id="reason-other"  />
+                    <label for="reason-other">Other</label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <label>Flight Seat</label>
+                <ul>
+                  <li>
+                    <input class="with-gap" name="seat" type="radio" id="seat-window" />
+                    <label for="seat-window">Window</label>
+                  </li>
+                  <li>
+                    <input class="with-gap" name="seat" type="radio" id="seat-middle"  />
+                    <label for="seat-middle">Middle</label>
+                  </li>
+                  <li>
+                    <input class="with-gap" name="seat" type="radio" id="seat-aisle"  />
+                    <label for="seat-aisle">Aisle</label>
+                  </li>
+                </ul>
+              </div>
+              <div class="input-field col s6">
+                <input id="seat-num" type="text">
+                <label for="seat-num">Seat Number</label>
+              </div>
+            </div>
+            <div class="row">
+              <a class="left waves-effect waves-light btn">back</a>
+              <a class="right waves-effect waves-light btn">continue</a>
+            </div>
+          </div>
+
+          <div id="test-swipe-4" class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <i class="material-icons prefix">comment</i>
+                <textarea id="comment" class="materialize-textarea" data-length="300"></textarea>
+                <label for="comment">Your Comments</label>
+              </div>
+            </div>
+            <div class="row">
+              <a class="left waves-effect waves-light btn">back</a>
+              <a class="right waves-effect waves-light btn">Submit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer teal">
+    <div class="footer-copyright">
+      <div class="container">
+      © 2017 Up in the Air
+      </div>
+    </div>
+  </footer>
+
+  <script src="static/js/lib/vue.min.js"></script>
+  <script src="static/js/lib/jquery.min.js"></script>
+  <script src="static/js/lib/materialize.min.js"></script>
+  <script src="static/js/lib/materialize.clockpicker.js"></script>
+  <script src="static/js/add_flight.jq.js"></script>
+  <script src="static/js/add_flight.js"></script>
+
+</body>
+</html>
