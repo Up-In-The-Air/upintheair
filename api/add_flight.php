@@ -20,7 +20,9 @@
   $photourl = $_POST['photourl'];
   $userid = $_POST['userid'];
 
-  $aircraft = $_POST['aircraft'];
+  $aircraft_type = $_POST['aircraft_type'];
+  $aircraft_reg = $_POST['aircraft_reg'];
+
   $source_airport = $_POST['source_airport'];
   $des_airport = $_POST['des_airport'];
   $airline = $_POST['airline'];
@@ -38,7 +40,7 @@
   $row = $conn->query($sql3)->fetch_assoc();
   $airline_id= $row['id'];
 //aircraft
-  $sql4 = "SELECT id FROM Aircraft where name = '$aircraft'";
+  $sql4 = "SELECT id FROM Aircraft where aircraft_type = '$aircraft_type' and aircraft_reg = '$aircraft_reg'";
   $row = $conn->query($sql4)->fetch_assoc();
   $aircraft_id= $row['id'];
 // check for duplicate adds
