@@ -57,7 +57,7 @@
       } else {
         $resp = [
           'status' => 'fail',
-          'message' => 'Error: '. $conn->error
+          'message' => 'Error: '.$conn->error
         ];
       }
     }
