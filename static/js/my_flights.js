@@ -1,3 +1,21 @@
+var CLASS_MAP = {
+  0: 'Economy',
+  1: 'Economy+',
+  2: 'Business',
+  3: 'First'
+};
+var PURPOSE_MAP = {
+  0: 'Leisure',
+  1: 'Business',
+  2: 'Crew',
+  3: 'Others'
+};
+var SEAT_MAP = {
+  0: 'W',
+  1: 'M',
+  2: 'A'
+};
+
 // For Debug Mode
 Vue.config.devtools = true;
 
@@ -6,6 +24,9 @@ var app = new Vue({
   data: function() {
     return {
       user: {},
+      classMap: CLASS_MAP,
+      purposeMap: PURPOSE_MAP,
+      seatMap: SEAT_MAP,
       flightList: [],
       editMode: false,
       editIndex: 0,
@@ -62,6 +83,9 @@ var app = new Vue({
             return;
           }
           _this.flightList = resp.data;
+          Vue.nextTick(function() {
+            $('.tooltipped').tooltip({ delay: 50 });
+          });
         }
       });
     },

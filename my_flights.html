@@ -50,8 +50,9 @@
                 <th>Arr.</th>
                 <th>Airline</th>
                 <th>Aircraft</th>
+                <th>Class</th>
+                <th>Purpose</th>
                 <th>Seat</th>
-                <th>Comment</th>
                 <th>Operations</th>
             </tr>
           </thead>
@@ -65,14 +66,31 @@
                 <span v-show="!isRecordEditting(index)">{{flight.flight_number}}</span>
                 <span v-show="isRecordEditting(index)"><input type="text" v-model="updateFlightNum"></span>
               </td>
-              <td>{{flight.dep_airport_iata}}</td>
-              <td>{{flight.arr_airport_iata}}</td>
+              <td>
+                <span class="tooltipped" data-position="top" data-delay="50" :data-tooltip="flight.dep_airport_name">{{flight.dep_airport_iata}}</span>
+              </td>
+              <td>
+                <span class="tooltipped" data-position="top" data-delay="50" :data-tooltip="flight.arr_airport_name">{{flight.arr_airport_iata}}</span>
+              </td>
               <td>{{flight.dep_time}}</td>
               <td>{{flight.arr_time}}</td>
-              <td>{{flight.airline_iata}}</td>
-              <td>{{flight.aircraft_iata}}</td>
               <td>
-                <span v-show="!isRecordEditting(index)">{{flight.seat}}</span>
+                <span v-if="flight.airline_name" class="tooltipped" data-position="top" data-delay="50" :data-tooltip="flight.airline_name">{{flight.airline_iata}}</span>
+              </td>
+              <td>
+                <span v-if="flight.aircraft_name" class="tooltipped" data-position="top" data-delay="50" :data-tooltip="flight.aircraft_name">{{flight.aircraft_iata}}</span>
+              </td>
+              <td>
+                <span v-show="!isRecordEditting(index)">{{classMap[flight.class]}}</span>
+              </td>
+              <td>
+                <span v-show="!isRecordEditting(index)">{{purposeMap[flight.purpose]}}</span>
+              </td>
+              <td>
+                <span v-show="!isRecordEditting(index)">
+                  <span>{{flight.seat_num}}</span>
+                  <span v-if="flight.seat">({{seatMap[flight.seat]}})</span>
+                </span>
                 <span v-show="isRecordEditting(index)">
                   <select>
                     <option value="0">Window</option>
@@ -81,7 +99,6 @@
                   </select>
                 </span>
               </td>
-              <td>{{flight.comment}}</td>
               <td>
                 <span v-show="!isRecordEditting(index)" @click="onFlightRecordEditClick(index, flight.id)"><i class="material-icons">mode_edit</i></span>
                 <span v-show="!isRecordEditting(index)" @click="onFlightRecordDeleteClick(flight.id)"><i class="material-icons">delete</i></span>
