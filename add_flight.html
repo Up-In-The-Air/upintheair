@@ -41,82 +41,121 @@
       <div class="right-pane">
         <div class="row">
           <ul class="tabs">
-            <li class="tab col s3"><a class="active" href="#test-swipe-1">BASIC INFO</a></li>
-            <li class="tab col s3"><a href="#test-swipe-2">FLIGHT INFO</a></li>
-            <li class="tab col s3"><a href="#test-swipe-3">TICKET INFO</a></li>
-            <li class="tab col s3"><a href="#test-swipe-4">RATE & REVIEW</a></li>
+            <li class="tab col s3"><a class="active" href="#tab-progress-1">BASIC INFO</a></li>
+            <li class="tab col s3"><a href="#tab-progress-2">FLIGHT INFO</a></li>
+            <li class="tab col s3"><a href="#tab-progress-3">TICKET INFO</a></li>
+            <li class="tab col s3"><a href="#tab-progress-4">RATE & REVIEW</a></li>
           </ul>
         </div>
         <div class="row">
-          <div id="test-swipe-1" class="col s12">
+          <div id="tab-progress-1" class="col s12">
             <div class="row">
               <div class="input-field col s6">
                 <i class="material-icons prefix">today</i>
-                <input id="flight_date" type="date" class="datepicker">
+                <input id="flight_date" type="date" class="datepicker" v-model="date">
                 <label for="flight_date">Departure Date</label>
               </div>
               <div class="input-field col s6">
                 <i class="material-icons prefix">flight</i>
-                <input id="flight_number" type="text" class="validate">
+                <input id="flight_number" type="text" v-model="flightNumber" @blur="onFlightNumberBlur">
                 <label for="flight_number">Flight Number</label>
               </div>
             </div>
             <div class="row">
-              <a class="left waves-effect waves-light btn">back</a>
-              <a class="right waves-effect waves-light btn">continue</a>
+              <a class="right waves-effect waves-light btn" @click="onJumpTabClick(2)">continue</a>
             </div>
           </div>
 
-          <div id="test-swipe-2" class="col s12">
+          <div id="tab-progress-2" class="col s12">
             <div class="row">
               <div class="input-field col s6">
-                <i class="material-icons prefix">location_on</i>
-                <input id="dep_airport" type="text">
+                <i class="material-icons prefix">flight_takeoff</i>
+                <input id="dep_airport" type="text" v-model="depAirport.name">
                 <label for="dep_airport">Departure Airport</label>
               </div>
-              <div class="input-field col s6">
+              <div class="input-field col s3">
+                <div v-if="depAirport.iata" class="chip">
+                  {{depAirport.iata}}
+                </div>
+                <div v-if="depAirport.city" class="chip">
+                  {{depAirport.city}}
+                </div>
+              </div>
+              <div class="input-field col s3">
                 <i class="material-icons prefix">av_timer</i>
-                <input id="dep_time" data-default="00:00:00" class="timepicker" type="time">
+                <input id="dep_time" class="timepicker" type="time" v-model="depTime">
                 <label for="dep_time">Departure Time</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s6">
-                <i class="material-icons prefix">location_on</i>
-                <input id="arr_airport" type="text">
+                <i class="material-icons prefix">flight_land</i>
+                <input id="arr_airport" type="text" v-model="arrAirport.name">
                 <label for="arr_airport">Arrival Airport</label>
               </div>
-              <div class="input-field col s6">
+              <div class="input-field col s3">
+                <div v-if="arrAirport.iata" class="chip">
+                  {{arrAirport.iata}}
+                </div>
+                <div v-if="arrAirport.city" class="chip">
+                  {{arrAirport.city}}
+                </div>
+              </div>
+              <div class="input-field col s3">
                 <i class="material-icons prefix">av_timer</i>
-                <input id="arr_time" data-default="00:00:00" class="timepicker" type="time">
+                <input id="arr_time" class="timepicker" type="time" v-model="arrTime">
                 <label for="arr_time">Arrival Time</label>
               </div>
             </div>
             <div class="row">
-              <a class="left waves-effect waves-light btn">back</a>
-              <a class="right waves-effect waves-light btn">continue</a>
+              <div class="input-field col s6">
+                <i class="material-icons prefix">flight</i>
+                <input id="airline" type="text" v-model="airline.name">
+                <label for="airline">Airline</label>
+              </div>
+              <div class="input-field col s3">
+                <div v-if="airline.iata" class="chip">
+                  {{airline.iata}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <i class="material-icons prefix">flight</i>
+                <input id="aircraft" type="text" v-model="aircraft.name">
+                <label for="aircraft">Aircraft</label>
+              </div>
+              <div class="input-field col s3">
+                <div v-if="aircraft.iata" class="chip">
+                  {{aircraft.iata}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <a class="left waves-effect waves-light btn" @click="onJumpTabClick(1)">back</a>
+              <a class="right waves-effect waves-light btn" @click="onJumpTabClick(3)">continue</a>
             </div>
           </div>
 
-          <div id="test-swipe-3" class="col s12">
+          <div id="tab-progress-3" class="col s12">
             <div class="row">
               <div class="input-field col s12">
                 <label>Flight Class</label>
                 <ul>
                   <li>
-                    <input class="with-gap" name="class" type="radio" id="class-economy"  />
+                    <input class="with-gap" value="0" type="radio" id="class-economy"  v-model="class" />
                     <label for="class-economy">Economy</label>
                   </li>
                   <li>
-                    <input class="with-gap" name="class" type="radio" id="class-economy-plus"  />
+                    <input class="with-gap" value="1" type="radio" id="class-economy-plus" v-model="class" />
                     <label for="class-economy-plus">Economy+</label>
                   </li>
                   <li>
-                    <input class="with-gap" name="class" type="radio" id="class-business"  />
+                    <input class="with-gap" value="2" type="radio" id="class-business" v-model="class" />
                     <label for="class-business">Business</label>
                   </li>
                   <li>
-                    <input class="with-gap" name="class" type="radio" id="class-first"  />
+                    <input class="with-gap" value="3" type="radio" id="class-first" v-model="class" />
                     <label for="class-first">First</label>
                   </li>
                 </ul>
@@ -124,23 +163,23 @@
             </div>
             <div class="row">
               <div class="input-field col s12">
-                <label>Flight Reason</label>
+                <label>Flight Purpose</label>
                 <ul>
                   <li>
-                    <input class="with-gap" name="reason" type="radio" id="reason-leisure"  />
-                    <label for="reason-leisure">Leisure</label>
+                    <input class="with-gap" value="0" type="radio" id="purpose-leisure" v-model="purpose" />
+                    <label for="purpose-leisure">Leisure</label>
                   </li>
                   <li>
-                    <input class="with-gap" name="reason" type="radio" id="reason-business"  />
-                    <label for="reason-business">Business</label>
+                    <input class="with-gap" value="1" type="radio" id="purpose-business" v-model="purpose" />
+                    <label for="purpose-business">Business</label>
                   </li>
                   <li>
-                    <input class="with-gap" name="reason" type="radio" id="reason-crew"  />
-                    <label for="reason-crew">Crew</label>
+                    <input class="with-gap" value="2" type="radio" id="purpose-crew" v-model="purpose" />
+                    <label for="purpose-crew">Crew</label>
                   </li>
                   <li>
-                    <input class="with-gap" name="reason" type="radio" id="reason-other"  />
-                    <label for="reason-other">Other</label>
+                    <input class="with-gap" value="3" type="radio" id="purpose-other" v-model="purpose" />
+                    <label for="purpose-other">Other</label>
                   </li>
                 </ul>
               </div>
@@ -150,41 +189,41 @@
                 <label>Flight Seat</label>
                 <ul>
                   <li>
-                    <input class="with-gap" name="seat" type="radio" id="seat-window" />
+                    <input class="with-gap" value="0" type="radio" id="seat-window" v-model="seat" />
                     <label for="seat-window">Window</label>
                   </li>
                   <li>
-                    <input class="with-gap" name="seat" type="radio" id="seat-middle"  />
+                    <input class="with-gap" value="1" type="radio" id="seat-middle" v-model="seat" />
                     <label for="seat-middle">Middle</label>
                   </li>
                   <li>
-                    <input class="with-gap" name="seat" type="radio" id="seat-aisle"  />
+                    <input class="with-gap" value="2" type="radio" id="seat-aisle" v-model="seat" />
                     <label for="seat-aisle">Aisle</label>
                   </li>
                 </ul>
               </div>
               <div class="input-field col s6">
-                <input id="seat-num" type="text">
+                <input id="seat-num" type="text" v-model="seatNum">
                 <label for="seat-num">Seat Number</label>
               </div>
             </div>
             <div class="row">
-              <a class="left waves-effect waves-light btn">back</a>
-              <a class="right waves-effect waves-light btn">continue</a>
+              <a class="left waves-effect waves-light btn" @click="onJumpTabClick(2)">back</a>
+              <a class="right waves-effect waves-light btn" @click="onJumpTabClick(4)">continue</a>
             </div>
           </div>
 
-          <div id="test-swipe-4" class="col s12">
+          <div id="tab-progress-4" class="col s12">
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">comment</i>
-                <textarea id="comment" class="materialize-textarea" data-length="300"></textarea>
+                <textarea id="comment" class="materialize-textarea" data-length="300" v-model="comment"></textarea>
                 <label for="comment">Your Comments</label>
               </div>
             </div>
             <div class="row">
-              <a class="left waves-effect waves-light btn">back</a>
-              <a class="right waves-effect waves-light btn">Submit</a>
+              <a class="left waves-effect waves-light btn" @click="onJumpTabClick(3)">back</a>
+              <a class="right waves-effect waves-light btn" @click="onAddFlightSubmitClick">Submit</a>
             </div>
           </div>
         </div>
