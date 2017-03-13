@@ -9,81 +9,91 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $id = $_POST['id'];
+  // Required
+  $id = $_POST['flight_id'];
 
-  $flight_number = $_POST['flight_number'];
+  if (!$id) {
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Missing required fields: flight_id'
+    ];
+    header('Content-Type: application/json');
+    echo json_encode($resp);
+    exit();
+  }
+
+  $sql_check_exist = "SELECT * FROM flight_record WHERE id='$id'";
+  if ($conn->query($sql_check_exist)->num_rows === 0) {
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Can not find flight_id = '.$id
+    ];
+    header('Content-Type: application/json');
+    echo json_encode($resp);
+    exit();
+  }
+
   $date = $_POST['date'];
+  $dep_airport_iata = $_POST['dep_airport_iata'];
+  $arr_airport_iata = $_POST['arr_airport_iata'];
+  $flight_number = $_POST['flight_number'];
   $dep_time = $_POST['dep_time'];
   $arr_time = $_POST['arr_time'];
   $class = $_POST['class'];
   $seat = $_POST['seat'];
   $purpose = $_POST['purpose'];
-  $note = $_POST['note'];
-  $photourl = $_POST['photourl'];
-  $userid = $_POST['userid'];
+  $aircraft_iata = $_POST['aircraft_iata'];
+  $airline_iata = $_POST['airline_iata'];
 
-  $aircraft = $_POST['aircraft'];
-  $dep_airport = $_POST['dep_airport'];
-  $arr_airport = $_POST['arr_airport'];
-  $airline = $_POST['airline'];
+  $schema_values = array();
 
-// source airport
-  $sql1 = "SELECT id FROM Airport where name = '$dep_airport'";
-  $row = $conn->query($sql1)->fetch_assoc();
-  $dep_airport_id = $row['id'];
-// des airport
-  $sql2 = "SELECT id FROM Airport where name = '$arr_airport'";
-  $row = $conn->query($sql2)->fetch_assoc();
-  $arr_airport_id = $row['id'];
-//airline
-  $sql3 = "SELECT id FROM Airline where name = '$airline'";
-  $row = $conn->query($sql3)->fetch_assoc();
-  $airline_id= $row['id'];
-//aircraft
-  $sql4 = "SELECT id FROM Aircraft where name = '$aircraft'";
-  $row = $conn->query($sql4)->fetch_assoc();
-  $aircraft_id= $row['id'];
-
-  // check for no flight
-
-  $sql_test = "SELECT * FROM flight_record where id = $id";
-
-  $result = $conn->query($sql_test);
-
-  if ($result -> num_rows == 0){
-      $resp = [
-        'status' => 'fail',
-        'message' => 'flight not exist'
-      ];
-      header('Content-Type: application/json');
-      echo json_encode($resp);
-      exit();
+  if ($dep_airport_iata) {
+    $sql1 = "SELECT id FROM airport WHERE iata = '$dep_airport_iata'";
+    $row = $conn->query($sql1)->fetch_assoc();
+    $dep_airport_id = $row['id'];
+    array_push($schema_values, "dep_airport_id='".$dep_airport_id."'");
   }
 
-  if($dep_time == null) $dep_time = 'no';
-  if($arr_time == null) $arr_time = 'no';
-  if($class == null) $class = 'no';
-  if($seat == null) $seat = 'no';
-  if($purpose == null) $purpose = 'no';
-  if($note == null) $note = 'no';
-  if($photourl == null) $photourl = 'no';
-  if($dep_airport_id == null) $dep_airport_id = 0;
-  if($arr_airport_id == null) $arr_airport_id = 0;
-  if($aircraft_id == null) $aircraft_id = 0;
-  if($airline_id == null) $airline_id = 0;
+  if ($arr_airport_iata) {
+    $sql2 = "SELECT id FROM airport WHERE iata = '$arr_airport_iata'";
+    $row = $conn->query($sql2)->fetch_assoc();
+    $arr_airport_id = $row['id'];
+    array_push($schema_values, "arr_airport_id='".$arr_airport_id."'");
+  }
 
-  $sql = "UPDATE flight_record SET flight_number = '$flight_number', date = '$date', dep_time = '$dep_time', arr_time = '$arr_time', class = '$class', seat = '$seat', purpose = '$purpose', note = '$note', photourl = '$photourl', dep_airport_id = $dep_airport_id, arr_airport_id = $arr_airport_id, userid = $userid, aircraft_id = $aircraft_id, airline_id = $airline_id WHERE id = $id";
+  if ($aircraft_iata) {
+    $sql4 = "SELECT id FROM aircraft WHERE iata = '$aircraft_iata'";
+    $row = $conn->query($sql4)->fetch_assoc();
+    array_push($schema_values, "aircraft_id='".$row['id']."'");
+  }
 
-  if ($conn->query($sql) === TRUE) {
-      $resp = [
-        'status' => 'success',
-        'message' => 'record updated successfully'
-      ];
+  if ($airline_iata) {
+    $sql3 = "SELECT id FROM airline where iata = '$airline_iata'";
+    $row = $conn->query($sql3)->fetch_assoc();
+    array_push($schema_values, "airline_id='".$row['id']."'");
+  }
+
+  if ($date) { array_push($schema_values, "date='".$date."'"); }
+  if ($flight_number) { array_push($schema_values, "flight_number='".$flight_number."'"); }
+  if ($dep_time) { array_push($schema_values, "dep_time='".$dep_time."'"); }
+  if ($arr_time) { array_push($schema_values, "arr_time='".$arr_time."'"); }
+  if ($class) { array_push($schema_values, "class='".$class."'"); }
+  if ($seat) { array_push($schema_values, "seat='".$seat."'"); }
+  if ($seat_num) { array_push($schema, "seat_num='".$seat_num."'"); }
+  if ($purpose) { array_push($schema_values, "purpose='".$purpose."'"); }
+
+  $schema_values_str = join(", ", $schema_values);
+
+  // update flights
+  $sql = "UPDATE flight_record SET ". $schema_values_str ." WHERE id='$id'";
+
+  if ($conn->query($sql)) {
+    $resp = [ 'status' => 'success' ];
   } else {
-      $resp = [
-        'status' => 'fail',
-        'message' => 'update fail(error)'
-      ];
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Error: '.$conn->error
+    ];
   }
   header('Content-Type: application/json');
   echo json_encode($resp);

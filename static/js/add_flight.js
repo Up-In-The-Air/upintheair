@@ -93,28 +93,8 @@ var app = new Vue({
           if (resp.response && resp.response[0]) {
             _this.depAirport.iata = resp.response[0].departure;
             _this.arrAirport.iata = resp.response[0].arrival;
-            $.ajax({
-              method: 'GET',
-              url: 'api/get_airport.php',
-              data: { iata: _this.depAirport.iata },
-              success: function(resp) {
-                if (resp && resp.status === 'success') {
-                  _this.depAirport.name = resp.data.name;
-                  _this.depAirport.city = resp.data.city;
-                }
-              }
-            });
-            $.ajax({
-              method: 'GET',
-              url: 'api/get_airport.php',
-              data: { iata: _this.arrAirport.iata },
-              success: function(resp) {
-                if (resp && resp.status === 'success') {
-                  _this.arrAirport.name = resp.data.name;
-                  _this.arrAirport.city = resp.data.city;
-                }
-              }
-            });
+            _this.getAirpotDetail(_this.depAirport);
+            _this.getAirpotDetail(_this.arrAirport);
           }
         }
       });
@@ -140,6 +120,15 @@ var app = new Vue({
       $('ul.tabs').tabs('select_tab', 'tab-progress-' + index);
     },
     onAddFlightSubmitClick: function() {
+      var missingList = [];
+      if (!this.date) { missingList.push('Departure Date'); }
+      if (!this.dep_airport_iata) { missingList.push('Departure Airport'); }
+      if (!this.arr_airport_iata) { missingList.push('Arrival Airport'); }
+      if (missingList.length > 0) {
+        Materialize.toast('Missing required field(s): ' + missingList.join(', '), 4000);
+        return;
+      }
+
       $.ajax({
         method: 'POST',
         url: 'api/add_flight.php',
@@ -169,6 +158,44 @@ var app = new Vue({
         }
       });
     },
+    getAirpotDetail: function(airport) {
+      var _this = this;
+      $.ajax({
+        method: 'GET',
+        url: 'api/get_airport.php',
+        data: { iata: airport.iata },
+        success: function(resp) {
+          if (resp && resp.status === 'success') {
+            airport.name = resp.data.name;
+            airport.city = resp.data.city;
+          }
+        }
+      });
+    },
+    airportAutocomplete: function(query, tag) {
+      var potentialAirportList;
+      $.ajax({
+        method: 'GET',
+        url: 'https://iatacodes.org/api/v6/autocomplete.jsonp',
+        dataType: "jsonp",
+        data: {
+          api_key: API_KEY,
+          query: query
+        },
+        success: function(resp) {
+          if (resp.response) {
+            potentialAirportList = resp.response.airports_by_cities.concat(resp.response.airports);
+            var potentialAiportObj = {};
+            potentialAirportList.forEach(function(airport) {
+              potentialAiportObj[airport.code + ' / ' + airport.name] = null;
+            });
+            $(tag).autocomplete({
+              data: potentialAiportObj
+            });
+          }
+        }
+      });
+    },
     onLogoutClick: function() {
       $.ajax({
         method: 'POST',
@@ -183,6 +210,56 @@ var app = new Vue({
           location.href = '/';
         }
       });
+    }
+  },
+  watch: {
+    'depAirport.name': function(newVal) {
+      if (newVal === '') {
+        this.depAirport.iata = '';
+        this.depAirport.city = '';
+      } else if (newVal.includes(' / ')) {
+        var iata = newVal.split(' / ')[0];
+        var name = newVal.split(' / ')[1];
+        this.depAirport.iata = iata;
+        this.depAirport.name = name;
+        this.getAirpotDetail(this.depAirport);
+      } else {
+        this.airportAutocomplete(newVal, 'input.dep-airport-autocomplete');
+      }
+    },
+    'arrAirport.name': function(newVal) {
+      if (newVal === '') {
+        this.arrAirport.iata = '';
+        this.arrAirport.city = '';
+      } else if (newVal.includes(' / ')) {
+        var iata = newVal.split(' / ')[0];
+        var name = newVal.split(' / ')[1];
+        this.arrAirport.iata = iata;
+        this.arrAirport.name = name;
+        this.getAirpotDetail(this.arrAirport);
+      } else {
+        this.airportAutocomplete(newVal, 'input.arr-airport-autocomplete');
+      }
+    },
+    'airline.name': function(newVal) {
+      if (newVal === '') {
+        this.airline.iata = '';
+      } else if (newVal.includes(' / ')) {
+        var iata = newVal.split(' / ')[0];
+        var name = newVal.split(' / ')[1];
+        this.airline.iata = iata;
+        this.airline.name = name;
+      }
+    },
+    'aircraft.name': function(newVal) {
+      if (newVal === '') {
+        this.aircraft.iata = '';
+      } else if (newVal.includes(' / ')) {
+        var iata = newVal.split(' / ')[0];
+        var name = newVal.split(' / ')[1];
+        this.aircraft.iata = iata;
+        this.aircraft.name = name;
+      }
     }
   }
 });

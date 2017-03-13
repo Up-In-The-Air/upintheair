@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "nunito-regular";
+  src: url("../fonts/Nunito-Regular.ttf");
+  font-weight: bolder;
+}
+body {
+  font-family: "nunito-regular";
+}
 #logo-container {
   height: 64px;
   display: flex;
@@ -42,6 +50,5 @@ footer.page-footer {
 .right-pane {
   margin: .5rem 0 1rem 0;
   border: 1px solid #e0e0e0;
-  padding: 10px 20px;
-  overflow: auto;
+  padding: 10px 35px;
 }

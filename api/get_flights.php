@@ -25,7 +25,7 @@
 
   $result = $conn->query($sql);
 
-  if ($result === false) {
+  if (!$result) {
     $resp = [
       'status' => 'fail',
       'message' => 'Error: '.$conn->error
@@ -39,6 +39,7 @@
       array_push($resp['data'], $row);
     }
   }
+
   header('Content-Type: application/json');
   echo json_encode($resp);
   $conn->close();

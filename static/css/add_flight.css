@@ -1,0 +1,32 @@
+ul.tabs {
+  border-bottom: 1px solid #e0e0e0;
+}
+.row.progress-btn {
+  margin: 0;
+}
+.input-field {
+  height: 50px;
+}
+.input-field.textarea-input {
+  height: auto;
+}
+.input-field ul.autocomplete-content {
+  position: relative;
+}
+.input-field.radio-field label {
+  top: 0;
+}
+.input-field.radio-field ul.radio-content {
+  margin: 30px 0;
+}
+.input-field.radio-field ul.radio-content li {
+  display: inline-block;
+  padding: 0 15px;
+  width: 120px;
+}
+.input-field.radio-field ul.radio-content li:first-child {
+  padding-left: 0;
+}
+.input-field.radio-field ul.radio-content li:last-child {
+  padding-right: 0;
+}

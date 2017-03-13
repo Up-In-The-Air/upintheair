@@ -8,6 +8,7 @@
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
   <link href="static/css/lib/materialize.clockpicker.css" type="text/css" rel="stylesheet" />
   <link href="static/css/common.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/add_flight.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="app">
   <div class="navbar-fixed">
@@ -61,7 +62,7 @@
                 <label for="flight_number">Flight Number</label>
               </div>
             </div>
-            <div class="row">
+            <div class="row progress-btn">
               <a class="right waves-effect waves-light btn" @click="onJumpTabClick(2)">continue</a>
             </div>
           </div>
@@ -70,7 +71,7 @@
             <div class="row">
               <div class="input-field col s6">
                 <i class="material-icons prefix">flight_takeoff</i>
-                <input id="dep_airport" type="text" v-model="depAirport.name">
+                <input id="dep_airport" type="text" class="dep-airport-autocomplete" v-model="depAirport.name">
                 <label for="dep_airport">Departure Airport</label>
               </div>
               <div class="input-field col s3">
@@ -90,7 +91,7 @@
             <div class="row">
               <div class="input-field col s6">
                 <i class="material-icons prefix">flight_land</i>
-                <input id="arr_airport" type="text" v-model="arrAirport.name">
+                <input id="arr_airport" type="text" class="arr-airport-autocomplete" v-model="arrAirport.name">
                 <label for="arr_airport">Arrival Airport</label>
               </div>
               <div class="input-field col s3">
@@ -110,7 +111,7 @@
             <div class="row">
               <div class="input-field col s6">
                 <i class="material-icons prefix">flight</i>
-                <input id="airline" type="text" v-model="airline.name">
+                <input id="airline" type="text" class="airline-autocomplete" v-model="airline.name">
                 <label for="airline">Airline</label>
               </div>
               <div class="input-field col s3">
@@ -122,7 +123,7 @@
             <div class="row">
               <div class="input-field col s6">
                 <i class="material-icons prefix">flight</i>
-                <input id="aircraft" type="text" v-model="aircraft.name">
+                <input id="aircraft" type="text" class="aircraft-autocomplete" v-model="aircraft.name">
                 <label for="aircraft">Aircraft</label>
               </div>
               <div class="input-field col s3">
@@ -131,17 +132,17 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <a class="left waves-effect waves-light btn" @click="onJumpTabClick(1)">back</a>
+            <div class="row progress-btn">
+              <a class="left waves-effect waves-light btn teal lighten-3" @click="onJumpTabClick(1)">back</a>
               <a class="right waves-effect waves-light btn" @click="onJumpTabClick(3)">continue</a>
             </div>
           </div>
 
           <div id="tab-progress-3" class="col s12">
             <div class="row">
-              <div class="input-field col s12">
+              <div class="input-field col s12 radio-field">
                 <label>Flight Class</label>
-                <ul>
+                <ul class="radio-content">
                   <li>
                     <input class="with-gap" value="0" type="radio" id="class-economy"  v-model="class" />
                     <label for="class-economy">Economy</label>
@@ -162,9 +163,9 @@
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s12">
+              <div class="input-field col s12 radio-field">
                 <label>Flight Purpose</label>
-                <ul>
+                <ul class="radio-content">
                   <li>
                     <input class="with-gap" value="0" type="radio" id="purpose-leisure" v-model="purpose" />
                     <label for="purpose-leisure">Leisure</label>
@@ -185,9 +186,9 @@
               </div>
             </div>
             <div class="row">
-              <div class="input-field col s6">
+              <div class="input-field col s6 radio-field">
                 <label>Flight Seat</label>
-                <ul>
+                <ul class="radio-content">
                   <li>
                     <input class="with-gap" value="0" type="radio" id="seat-window" v-model="seat" />
                     <label for="seat-window">Window</label>
@@ -202,28 +203,30 @@
                   </li>
                 </ul>
               </div>
-              <div class="input-field col s6">
+            </div>
+            <div class="row">
+              <div class="input-field col s4">
                 <input id="seat-num" type="text" v-model="seatNum">
                 <label for="seat-num">Seat Number</label>
               </div>
             </div>
-            <div class="row">
-              <a class="left waves-effect waves-light btn" @click="onJumpTabClick(2)">back</a>
+            <div class="row progress-btn">
+              <a class="left waves-effect waves-light btn teal lighten-3" @click="onJumpTabClick(2)">back</a>
               <a class="right waves-effect waves-light btn" @click="onJumpTabClick(4)">continue</a>
             </div>
           </div>
 
           <div id="tab-progress-4" class="col s12">
             <div class="row">
-              <div class="input-field col s12">
+              <div class="input-field col s12 textarea-input">
                 <i class="material-icons prefix">comment</i>
                 <textarea id="comment" class="materialize-textarea" data-length="300" v-model="comment"></textarea>
                 <label for="comment">Your Comments</label>
               </div>
             </div>
-            <div class="row">
-              <a class="left waves-effect waves-light btn" @click="onJumpTabClick(3)">back</a>
-              <a class="right waves-effect waves-light btn" @click="onAddFlightSubmitClick">Submit</a>
+            <div class="row progress-btn">
+              <a class="left waves-effect waves-light btn teal lighten-3" @click="onJumpTabClick(3)">back</a>
+              <a class="right waves-effect waves-light btn" @click="onAddFlightSubmitClick">Submit<i class="material-icons right">send</i></a>
             </div>
           </div>
         </div>
@@ -233,7 +236,7 @@
 
   <footer class="page-footer teal">
     <div class="footer-copyright">
-      <div class="container">
+      <div class="container center-align">
       © 2017 Up in the Air
       </div>
     </div>
