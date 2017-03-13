@@ -9,20 +9,17 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $id = $_POST['id'];
+  $id = $_POST['flight_id'];
 
-  $sql = "DELETE FROM flight_record WHERE id = $id ";
+  $sql = "DELETE FROM flight_record WHERE id = '$id' ";
 
-  if ($conn->query($sql) === TRUE) {
-      $resp = [
-        'status' => 'success',
-        'message' => 'delete successfully'
-      ];
+  if ($conn->query($sql)) {
+    $resp = [ 'status' => 'success'];
   } else {
-      $resp = [
-        'status' => 'fail',
-        'message' => 'delete fail(error)'
-      ];
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Error: '.$conn->error
+    ];
   }
   header('Content-Type: application/json');
   echo json_encode($resp);

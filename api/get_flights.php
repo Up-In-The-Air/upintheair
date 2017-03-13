@@ -9,51 +9,34 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $flight_number = $_POST['flight_number'];
-  $date = $_POST['date'];
-  $userid = $_POST['user_id'];
+  $user_id = $_GET['user_id'];
 
-  $sql = "SELECT * FROM flight_record, "
-
-  if ($flight_number == null) {
-    $sql = "SELECT * FROM flight_record where date = '$date' and userid = $userid";
-  }
-  if ($date == null) {
-    $sql = "SELECT * FROM flight_record where flight_number = '$flight_number' and userid = $userid";
-  }
-  if ($flight_number != null && $date != null) {
-    $sql = "SELECT * FROM flight_record where date = '$date' and userid = $userid and flight_number = '$flight_number'";
-  }
+  $sql = "SELECT DISTINCT flight_record.*, "
+        ."a.name AS dep_airport_name, a.city AS dep_airport_city, a.country AS dep_airport_country, a.iata AS dep_airport_iata, "
+        ."b.name AS arr_airport_name, b.city AS arr_airport_city, b.country AS arr_airport_country, b.iata AS arr_airport_iata, "
+        ."airline.name AS airline_name, airline.iata AS airline_iata, "
+        ."aircraft.name AS aircraft_name, aircraft.iata AS aircraft_iata "
+        ."FROM flight_record, airport a, airport b, airline, aircraft "
+        ."WHERE flight_record.user_id = '$user_id' "
+        ."AND a.id = flight_record.dep_airport_id AND b.id = flight_record.arr_airport_id AND "
+        ."(airline.id = flight_record.airline_id OR flight_record.airline_id IS NULL) AND "
+        ."(aircraft.id = flight_record.aircraft_id OR flight_record.aircraft_id IS NULL) "
+        ."ORDER BY date DESC";
 
   $result = $conn->query($sql);
 
-  if ($result->num_rows == 0) {
-      $resp = [
-        'status' => 'fail',
-        'message' => 'no match'
-      ];
+  if ($result === false) {
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Error: '.$conn->error
+    ];
   } else {
-    $i = 0;
+    $resp = [
+      'status' => 'success',
+      'data' => []
+    ];
     while ($row = $result->fetch_assoc()) {
-        $resp[$i] = [
-        'status' => 'success',
-        'data' => [
-          'id' => $row['id'],
-          'flight_number' => $row['flight_number'],
-          'date' => $row['date'],
-          'class' => $row['class'],
-          'seat' => $row['seat'],
-          'note' => $row['note'],
-          'purpose' => $row['purpose'],
-          'photourl' => $row['photourl'],
-          'source_airport_id' => $row['source_airport_id'],
-          'des_airport_id' => $row['des_airport_id'],
-          'userid' => $row['userid'],
-          'aircraft_id' => $row['aircraft_id'],
-          'airline_id' => $row['airline_id']
-        ]
-      ];
-      $i += 1;
+      array_push($resp['data'], $row);
     }
   }
   header('Content-Type: application/json');

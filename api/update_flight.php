@@ -23,18 +23,18 @@
   $userid = $_POST['userid'];
 
   $aircraft = $_POST['aircraft'];
-  $source_airport = $_POST['source_airport'];
-  $des_airport = $_POST['des_airport'];
+  $dep_airport = $_POST['dep_airport'];
+  $arr_airport = $_POST['arr_airport'];
   $airline = $_POST['airline'];
 
 // source airport
-  $sql1 = "SELECT id FROM Airport where name = '$source_airport'";
+  $sql1 = "SELECT id FROM Airport where name = '$dep_airport'";
   $row = $conn->query($sql1)->fetch_assoc();
-  $source_airport_id = $row['id'];
+  $dep_airport_id = $row['id'];
 // des airport
-  $sql2 = "SELECT id FROM Airport where name = '$des_airport'";
+  $sql2 = "SELECT id FROM Airport where name = '$arr_airport'";
   $row = $conn->query($sql2)->fetch_assoc();
-  $des_airport_id = $row['id'];
+  $arr_airport_id = $row['id'];
 //airline
   $sql3 = "SELECT id FROM Airline where name = '$airline'";
   $row = $conn->query($sql3)->fetch_assoc();
@@ -67,12 +67,12 @@
   if($purpose == null) $purpose = 'no';
   if($note == null) $note = 'no';
   if($photourl == null) $photourl = 'no';
-  if($source_airport_id == null) $source_airport_id = 0;
-  if($des_airport_id == null) $des_airport_id = 0;
+  if($dep_airport_id == null) $dep_airport_id = 0;
+  if($arr_airport_id == null) $arr_airport_id = 0;
   if($aircraft_id == null) $aircraft_id = 0;
   if($airline_id == null) $airline_id = 0;
 
-  $sql = "UPDATE flight_record SET flight_number = '$flight_number', date = '$date', dep_time = '$dep_time', arr_time = '$arr_time', class = '$class', seat = '$seat', purpose = '$purpose', note = '$note', photourl = '$photourl', source_airport_id = $source_airport_id, des_airport_id = $des_airport_id, userid = $userid, aircraft_id = $aircraft_id, airline_id = $airline_id WHERE id = $id";
+  $sql = "UPDATE flight_record SET flight_number = '$flight_number', date = '$date', dep_time = '$dep_time', arr_time = '$arr_time', class = '$class', seat = '$seat', purpose = '$purpose', note = '$note', photourl = '$photourl', dep_airport_id = $dep_airport_id, arr_airport_id = $arr_airport_id, userid = $userid, aircraft_id = $aircraft_id, airline_id = $airline_id WHERE id = $id";
 
   if ($conn->query($sql) === TRUE) {
       $resp = [
