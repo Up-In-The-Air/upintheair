@@ -121,21 +121,19 @@ var app = new Vue({
     },
     onFlightRecordDeleteClick: function(flightId) {
       var _this = this;
-      // $.ajax({
-      //   method: 'POST',
-      //   url: 'api/delete_flight.php',
-      //   data: { flight_id: flightId },
-      //   success: function(resp) {
-      //     if (!resp || resp.status !== 'success') {
-      //       Materialize.toast(resp.message, 4000);
-      //       return;
-      //     }
-      //     Materialize.toast('Delete record successfully', 4000);
-      //   },
-      //   error: function() {
-      //     Materialize.toast('Fail to delete the record', 4000);
-      //   }
-      // });
+      $.ajax({
+        method: 'POST',
+        url: 'api/delete_flight.php',
+        data: { flight_id: flightId },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          Materialize.toast('Delete record successfully', 3000);
+          _this.getFlightLists();
+        }
+      });
     },
     onLogoutClick: function() {
       $.ajax({

@@ -66,18 +66,22 @@
     exit();
   }
 
+  array_push($schema, 'aircraft_id');
   if ($aircraft_iata) {
     $sql4 = "SELECT id FROM aircraft WHERE iata = '$aircraft_iata'";
     $row = $conn->query($sql4)->fetch_assoc();
-    array_push($schema, 'aircraft_id');
     array_push($values, $row['id']);
+  } else {
+    array_push($values, 0);
   }
 
+  array_push($schema, 'airline_id');
   if ($airline_iata) {
     $sql3 = "SELECT id FROM airline where iata = '$airline_iata'";
     $row = $conn->query($sql3)->fetch_assoc();
-    array_push($schema, 'airline_id');
     array_push($values, $row['id']);
+  } else {
+    array_push($values, 0);
   }
 
   if ($flight_number) {
