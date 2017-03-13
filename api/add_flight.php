@@ -12,10 +12,10 @@
   // Required
   $user_id = $_POST['user_id'];
   $date = $_POST['date'];
-  $source_airport_iata = $_POST['source_airport_iata'];
-  $des_airport_iata = $_POST['des_airport_iata'];
+  $dep_airport_iata = $_POST['dep_airport_iata'];
+  $arr_airport_iata = $_POST['arr_airport_iata'];
 
-  if (!$user_id || !$date || !$source_airport_iata || !$des_airport_iata) {
+  if (!$user_id || !$date || !$dep_airport_iata || !$arr_airport_iata) {
     $resp = [
       'status' => 'fail',
       'message' => 'Missing required fields'
@@ -39,22 +39,22 @@
   $schema = array('user_id', 'date');
   $values = array($user_id, $date);
 
-  $sql1 = "SELECT id FROM airport WHERE iata = '$source_airport_iata'";
+  $sql1 = "SELECT id FROM airport WHERE iata = '$dep_airport_iata'";
   $row = $conn->query($sql1)->fetch_assoc();
-  $source_airport_id = $row['id'];
-  array_push($schema, 'source_airport_id');
-  array_push($values, $source_airport_id);
-  $sql2 = "SELECT id FROM airport WHERE iata = '$des_airport_iata'";
+  $dep_airport_id = $row['id'];
+  array_push($schema, 'dep_airport_id');
+  array_push($values, $dep_airport_id);
+  $sql2 = "SELECT id FROM airport WHERE iata = '$arr_airport_iata'";
   $row = $conn->query($sql2)->fetch_assoc();
-  $des_airport_id = $row['id'];
-  array_push($schema, 'des_airport_id');
-  array_push($values, $des_airport_id);
+  $arr_airport_id = $row['id'];
+  array_push($schema, 'arr_airport_id');
+  array_push($values, $arr_airport_id);
 
   // Check duplicate records
   $sql_check_duplicate = "SELECT * FROM flight_record "
                         ."WHERE user_id = $user_id AND date = '$date' AND "
-                        ."source_airport_id = '$source_airport_id' AND "
-                        ."des_airport_id = '$des_airport_id'";
+                        ."dep_airport_id = '$dep_airport_id' AND "
+                        ."arr_airport_id = '$arr_airport_id'";
   $result = $conn->query($sql_check_duplicate);
   if ($result -> num_rows != 0) {
     $resp = [

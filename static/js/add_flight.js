@@ -90,7 +90,7 @@ var app = new Vue({
           flight_number: this.flightNumber
         },
         success: function(resp) {
-          if (resp.response) {
+          if (resp.response && resp.response[0]) {
             _this.depAirport.iata = resp.response[0].departure;
             _this.arrAirport.iata = resp.response[0].arrival;
             $.ajax({
@@ -146,8 +146,8 @@ var app = new Vue({
         data: {
           user_id: this.user.id,
           date: this.date,
-          source_airport_iata: this.depAirport.iata,
-          des_airport_iata: this.arrAirport.iata,
+          dep_airport_iata: this.depAirport.iata,
+          arr_airport_iata: this.arrAirport.iata,
           flight_number: this.flightNumber,
           dep_time: this.depTime,
           arr_time: this.arrTime,

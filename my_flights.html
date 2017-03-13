@@ -62,15 +62,15 @@
                 <span v-show="isRecordEditting(index)"><input type="date" class="datepicker" v-model="updateDate"></span>
               </td>
               <td>
-                <span v-show="!isRecordEditting(index)">{{flight.flight_num}}</span>
+                <span v-show="!isRecordEditting(index)">{{flight.flight_number}}</span>
                 <span v-show="isRecordEditting(index)"><input type="text" v-model="updateFlightNum"></span>
               </td>
-              <td>{{flight.from}}</td>
-              <td>{{flight.to}}</td>
+              <td>{{flight.dep_airport_iata}}</td>
+              <td>{{flight.arr_airport_iata}}</td>
               <td>{{flight.dep_time}}</td>
               <td>{{flight.arr_time}}</td>
-              <td>{{flight.airline}}</td>
-              <td>{{flight.aircraft}}</td>
+              <td>{{flight.airline_iata}}</td>
+              <td>{{flight.aircraft_iata}}</td>
               <td>
                 <span v-show="!isRecordEditting(index)">{{flight.seat}}</span>
                 <span v-show="isRecordEditting(index)">
