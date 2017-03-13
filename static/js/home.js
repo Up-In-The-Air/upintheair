@@ -54,7 +54,7 @@ var app = new Vue({
           };
         },
         error: function() { location.href = '/'; }
-      })
+      });
     }
   },
   methods: {

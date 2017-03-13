@@ -105,8 +105,8 @@
     array_push($values, $seat_num);
   }
   if ($purpose) {
-    array_push($schema, 'dep_time');
-    array_push($values, $dep_time);
+    array_push($schema, 'purpose');
+    array_push($values, $purpose);
   }
 
   $schema_str = join(", ", $schema);
