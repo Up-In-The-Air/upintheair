@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Flight collection, analysis, social and more!",
   "author": [
-    "Wanli Wang <>",
-    "Haoyu Wang <>",
-    "Tianhao Chi <>",
+    "Haoyu Wang <hwang158@illinois.edu>",
+    "Wanli Wang <wwang128@illinois.edu>",
+    "Tianhao Chi <tchi3@illinois.edu>",
     "Zhuo Li <zhuol2@illinois.edu>"
   ],
   "scripts": {},

@@ -6,6 +6,7 @@
   <link rel="icon" type="image/png" href="favicon.png" sizes="48x48">
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/lib/materialize.clockpicker.css" type="text/css" rel="stylesheet" />
   <link href="static/css/common.css" type="text/css" rel="stylesheet" />
   <link href="static/css/my_filght.css" type="text/css" rel="stylesheet" />
 </head>
@@ -42,18 +43,18 @@
         <table class="highlight">
           <thead>
             <tr>
-                <th>Date</th>
-                <th>Fight#</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Dep.</th>
-                <th>Arr.</th>
+                <th class="date-cell">Date</th>
+                <th>Flight#</th>
+                <th class="airport-cell">From</th>
+                <th class="airport-cell">To</th>
+                <th class="time-cell">Dep.</th>
+                <th class="time-cell">Arr.</th>
                 <th>Airline</th>
                 <th>Aircraft</th>
                 <th>Class</th>
                 <th>Purpose</th>
                 <th>Seat</th>
-                <th>Operations</th>
+                <th class="operation-cell">Operations</th>
             </tr>
           </thead>
           <tbody>
@@ -63,8 +64,7 @@
                 <span v-show="isRecordEditting(index)"><input type="date" class="datepicker" v-model="updateDate"></span>
               </td>
               <td>
-                <span v-show="!isRecordEditting(index)">{{flight.flight_number}}</span>
-                <span v-show="isRecordEditting(index)"><input type="text" v-model="updateFlightNum"></span>
+                <span>{{flight.flight_number}}</span>
               </td>
               <td>
                 <span class="tooltipped" data-position="top" data-delay="50" :data-tooltip="flight.dep_airport_name">{{flight.dep_airport_iata}}</span>
@@ -72,8 +72,14 @@
               <td>
                 <span class="tooltipped" data-position="top" data-delay="50" :data-tooltip="flight.arr_airport_name">{{flight.arr_airport_iata}}</span>
               </td>
-              <td>{{flight.dep_time}}</td>
-              <td>{{flight.arr_time}}</td>
+              <td>
+                <span v-show="!isRecordEditting(index)">{{flight.dep_time}}</span>
+                <span v-show="isRecordEditting(index)"><input type="time" class="timepicker" v-model="updateDepTime"></span>
+              </td>
+              <td>
+                <span v-show="!isRecordEditting(index)">{{flight.arr_time}}</span>
+                <span v-show="isRecordEditting(index)"><input type="time" class="timepicker" v-model="updateArrTime"></span>
+              </td>
               <td>
                 <span v-if="flight.airline_name" class="tooltipped" data-position="top" data-delay="50" :data-tooltip="flight.airline_name">{{flight.airline_iata}}</span>
               </td>
@@ -82,27 +88,35 @@
               </td>
               <td>
                 <span v-show="!isRecordEditting(index)">{{classMap[flight.class]}}</span>
-              </td>
-              <td>
-                <span v-show="!isRecordEditting(index)">{{purposeMap[flight.purpose]}}</span>
-              </td>
-              <td>
-                <span v-show="!isRecordEditting(index)">
-                  <span>{{flight.seat_num}}</span>
-                  <span v-if="flight.seat">({{seatMap[flight.seat]}})</span>
-                </span>
                 <span v-show="isRecordEditting(index)">
-                  <select>
-                    <option value="0">Window</option>
-                    <option value="1">Middle</option>
-                    <option value="2">Aisle</option>
+                  <select v-model="updateClass" class="browser-default">
+                    <option value="0">Economy</option>
+                    <option value="1">Economy+</option>
+                    <option value="2">Business</option>
+                    <option value="3">First</option>
                   </select>
                 </span>
               </td>
               <td>
-                <span v-show="!isRecordEditting(index)" @click="onFlightRecordEditClick(index, flight.id)"><i class="material-icons">mode_edit</i></span>
-                <span v-show="!isRecordEditting(index)" @click="onFlightRecordDeleteClick(flight.id)"><i class="material-icons">delete</i></span>
-                <span v-show="isRecordEditting(index)" @click="onFlightRecordUpdateConfirm"><i class="material-icons">done</i></span>
+                <span v-show="!isRecordEditting(index)">{{purposeMap[flight.purpose]}}</span>
+                <span v-show="isRecordEditting(index)">
+                  <select v-model="updatePurpose" class="browser-default">
+                    <option value="0">Leisure</option>
+                    <option value="1">Business</option>
+                    <option value="2">Crew</option>
+                    <option value="3">Other</option>
+                  </select>
+                </span>
+              </td>
+              <td>
+                <span>{{flight.seat_num}}</span>
+                <span v-if="flight.seat">({{seatMap[flight.seat]}})</span>
+              </td>
+              <td>
+                <span v-show="!isRecordEditting(index)" @click="onFlightRecordEditClick(index, flight.id)" class="btn-floating teal"><i class="material-icons">mode_edit</i></span>
+                <span v-show="!isRecordEditting(index)" @click="onFlightRecordDeleteClick(flight.id)" class="btn-floating grey"><i class="material-icons">delete_forever</i></span>
+                <span v-show="isRecordEditting(index)" @click="onFlightRecordUpdateConfirm" class="btn-floating teal"><i class="material-icons">done</i></span>
+                <span v-show="isRecordEditting(index)" @click="onFlightRecordUpdateCancel" class="btn-floating grey"><i class="material-icons">undo</i></span>
               </td>
             </tr>
           </tbody>
@@ -113,7 +127,7 @@
 
   <footer class="page-footer teal">
     <div class="footer-copyright">
-      <div class="container">
+      <div class="container center-align">
       © 2017 Up in the Air
       </div>
     </div>
@@ -122,6 +136,7 @@
   <script src="static/js/lib/vue.min.js"></script>
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
+  <script src="static/js/lib/materialize.clockpicker.js"></script>
   <script src="static/js/my_flights.js"></script>
   <script src="static/js/my_flights.jq.js"></script>
 </body>

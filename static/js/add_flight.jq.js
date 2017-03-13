@@ -10,4 +10,36 @@ $(document).ready(function() {
     autoclose: false,
     twelvehour: false
   });
+  $.ajax({
+    method: 'GET',
+    url: 'api/get_airlines.php',
+    success: function(resp) {
+      if (resp && resp.status === 'success') {
+        var sourceObj = {};
+        resp.data.forEach(function(airline) {
+          sourceObj[airline.iata + ' / ' + airline.name] = null;
+        });
+        $('.airline-autocomplete').autocomplete({
+          data: sourceObj,
+          limit: 10
+        });
+      }
+    }
+  });
+  $.ajax({
+    method: 'GET',
+    url: 'api/get_aircrafts.php',
+    success: function(resp) {
+      if (resp && resp.status === 'success') {
+        var sourceObj = {};
+        resp.data.forEach(function(aircraft) {
+          sourceObj[aircraft.iata + ' / ' + aircraft.name] = null;
+        });
+        $('.aircraft-autocomplete').autocomplete({
+          data: sourceObj,
+          limit: 10
+        });
+      }
+    }
+  });
 });

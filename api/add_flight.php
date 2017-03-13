@@ -118,7 +118,8 @@
 
   // add flights
   $sql = "INSERT INTO flight_record (".$schema_str.") VALUES ('".$values_str."')";
-  if ($conn->query($sql) == TRUE) {
+
+  if ($conn->query($sql)) {
     $resp = [ 'status' => 'success' ];
   } else {
     $resp = [

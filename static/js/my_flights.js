@@ -31,7 +31,10 @@ var app = new Vue({
       editMode: false,
       editIndex: 0,
       updateDate: '',
-      updateFlightNum: ''
+      updateDepTime: '',
+      updateArrTime: '',
+      updateClass: '',
+      updatePurpose: ''
     }
   },
   ready: function() {
@@ -85,6 +88,16 @@ var app = new Vue({
           _this.flightList = resp.data;
           Vue.nextTick(function() {
             $('.tooltipped').tooltip({ delay: 50 });
+            $('.datepicker').pickadate({
+              selectMonths: true,
+              selectYears: 15,
+              format: 'yyyy-mm-dd'
+            });
+            $('.timepicker').pickatime({
+              autoclose: false,
+              twelvehour: false
+            });
+            $('select').material_select();
           });
         }
       });
@@ -93,29 +106,38 @@ var app = new Vue({
       this.editMode = true;
       this.editIndex = index;
       this.updateDate = this.flightList[index].date;
-      this.updateFlightNum = this.flightList[index].flight_num;
+      this.updateDepTime = this.flightList[index].dep_time;
+      this.updateArrTime = this.flightList[index].arr_time;
+      this.updateClass = this.flightList[index].class;
+      this.updatePurpose = this.flightList[index].purpose;
+      $('select').material_select();
+    },
+    onFlightRecordUpdateCancel: function() {
+      this.editMode = false;
+      this.editIndex = 0;
     },
     onFlightRecordUpdateConfirm: function() {
       var _this = this;
-      // $.ajax({
-      //   method: 'POST',
-      //   url: 'api/update_flight.php',
-      //   data: {
-      //     flight_id: this.flightList[editIndex].flight_id,
-      //     date: this.updateDate,
-      //     flight_num: this.updateFlightNum
-      //   },
-      //   success: function(resp) {
-      //     if (!resp || resp.status !== 'success') {
-      //       Materialize.toast(resp.message, 4000);
-      //       return;
-      //     }
-      //     Materialize.toast('Update record successfully', 4000);
-      //   },
-      //   error: function() {
-      //     Materialize.toast('Fail to update the record', 4000);
-      //   }
-      // });
+      $.ajax({
+        method: 'POST',
+        url: 'api/update_flight.php',
+        data: {
+          flight_id: this.flightList[this.editIndex].id,
+          date: this.updateDate,
+          dep_time: this.updateDepTime,
+          arr_time: this.updateArrTime,
+          class: this.updateClass,
+          purpose: this.updatePurpose
+        },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          Materialize.toast('Update record successfully', 3000);
+          _this.getFlightLists();
+        }
+      });
       this.editMode = false;
       this.editIndex = 0;
     },
