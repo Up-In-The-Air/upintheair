@@ -11,28 +11,30 @@
 
   $flight_number = $_POST['flight_number'];
   $date = $_POST['date'];
-  $userid = $_POST['userid'];
+  $userid = $_POST['user_id'];
 
-  if($flight_number == null){
+  $sql = "SELECT * FROM flight_record, "
+
+  if ($flight_number == null) {
     $sql = "SELECT * FROM flight_record where date = '$date' and userid = $userid";
   }
-  if($date == null){
+  if ($date == null) {
     $sql = "SELECT * FROM flight_record where flight_number = '$flight_number' and userid = $userid";
   }
-  if($flight_number != null && $date != null){
+  if ($flight_number != null && $date != null) {
     $sql = "SELECT * FROM flight_record where date = '$date' and userid = $userid and flight_number = '$flight_number'";
   }
 
   $result = $conn->query($sql);
 
-   if ($result->num_rows == 0) {
+  if ($result->num_rows == 0) {
       $resp = [
         'status' => 'fail',
         'message' => 'no match'
       ];
-  }else{
+  } else {
     $i = 0;
-    while($row = $result->fetch_assoc()){
+    while ($row = $result->fetch_assoc()) {
         $resp[$i] = [
         'status' => 'success',
         'data' => [
