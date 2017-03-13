@@ -109,12 +109,12 @@ var app = new Vue({
         success: function(resp) {
           if (resp.response) {
             _this.airline.name = resp.response[0].name;
+            Vue.nextTick(function() {
+              Materialize.updateTextFields();
+            });
           }
         }
       });
-      setTimeout(function() {
-        Materialize.updateTextFields();
-      }, 1000);
     },
     onJumpTabClick: function(index) {
       $('ul.tabs').tabs('select_tab', 'tab-progress-' + index);
@@ -122,8 +122,8 @@ var app = new Vue({
     onAddFlightSubmitClick: function() {
       var missingList = [];
       if (!this.date) { missingList.push('Departure Date'); }
-      if (!this.dep_airport_iata) { missingList.push('Departure Airport'); }
-      if (!this.arr_airport_iata) { missingList.push('Arrival Airport'); }
+      if (!this.depAirport.iata) { missingList.push('Departure Airport'); }
+      if (!this.arrAirport.iata) { missingList.push('Arrival Airport'); }
       if (missingList.length > 0) {
         Materialize.toast('Missing required field(s): ' + missingList.join(', '), 4000);
         return;
@@ -169,6 +169,9 @@ var app = new Vue({
             airport.name = resp.data.name;
             airport.city = resp.data.city;
           }
+          Vue.nextTick(function() {
+            Materialize.updateTextFields();
+          });
         }
       });
     },
