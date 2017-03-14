@@ -14,10 +14,10 @@
 
   $email = $_Post['email'];
 
-  $sql_seat_first = "SELECT COUNT(*) as num_fs FROM user, Flight_record WHERE Flight_record.class LIKE 'F%' AND user.id = Flight_record.userid AND user.email = '".$email."'";
-  $sql_seat_bus = "SELECT COUNT(*) as num_bs FROM user, Flight_record WHERE Flight_record.class LIKE 'B%' AND user.id = Flight_record.userid AND user.email = '".$email."'";
-  $sql_seat_ecop = "SELECT COUNT(*) as num_ep FROM user, Flight_record WHERE Flight_record.class LIKE 'E%+' AND user.id = Flight_record.userid AND user.email = '".$email."'";
-  $sql_seat_eco = "SELECT COUNT(*) as num_ec FROM user, Flight_record WHERE Flight_record.class = 'Economy' AND user.id = Flight_record.userid AND user.email = '".$email."'";
+  $sql_seat_0 = "SELECT COUNT(flight_record.class) as num_fs FROM user, flight_record WHERE flight_record.class = 0 AND user.id = flight_record.userid AND user.email = '".$email."'";
+  $sql_seat_1 = "SELECT COUNT(flight_record.class) as num_bs FROM user, flight_record WHERE flight_record.class = 1 AND user.id = flight_record.userid AND user.email = '".$email."'";
+  $sql_seat_2 = "SELECT COUNT(flight_record.class) as num_ep FROM user, flight_record WHERE flight_record.class = 2 AND user.id = flight_record.userid AND user.email = '".$email."'";
+  $sql_seat_3 = "SELECT COUNT(flight_record.class) as num_ec FROM user, flight_record WHERE flight_record.class = 3 AND user.id = flight_record.userid AND user.email = '".$email."'";
 
   if (($conn->query($sql_seat_first) == FALSE) 
   	|| ($conn->query($sql_seat_bus) == FALSE) 
@@ -31,10 +31,10 @@
     ];
   } else {
 
-  	$result_first = $conn->query($sql_seat_first);
-  	$result_bus = $conn->query($sql_seat_bus);
-  	$result_ecop = $conn->query($sql_seat_ecop);
-  	$result_eco = $conn->query($sql_seat_eco);
+  	$result_first = $conn->query($sql_seat_0);
+  	$result_bus = $conn->query($sql_seat_1);
+  	$result_ecop = $conn->query($sql_seat_2);
+  	$result_eco = $conn->query($sql_seat_3);
 
   	$num_seat_fs = mysql_fetch_assoc($result_first);
   	$num_seat_bus = mysql_fetch_assoc($result_bus);
@@ -45,10 +45,10 @@
   	  'status' => 'success',
   	  'table' => 'class',
   	  'data' => [
-  	    'first_class' => $num_seat_fs['num_fs'],
-  	    'business' => $num_seat_bus['num_bs'],
-  	    'economy+' => $num_seat_ecop['num_ep'],
-  	    'economy' => $num_seat_eco['num_ec']
+  	    '0' => $num_seat_fs['num_fs'],
+  	    '1' => $num_seat_bus['num_bs'],
+  	    '2' => $num_seat_ecop['num_ep'],
+  	    '3' => $num_seat_eco['num_ec']
   	  ]
     ];
   }

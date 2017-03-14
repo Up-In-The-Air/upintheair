@@ -11,40 +11,29 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $email = $_Post['email'];
+  $userid = $_GET['user_id'];
 
-  $sql_reason_leisure = "SELECT COUNT(Flight_record.purpose) as lei FROM user, Flight_record WHERE Flight_record.purpose = 'leisure' AND user.id = Flight_record.userid AND user.email = '".$email."'";
-  $sql_reason_business = "SELECT COUNT(Flight_record.purpose) as bus FROM user, Flight_record WHERE Flight_record.purpose = 'business' AND user.id = Flight_record.userid AND user.email = '".$email."'";
-  $sql_reason_crew = "SELECT COUNT(Flight_record.purpose) as crew FROM user, Flight_record WHERE Flight_record.purpose = 'crew' AND user.id = Flight_record.userid AND user.email = '".$email."'";
+  $sql_reason = "SELECT purpose, COUNT(purpose) AS count FROM flight_record WHERE user_id = '$userid' GROUP BY purpose ORDER BY count DESC";
 
-  if(($conn->query($sql_reason_leisure) == FALSE)
-    || ($conn->query($sql_reason_business) == FALSE)
-    || ($conn->query($sql_reason_crew) == FALSE)) {
+  if(conn->query($sql_reason) == FALSE) {
 
     $resp = [
       'status' => 'fail',
       'table' => 'reason',
       'message' => 'Cannot retrieve reason data'
     ];
+
   } else {
 
-    $result_leisure = $conn->query($sql_reason_leisure);
-    $result_business = $conn->query($sql_reason_business);
-    $result_crew = $conn->query($sql_reason_crew);
-
-    $num_leisure = mysql_fetch_assoc($result_leisure);
-    $num_business = mysql_fetch_assoc($result_business);
-    $num_crew = mysql_fetch_assoc($result_crew);
-
+    $result = $conn->query($sql_reason);
     $resp = [
       'status' => 'success',
       'table' => 'reason',
-      'data' => [
-        'leisure' => $num_leisure['lei'],
-        'business' => $num_business['bus'],
-        'crew' => $num_crew['crew']
-      ]
+      'data' => []
     ];
+    while ($row = $result->fetch_assoc()) {
+      $resp['data'][$row['purpose']] = $row['count'];
+    }
   }
 
   $conn->close();
