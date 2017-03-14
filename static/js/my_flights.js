@@ -161,7 +161,7 @@ var app = new Vue({
       $.ajax({
         method: 'POST',
         url: 'api/log_out.php',
-        data: { email: this.user.email },
+        data: { user_id: this.user.id },
         success: function(resp) {
           if (!resp || resp.status !== 'success') {
             Materialize.toast(resp.message, 4000);
