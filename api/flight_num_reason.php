@@ -11,11 +11,11 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $userid = $_GET['user_id'];
+  $user_id = $_GET['user_id'];
 
-  $sql_reason = "SELECT purpose, COUNT(purpose) AS count FROM flight_record WHERE user_id = '$userid' GROUP BY purpose ORDER BY count DESC";
+  $sql_reason = "SELECT purpose, COUNT(purpose) AS count FROM flight_record WHERE user_id = '$user_id' AND purpose IS NOT NULL GROUP BY purpose ORDER BY count DESC";
 
-  if($conn->query($sql_reason) == FALSE) {
+  if (!$conn->query($sql_reason)) {
 
     $resp = [
       'status' => 'fail',
@@ -34,7 +34,7 @@
         'reason' => $row['purpose'],
         'count' => $row['count']
       ];
-      array_push($resp, $info);
+      array_push($resp['data'], $info);
     }
   }
 

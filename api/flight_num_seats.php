@@ -9,11 +9,11 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $userid = $_GET['user_id'];
+  $user_id = $_GET['user_id'];
 
-  $sql_seat = "SELECT seat, COUNT(seat) AS count FROM flight_record WHERE user_id = '$userid' GROUP BY seat ORDER BY count DESC";
+  $sql_seat = "SELECT seat, COUNT(seat) AS count FROM flight_record WHERE user_id = '$user_id' AND seat IS NOT NULL GROUP BY seat ORDER BY count DESC";
 
-  if ($conn->query($sql_seat) == FALSE) {
+  if (!$conn->query($sql_seat)) {
 
   	$resp = [
   	  'status' => 'fail',
@@ -32,7 +32,7 @@
         'seat' => $row['seat'],
         'count' => $row['count']
       ];
-      array_push($resp, $info);
+      array_push($resp['data'], $info);
     }
   }
 

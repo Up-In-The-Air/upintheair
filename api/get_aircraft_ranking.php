@@ -12,10 +12,10 @@
   $user_id = $_GET['user_id'];
   $limit = $_GET['limit'];
 
-  $sql = "SELECT aircraft.name, COUNT(aircraft.name) AS count FROM aircraft, flight_record WHERE flight_record.user_id = '$user_id' AND flight_record.aircraft_id = aircraft.id GROUP BY aircraft.name ORDER BY count DESC";
+  $sql = "SELECT aircraft.*, COUNT(aircraft.name) AS frequency FROM aircraft, flight_record WHERE flight_record.user_id = '$user_id' AND flight_record.aircraft_id = aircraft.id GROUP BY aircraft.id ORDER BY frequency DESC";
 
   if ($limit) {
-    $sql = $sql."LIMIT $limit";
+    $sql = $sql." LIMIT $limit";
   }
 
   $result = $conn->query($sql);
@@ -31,7 +31,9 @@
       'data' => []
     ];
     while ($row = $result->fetch_assoc()) {
-      array_push($resp['data'], $row);
+      if ($row['id'] != 0) {
+        array_push($resp['data'], $row);
+      }
     }
   }
 

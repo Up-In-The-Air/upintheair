@@ -23,10 +23,10 @@
         ."GROUP BY airport_id "
         .") AS airport_count_sum, airport "
         ."WHERE airport.id = airport_count_sum.airport_id "
-        ."ORDER BY frequency DESC ";
+        ."ORDER BY frequency DESC";
 
   if ($limit) {
-    $sql = $sql."LIMIT $limit";
+    $sql = $sql." LIMIT $limit";
   }
 
   $result = $conn->query($sql);

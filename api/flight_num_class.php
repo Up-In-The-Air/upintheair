@@ -1,6 +1,6 @@
 <?php
   //deliever basic flight record for user
-  
+
   //connect to db
   $server_name = '127.0.0.1';
   $username = 'upintheair_admin';
@@ -12,11 +12,11 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $userid = $_GET['user_id'];
+  $user_id = $_GET['user_id'];
 
-  $sql_class = "SELECT class, COUNT(class) AS count FROM flight_record WHERE user_id = '$userid' GROUP BY class ORDER BY count DESC";
+  $sql_class = "SELECT class, COUNT(class) AS count FROM flight_record WHERE user_id = '$user_id' AND class IS NOT NULL GROUP BY class ORDER BY count DESC";
 
-  if ($conn->query($sql_class)) {
+  if (!$conn->query($sql_class)) {
 
   	$resp = [
   	  'status' => 'fail',
@@ -35,7 +35,7 @@
         'class' => $row['class'],
         'count' => $row['count']
       ];
-      arrya_push($resp, $info);
+      array_push($resp['data'], $info);
     }
   }
 
