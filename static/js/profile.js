@@ -143,6 +143,8 @@ var app = new Vue({
           _this.drawDistributionChart('purpose', PURPOSE_MAP);
 
           _this.drawRankingChart('airport');
+          _this.drawRankingChart('airline');
+          _this.drawRankingChart('aircraft');
         },
         error: function() { location.href = '/'; }
       });
@@ -171,60 +173,32 @@ var app = new Vue({
       });
     },
     drawDistributionChart: function(name, map) {
-      var fakeData = [{
-        category: 0,
-        count: 5
-      }, {
-        category: 1,
-        count: 6
-      }, {
-        category: 2,
-        count: 10
-      }, {
-        category: 3,
-        count: 24
-      }];
-      PIE_CHART_OPTION.title.text = name[0].toUpperCase() + name.substring(1);
-      PIE_CHART_OPTION.series[0].name = name[0].toUpperCase() + name.substring(1);
-      var chartData = [];
-      var count = 0;
-      fakeData.forEach(function(category) {
-        chartData.push({
-          value: category.count,
-          name: map[category.category]
-        });
-        count += category.count;
+      $.ajax({
+        method: 'GET',
+        url: 'api/flight_num_' + name + '.php',
+        data: { user_id: this.user.id },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          PIE_CHART_OPTION.title.text = name[0].toUpperCase() + name.substring(1);
+          PIE_CHART_OPTION.series[0].name = name[0].toUpperCase() + name.substring(1);
+          var chartData = [];
+          var count = 0;
+          resp.data.forEach(function(category) {
+            chartData.push({
+              value: category.count,
+              name: map[parseInt(category.category)]
+            });
+            count += category.count;
+          });
+          PIE_CHART_OPTION.series[0].data = chartData;
+          PIE_CHART_OPTION.visualMap.max = count;
+          var myChart = echarts.init(document.getElementById(name + '-chart'));
+          myChart.setOption(PIE_CHART_OPTION);
+        }
       });
-      PIE_CHART_OPTION.series[0].data = chartData;
-      PIE_CHART_OPTION.visualMap.max = count;
-      var myChart = echarts.init(document.getElementById(name + '-chart'));
-      myChart.setOption(PIE_CHART_OPTION);
-      // $.ajax({
-      //   method: 'GET',
-      //   url: 'api/flight_num_' + name + '.php',
-      //   data: { user_id: this.user.id },
-      //   success: function(resp) {
-      //     if (!resp || resp.status !== 'success') {
-      //       Materialize.toast(resp.message, 4000);
-      //       return;
-      //     }
-      //     PIE_CHART_OPTION.title.text = name[0].toUpperCase() + name.substring(1);
-      //     PIE_CHART_OPTION.series[0].name = name[0].toUpperCase() + name.substring(1);
-      //     var chartData = [];
-      //     var count = 0;
-      //     resp.data.forEach(function(category) {
-      //       chartData.push({
-      //         value: category.count,
-      //         name: map[category.category]
-      //       });
-      //       count += category.count;
-      //     });
-      //     PIE_CHART_OPTION.series[0].data = chartData;
-      //     PIE_CHART_OPTION.visualMap.max = count;
-      //     var myChart = echarts.init(document.getElementById(name + '-chart'));
-      //     myChart.setOption(PIE_CHART_OPTION);
-      //   }
-      // });
     },
     drawRankingChart: function(name) {
       $.ajax({

@@ -17,22 +17,19 @@
   $sql_class = "SELECT class, COUNT(class) AS count FROM flight_record WHERE user_id = '$user_id' AND class IS NOT NULL GROUP BY class ORDER BY count DESC";
 
   if (!$conn->query($sql_class)) {
-
-  	$resp = [
-  	  'status' => 'fail',
-  	  'message' => 'Cannot retrieve class data'
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Cannot retrieve class data'
     ];
-
   } else {
-
-  	$result = $conn->query($sql_class);
-  	$resp = [
-  	  'status' => 'success',
-  	  'data' => []
+    $result = $conn->query($sql_class);
+    $resp = [
+      'status' => 'success',
+      'data' => []
     ];
     while ($row = $result->fetch_assoc()) {
       $info = [
-        'class' => $row['class'],
+        'category' => $row['class'],
         'count' => $row['count']
       ];
       array_push($resp['data'], $info);

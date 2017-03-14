@@ -13,25 +13,22 @@
 
   $user_id = $_GET['user_id'];
 
-  $sql_reason = "SELECT purpose, COUNT(purpose) AS count FROM flight_record WHERE user_id = '$user_id' AND purpose IS NOT NULL GROUP BY purpose ORDER BY count DESC";
+  $sql_purpose = "SELECT purpose, COUNT(purpose) AS count FROM flight_record WHERE user_id = '$user_id' AND purpose IS NOT NULL GROUP BY purpose ORDER BY count DESC";
 
-  if (!$conn->query($sql_reason)) {
-
+  if (!$conn->query($sql_purpose)) {
     $resp = [
       'status' => 'fail',
-      'message' => 'Cannot retrieve reason data'
+      'message' => 'Cannot retrieve purpose data'
     ];
-
   } else {
-
-    $result = $conn->query($sql_reason);
+    $result = $conn->query($sql_purpose);
     $resp = [
       'status' => 'success',
       'data' => []
     ];
     while ($row = $result->fetch_assoc()) {
       $info = [
-        'reason' => $row['purpose'],
+        'category' => $row['purpose'],
         'count' => $row['count']
       ];
       array_push($resp['data'], $info);
@@ -41,4 +38,4 @@
   $conn->close();
   header('Content-Type: application/json');
   echo json_encode($resp);
-  ?>
+?>

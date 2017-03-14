@@ -14,22 +14,19 @@
   $sql_seat = "SELECT seat, COUNT(seat) AS count FROM flight_record WHERE user_id = '$user_id' AND seat IS NOT NULL GROUP BY seat ORDER BY count DESC";
 
   if (!$conn->query($sql_seat)) {
-
-  	$resp = [
-  	  'status' => 'fail',
-  	  'message' => 'Cannot retrieve seat data'
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Cannot retrieve seat data'
     ];
-
   } else {
-
-  	$result = $conn->query($sql_seat);
-  	$resp = [
-  	  'status' => 'success',
-  	  'data' => []
-  	];
+    $result = $conn->query($sql_seat);
+    $resp = [
+      'status' => 'success',
+      'data' => []
+    ];
     while ($row = $result->fetch_assoc()) {
       $info = [
-        'seat' => $row['seat'],
+        'category' => $row['seat'],
         'count' => $row['count']
       ];
       array_push($resp['data'], $info);
@@ -39,4 +36,4 @@
   $conn->close();
   header('Content-Type: application/json');
   echo json_encode($resp);
- ?>
+?>

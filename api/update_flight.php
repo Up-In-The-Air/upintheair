@@ -73,14 +73,14 @@
     array_push($schema_values, "airline_id='".$row['id']."'");
   }
 
-  if ($date) { array_push($schema_values, "date='".$date."'"); }
-  if ($flight_number) { array_push($schema_values, "flight_number='".$flight_number."'"); }
-  if ($dep_time) { array_push($schema_values, "dep_time='".$dep_time."'"); }
-  if ($arr_time) { array_push($schema_values, "arr_time='".$arr_time."'"); }
-  if ($class) { array_push($schema_values, "class='".$class."'"); }
-  if ($seat) { array_push($schema_values, "seat='".$seat."'"); }
-  if ($seat_num) { array_push($schema, "seat_num='".$seat_num."'"); }
-  if ($purpose) { array_push($schema_values, "purpose='".$purpose."'"); }
+  if ($date != null) { array_push($schema_values, "date='".$date."'"); }
+  if ($flight_number != null) { array_push($schema_values, "flight_number='".$flight_number."'"); }
+  if ($dep_time != null) { array_push($schema_values, "dep_time='".$dep_time."'"); }
+  if ($arr_time != null) { array_push($schema_values, "arr_time='".$arr_time."'"); }
+  if ($class != null) { array_push($schema_values, "class='".$class."'"); }
+  if ($seat != null) { array_push($schema_values, "seat='".$seat."'"); }
+  if ($seat_num != null) { array_push($schema, "seat_num='".$seat_num."'"); }
+  if ($purpose != null) { array_push($schema_values, "purpose='".$purpose."'"); }
 
   $schema_values_str = join(", ", $schema_values);
 

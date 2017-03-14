@@ -67,7 +67,7 @@
   }
 
   array_push($schema, 'aircraft_id');
-  if ($aircraft_iata) {
+  if ($aircraft_iata != null) {
     $sql4 = "SELECT id FROM aircraft WHERE iata = '$aircraft_iata'";
     $row = $conn->query($sql4)->fetch_assoc();
     array_push($values, $row['id']);
@@ -76,7 +76,7 @@
   }
 
   array_push($schema, 'airline_id');
-  if ($airline_iata) {
+  if ($airline_iata != null) {
     $sql3 = "SELECT id FROM airline where iata = '$airline_iata'";
     $row = $conn->query($sql3)->fetch_assoc();
     array_push($values, $row['id']);
@@ -84,31 +84,31 @@
     array_push($values, 0);
   }
 
-  if ($flight_number) {
+  if ($flight_number != null) {
     array_push($schema, 'flight_number');
     array_push($values, $flight_number);
   }
-  if ($dep_time) {
+  if ($dep_time != null) {
     array_push($schema, 'dep_time');
     array_push($values, $dep_time);
   }
-  if ($arr_time) {
+  if ($arr_time != null) {
     array_push($schema, 'arr_time');
     array_push($values, $arr_time);
   }
-  if ($class) {
+  if ($class != null) {
     array_push($schema, 'class');
     array_push($values, $class);
   }
-  if ($seat) {
+  if ($seat != null) {
     array_push($schema, 'seat');
     array_push($values, $seat);
   }
-  if ($seat_num) {
+  if ($seat_num != null) {
     array_push($schema, 'seat_num');
     array_push($values, $seat_num);
   }
-  if ($purpose) {
+  if ($purpose != null) {
     array_push($schema, 'purpose');
     array_push($values, $purpose);
   }
