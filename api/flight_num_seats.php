@@ -9,41 +9,31 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $email = $_Post['email'];
+  $userid = $_GET['user_id'];
 
-  $sql_seat_window = "SELECT COUNT(*) as num_win FROM user, Flight_record WHERE Flight_record.seat = 'window' AND user.id = Flight_record.userid AND user.email = '".$email."'";
-  $sql_seat_middle = "SELECT COUNT(*) as num_mid FROM user, Flight_record WHERE Flight_record.seat = 'middle' AND user.id = Flight_record.userid AND user.email = '".$email."'";
-  $sql_seat_aisle = "SELECT COUNT(*) as num_ais FROM user, Flight_record WHERE Flight_record.seat = 'aisle' AND user.id = Flight_record.userid AND user.email = '".$email."'";
+  $sql_seat = "SELECT seat, COUNT(seat) AS count FROM flight_record WHERE user_id = '$userid' GROUP BY seat ORDER BY count DESC";
 
-  if (($conn->query($sql_seat_window) == FALSE)
-  	|| ($conn->query($sql_seat_middle) == FALSE)
-  	|| ($conn->query($sql_seat_aisle) == FALSE)) {
+  if ($conn->query($sql_seat) == FALSE) {
 
   	$resp = [
   	  'status' => 'fail',
-  	  'table' => 'seat',
   	  'message' => 'Cannot retrieve seat data'
     ];
+
   } else {
 
-  	$result_window = $conn->query($sql_seat_window);
-  	$result_middle = $conn->query($sql_seat_middle);
-  	$result_aisle = $conn->query($sql_seat_aisle);
-
-  	$num_window = mysql_fetch_assoc($result_window);
-  	$num_middle = mysql_fetch_assoc($result_middle);
-  	$num_aisle = mysql_fetch_assoc($result_aisle);
-
+  	$result = $conn->query($sql_seat);
   	$resp = [
   	  'status' => 'success',
-  	  'table' => 'seat',
-  	  'data' => [
-  	    'window' => $num_window['num_win'],
-  	    'middle' => $num_middle['num_mid'],
-  	    'aisle' => $num_aisle['num_ais']
-  	  ]
+  	  'data' => []
   	];
-
+    while ($row = $result->fetch_assoc()) {
+      $info = [
+        'seat' => $row['seat'],
+        'count' => $row['count']
+      ];
+      array_push($resp, $info);
+    }
   }
 
   $conn->close();

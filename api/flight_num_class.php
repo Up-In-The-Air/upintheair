@@ -12,45 +12,31 @@
     die('Connection failed: ' . $conn->connect_error);
   }
 
-  $email = $_Post['email'];
+  $userid = $_GET['user_id'];
 
-  $sql_seat_0 = "SELECT COUNT(flight_record.class) as num_fs FROM user, flight_record WHERE flight_record.class = 0 AND user.id = flight_record.userid AND user.email = '".$email."'";
-  $sql_seat_1 = "SELECT COUNT(flight_record.class) as num_bs FROM user, flight_record WHERE flight_record.class = 1 AND user.id = flight_record.userid AND user.email = '".$email."'";
-  $sql_seat_2 = "SELECT COUNT(flight_record.class) as num_ep FROM user, flight_record WHERE flight_record.class = 2 AND user.id = flight_record.userid AND user.email = '".$email."'";
-  $sql_seat_3 = "SELECT COUNT(flight_record.class) as num_ec FROM user, flight_record WHERE flight_record.class = 3 AND user.id = flight_record.userid AND user.email = '".$email."'";
+  $sql_class = "SELECT class, COUNT(class) AS count FROM flight_record WHERE user_id = '$userid' GROUP BY class ORDER BY count DESC";
 
-  if (($conn->query($sql_seat_first) == FALSE) 
-  	|| ($conn->query($sql_seat_bus) == FALSE) 
-  	|| ($conn->query($sql_seat_ecop) == FALSE)
-  	|| ($conn->query($sql_seat_eco) == FALSE)) {
+  if ($conn->query($sql_class)) {
 
   	$resp = [
   	  'status' => 'fail',
-  	  'table' => 'class',
   	  'message' => 'Cannot retrieve class data'
     ];
+
   } else {
 
-  	$result_first = $conn->query($sql_seat_0);
-  	$result_bus = $conn->query($sql_seat_1);
-  	$result_ecop = $conn->query($sql_seat_2);
-  	$result_eco = $conn->query($sql_seat_3);
-
-  	$num_seat_fs = mysql_fetch_assoc($result_first);
-  	$num_seat_bus = mysql_fetch_assoc($result_bus);
-  	$num_seat_ecop = mysql_fetch_assoc($result_ecop);
-  	$num_seat_eco = mysql_fetch_assoc($result_eco);
-  
+  	$result = $conn->query($sql_class);
   	$resp = [
   	  'status' => 'success',
-  	  'table' => 'class',
-  	  'data' => [
-  	    '0' => $num_seat_fs['num_fs'],
-  	    '1' => $num_seat_bus['num_bs'],
-  	    '2' => $num_seat_ecop['num_ep'],
-  	    '3' => $num_seat_eco['num_ec']
-  	  ]
+  	  'data' => []
     ];
+    while ($row = $result->fetch_assoc()) {
+      $info = [
+        'class' => $row['class'],
+        'count' => $row['count']
+      ];
+      arrya_push($resp, $info);
+    }
   }
 
   $conn->close();

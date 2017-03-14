@@ -15,11 +15,10 @@
 
   $sql_reason = "SELECT purpose, COUNT(purpose) AS count FROM flight_record WHERE user_id = '$userid' GROUP BY purpose ORDER BY count DESC";
 
-  if(conn->query($sql_reason) == FALSE) {
+  if($conn->query($sql_reason) == FALSE) {
 
     $resp = [
       'status' => 'fail',
-      'table' => 'reason',
       'message' => 'Cannot retrieve reason data'
     ];
 
@@ -28,11 +27,14 @@
     $result = $conn->query($sql_reason);
     $resp = [
       'status' => 'success',
-      'table' => 'reason',
       'data' => []
     ];
     while ($row = $result->fetch_assoc()) {
-      $resp['data'][$row['purpose']] = $row['count'];
+      $info = [
+        'reason' => $row['purpose'],
+        'count' => $row['count']
+      ];
+      array_push($resp, $info);
     }
   }
 
