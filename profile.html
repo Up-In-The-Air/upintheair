@@ -7,6 +7,7 @@
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
   <link href="static/css/common.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/profile.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="app">
   <div class="navbar-fixed">
@@ -28,7 +29,7 @@
   </div>
 
   <div class="row content">
-    <div class="col s12 m4 l3">
+    <div class="col s12 m2">
       <div class="collection">
         <a href="profile.html" class="collection-item active">Profile</a>
         <a href="add_flight.html" class="collection-item">Add Flights</a>
@@ -36,8 +37,41 @@
       </div>
     </div>
 
-    <div class="col s12 m8 l9">
+    <div class="col s12 m10">
       <div class="right-pane">
+        <div class="row dashboard-row">
+          <div class="col s6">
+            <div class="number teal-text">
+              {{totalFlight}}
+            </div>
+            <div class="note">
+              Total Flights
+            </div>
+          </div>
+          <div class="col s6">
+            <div class="number teal-text">
+              {{totalDistance}}
+            </div>
+            <div class="note">
+              Total Distance (Miles)
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row chart-row">
+          <div id="class-chart" class="col s12 m4 pie-chart-container"></div>
+          <div id="seat-chart" class="col s12 m4 pie-chart-container"></div>
+          <div id="purpose-chart" class="col s12 m4 pie-chart-container"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row chart-row">
+          <div id="airport-chart" class="col s12 m6 bar-chart-container"></div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -50,10 +84,10 @@
     </div>
   </footer>
 
-
   <script src="static/js/lib/vue.min.js"></script>
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
+  <script src="static/js/lib/echarts.common.min.js"></script>
   <script src="static/js/profile.jq.js"></script>
   <script src="static/js/profile.js"></script>
 </body>

@@ -1,0 +1,28 @@
+.row.dashboard-row {
+  height: 150px;
+}
+.dashboard-row .col {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.dashboard-row .col:not(:last-child) {
+  border-right: 1px solid #e0e0e0;
+}
+.dashboard-row .col .number {
+  font-size: 50px;
+}
+.dashboard-row .col .note {
+  font-size: 20px;
+}
+.row.chart-row {
+  margin: 20px 0 0 0;
+}
+.pie-chart-container {
+  height: 250px;
+}
+.bar-chart-container {
+  height: 300px;
+}

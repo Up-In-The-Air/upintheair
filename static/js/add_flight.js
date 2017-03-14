@@ -203,7 +203,7 @@ var app = new Vue({
       $.ajax({
         method: 'POST',
         url: 'api/log_out.php',
-        data: { email: this.user.email },
+        data: { user_id: this.user.id },
         success: function(resp) {
           if (!resp || resp.status !== 'success') {
             Materialize.toast(resp.message, 4000);
@@ -217,7 +217,7 @@ var app = new Vue({
   },
   watch: {
     'depAirport.name': function(newVal) {
-      if (newVal === '') {
+      if (!newVal) {
         this.depAirport.iata = '';
         this.depAirport.city = '';
       } else if (newVal.includes(' / ')) {
@@ -231,7 +231,7 @@ var app = new Vue({
       }
     },
     'arrAirport.name': function(newVal) {
-      if (newVal === '') {
+      if (!newVal) {
         this.arrAirport.iata = '';
         this.arrAirport.city = '';
       } else if (newVal.includes(' / ')) {
@@ -245,7 +245,7 @@ var app = new Vue({
       }
     },
     'airline.name': function(newVal) {
-      if (newVal === '') {
+      if (!newVal) {
         this.airline.iata = '';
       } else if (newVal.includes(' / ')) {
         var iata = newVal.split(' / ')[0];
@@ -255,7 +255,7 @@ var app = new Vue({
       }
     },
     'aircraft.name': function(newVal) {
-      if (newVal === '') {
+      if (!newVal) {
         this.aircraft.iata = '';
       } else if (newVal.includes(' / ')) {
         var iata = newVal.split(' / ')[0];
