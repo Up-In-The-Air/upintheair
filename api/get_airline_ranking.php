@@ -12,18 +12,7 @@
   $user_id = $_GET['user_id'];
   $limit = $_GET['limit'];
 
-  $sql = "SELECT * "
-        ."FROM ( "
-        ."SELECT SUM(count) AS frequency, airport_id "
-        ."FROM ( "
-        ."SELECT COUNT(dep_airport_id) AS count, dep_airport_id AS airport_id FROM flight_record WHERE user_id = '$user_id' GROUP BY dep_airport_id "
-        ."UNION ALL "
-        ."SELECT COUNT(arr_airport_id) AS count, arr_airport_id AS airport_id FROM flight_record WHERE user_id = '$user_id' GROUP BY arr_airport_id "
-        .") AS airport_count "
-        ."GROUP BY airport_id "
-        .") AS airport_count_sum, airport "
-        ."WHERE airport.id = airport_count_sum.airport_id "
-        ."ORDER BY frequency DESC";
+  $sql = "SELECT airline.*, COUNT(airline.name) AS frequency FROM airline, flight_record WHERE flight_record.user_id = '$user_id' AND flight_record.airline_id = airline.id GROUP BY airline.id ORDER BY frequency DESC";
 
   if ($limit) {
     $sql = $sql." LIMIT $limit";
@@ -42,7 +31,9 @@
       'data' => []
     ];
     while ($row = $result->fetch_assoc()) {
-      array_push($resp['data'], $row);
+      if ($row['id'] != 0) {
+        array_push($resp['data'], $row);
+      }
     }
   }
 
