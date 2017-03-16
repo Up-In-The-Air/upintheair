@@ -10,6 +10,7 @@ Here we listed the tech stacks we have chosen. Further code style and API docume
 - [jQuery](https://jquery.com/) for DOM manipulation
 - [Vue.js](https://vuejs.org/) for view-model
 - [Materialize](http://materializecss.com/) for UI
+- [ECharts](http://echarts.baidu.com/) for data visualization
 
 ### Back-End
 
