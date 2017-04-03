@@ -96,6 +96,41 @@ var app = new Vue({
             _this.arrAirport.iata = resp.response[0].arrival;
             _this.getAirpotDetail(_this.depAirport);
             _this.getAirpotDetail(_this.arrAirport);
+
+            // Draw route on map
+            if (window.depMarker) { depMarker.setMap(null); }
+            if (window.arrMarker) { arrMarker.setMap(null); }
+            if (window.flightRoute) { flightRoute.setMap(null); }
+            geocoder.geocode( { 'address': resp.response[0].departure }, function(results, status) {
+              if (status === 'OK') {
+                depMarker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                    animation: google.maps.Animation.DROP
+                });
+                geocoder.geocode( { 'address': resp.response[0].arrival }, function(results, status) {
+                  if (status === 'OK') {
+                    arrMarker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        animation: google.maps.Animation.DROP
+                    });
+                    var latlngbounds = new google.maps.LatLngBounds();
+                    latlngbounds.extend(depMarker.getPosition());
+                    latlngbounds.extend(arrMarker.getPosition());
+                    map.fitBounds(latlngbounds);
+                    flightRoute = new google.maps.Polyline({
+                      path: [depMarker.getPosition(), arrMarker.getPosition()],
+                      strokeColor: "#009688",
+                      strokeOpacity: 1.0,
+                      strokeWeight: 3,
+                      geodesic: true,
+                      map: map
+                    });
+                  }
+                });
+              }
+            });
           }
         }
       });
@@ -221,12 +256,46 @@ var app = new Vue({
       if (!newVal) {
         this.depAirport.iata = '';
         this.depAirport.city = '';
+
+        // Remove map marker
+        if (window.depMarker) { depMarker.setMap(null); }
+        if (window.flightRoute) { flightRoute.setMap(null); }
       } else if (newVal.includes(' / ')) {
         var iata = newVal.split(' / ')[0];
         var name = newVal.split(' / ')[1];
         this.depAirport.iata = iata;
         this.depAirport.name = name;
         this.getAirpotDetail(this.depAirport);
+
+        // Update map marker and route
+        if (window.depMarker) { depMarker.setMap(null); }
+        if (window.flightRoute) { flightRoute.setMap(null); }
+        geocoder.geocode( { 'address': name }, function(results, status) {
+          if (status === 'OK') {
+            depMarker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location,
+                animation: google.maps.Animation.DROP
+            });
+            if (window.arrMarker) {
+              var latlngbounds = new google.maps.LatLngBounds();
+              latlngbounds.extend(depMarker.getPosition());
+              latlngbounds.extend(arrMarker.getPosition());
+              map.fitBounds(latlngbounds);
+              flightRoute = new google.maps.Polyline({
+                path: [depMarker.getPosition(), arrMarker.getPosition()],
+                strokeColor: "#009688",
+                strokeOpacity: 1.0,
+                strokeWeight: 3,
+                geodesic: true,
+                map: map
+              });
+            } else {
+              map.setCenter(results[0].geometry.location);
+              map.setZoom(12);
+            }
+          }
+        });
       } else {
         this.airportAutocomplete(newVal, 'input.dep-airport-autocomplete');
       }
@@ -235,12 +304,46 @@ var app = new Vue({
       if (!newVal) {
         this.arrAirport.iata = '';
         this.arrAirport.city = '';
+
+        // Remove map marker
+        if (window.arrMarker) { arrMarker.setMap(null); }
+        if (window.flightRoute) { flightRoute.setMap(null); }
       } else if (newVal.includes(' / ')) {
         var iata = newVal.split(' / ')[0];
         var name = newVal.split(' / ')[1];
         this.arrAirport.iata = iata;
         this.arrAirport.name = name;
         this.getAirpotDetail(this.arrAirport);
+
+        // Update map marker and route
+        if (window.arrMarker) { arrMarker.setMap(null); }
+        if (window.flightRoute) { flightRoute.setMap(null); }
+        geocoder.geocode( { 'address': name }, function(results, status) {
+          if (status === 'OK') {
+            arrMarker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location,
+                animation: google.maps.Animation.DROP
+            });
+            if (window.depMarker) {
+              var latlngbounds = new google.maps.LatLngBounds();
+              latlngbounds.extend(depMarker.getPosition());
+              latlngbounds.extend(arrMarker.getPosition());
+              map.fitBounds(latlngbounds);
+              flightRoute = new google.maps.Polyline({
+                path: [depMarker.getPosition(), arrMarker.getPosition()],
+                strokeColor: "#009688",
+                strokeOpacity: 1.0,
+                strokeWeight: 3,
+                geodesic: true,
+                map: map
+              });
+            } else {
+              map.setCenter(results[0].geometry.location);
+              map.setZoom(12);
+            }
+          }
+        });
       } else {
         this.airportAutocomplete(newVal, 'input.arr-airport-autocomplete');
       }

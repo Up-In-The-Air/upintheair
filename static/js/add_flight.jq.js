@@ -1,6 +1,7 @@
 var mapLoaded = false;
 function initMap() {
-  var map = new google.maps.Map(document.getElementById('route-map'), {
+  geocoder = new google.maps.Geocoder();
+  map = new google.maps.Map(document.getElementById('route-map'), {
     center: {lat: 0, lng: 0},
     zoom: 1,
   });
@@ -20,7 +21,7 @@ $(document).ready(function() {
   // Google map
   $('.flight-info-trigger').click(function() {
     if (!mapLoaded) {
-      $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyCdDkk14fyMgdX9DOODWwgwBdXYHDJoCt8&sensor=true&callback=initMap');
+      $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyCdDkk14fyMgdX9DOODWwgwBdXYHDJoCt8&libraries=geometry&callback=initMap');
       mapLoaded = true;
     }
   });
