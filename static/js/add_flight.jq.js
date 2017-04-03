@@ -1,3 +1,10 @@
+var mapLoaded = false;
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('route-map'), {
+    center: {lat: 0, lng: 0},
+    zoom: 1,
+  });
+}
 $(document).ready(function() {
   $('ul.tabs').tabs();
   $('#comment').characterCounter();
@@ -10,6 +17,14 @@ $(document).ready(function() {
     autoclose: false,
     twelvehour: false
   });
+  // Google map
+  $('.flight-info-trigger').click(function() {
+    if (!mapLoaded) {
+      $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyCdDkk14fyMgdX9DOODWwgwBdXYHDJoCt8&sensor=true&callback=initMap');
+      mapLoaded = true;
+    }
+  });
+  // flight data api
   $.ajax({
     method: 'GET',
     url: 'api/get_airlines.php',

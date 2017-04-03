@@ -1,4 +1,5 @@
 var API_KEY = '306bcf74-75f0-468d-abae-cc82b5aed993';
+var GOOGLE_MAP_API_KEY = 'AIzaSyCdDkk14fyMgdX9DOODWwgwBdXYHDJoCt8';
 
 // For Debug Mode
 Vue.config.devtools = true;
