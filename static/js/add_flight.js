@@ -1,5 +1,4 @@
 var API_KEY = '306bcf74-75f0-468d-abae-cc82b5aed993';
-var GOOGLE_MAP_API_KEY = 'AIzaSyCdDkk14fyMgdX9DOODWwgwBdXYHDJoCt8';
 
 // For Debug Mode
 Vue.config.devtools = true;
@@ -21,6 +20,7 @@ var app = new Vue({
         city: '',
         iata: ''
       },
+      distance: '',
       depTime: '',
       arrTime: '',
       airline: {
@@ -116,17 +116,27 @@ var app = new Vue({
                         animation: google.maps.Animation.DROP
                     });
                     var latlngbounds = new google.maps.LatLngBounds();
-                    latlngbounds.extend(depMarker.getPosition());
-                    latlngbounds.extend(arrMarker.getPosition());
+                    var depPosition = depMarker.getPosition();
+                    var arrPosition = arrMarker.getPosition();
+
+                    latlngbounds.extend(depPosition);
+                    latlngbounds.extend(arrPosition);
                     map.fitBounds(latlngbounds);
                     flightRoute = new google.maps.Polyline({
-                      path: [depMarker.getPosition(), arrMarker.getPosition()],
+                      path: [depPosition, arrPosition],
                       strokeColor: "#009688",
                       strokeOpacity: 1.0,
                       strokeWeight: 3,
                       geodesic: true,
                       map: map
                     });
+
+                    app.$set(
+                      'distance', google.maps.geometry.spherical.computeDistanceBetween(
+                        depPosition,
+                        arrPosition
+                      )
+                    );
                   }
                 });
               }
@@ -173,6 +183,7 @@ var app = new Vue({
           date: this.date,
           dep_airport_iata: this.depAirport.iata,
           arr_airport_iata: this.arrAirport.iata,
+          distance: this.distance,
           flight_number: this.flightNumber,
           dep_time: this.depTime,
           arr_time: this.arrTime,
@@ -257,9 +268,10 @@ var app = new Vue({
         this.depAirport.iata = '';
         this.depAirport.city = '';
 
-        // Remove map marker
+        // Remove map marker, route and distance
         if (window.depMarker) { depMarker.setMap(null); }
         if (window.flightRoute) { flightRoute.setMap(null); }
+        this.distance = '';
       } else if (newVal.includes(' / ')) {
         var iata = newVal.split(' / ')[0];
         var name = newVal.split(' / ')[1];
@@ -279,17 +291,27 @@ var app = new Vue({
             });
             if (window.arrMarker) {
               var latlngbounds = new google.maps.LatLngBounds();
-              latlngbounds.extend(depMarker.getPosition());
-              latlngbounds.extend(arrMarker.getPosition());
+              var depPosition = depMarker.getPosition();
+              var arrPosition = arrMarker.getPosition();
+
+              latlngbounds.extend(depPosition);
+              latlngbounds.extend(arrPosition);
               map.fitBounds(latlngbounds);
               flightRoute = new google.maps.Polyline({
-                path: [depMarker.getPosition(), arrMarker.getPosition()],
+                path: [depPosition, arrPosition],
                 strokeColor: "#009688",
                 strokeOpacity: 1.0,
                 strokeWeight: 3,
                 geodesic: true,
                 map: map
               });
+
+              app.$set(
+                'distance', google.maps.geometry.spherical.computeDistanceBetween(
+                  depPosition,
+                  arrPosition
+                )
+              );
             } else {
               map.setCenter(results[0].geometry.location);
               map.setZoom(12);
@@ -305,9 +327,10 @@ var app = new Vue({
         this.arrAirport.iata = '';
         this.arrAirport.city = '';
 
-        // Remove map marker
+        // Remove map marker, route and distance
         if (window.arrMarker) { arrMarker.setMap(null); }
         if (window.flightRoute) { flightRoute.setMap(null); }
+        this.distance = '';
       } else if (newVal.includes(' / ')) {
         var iata = newVal.split(' / ')[0];
         var name = newVal.split(' / ')[1];
@@ -327,17 +350,27 @@ var app = new Vue({
             });
             if (window.depMarker) {
               var latlngbounds = new google.maps.LatLngBounds();
-              latlngbounds.extend(depMarker.getPosition());
-              latlngbounds.extend(arrMarker.getPosition());
+              var depPosition = depMarker.getPosition();
+              var arrPosition = arrMarker.getPosition();
+
+              latlngbounds.extend(depPosition);
+              latlngbounds.extend(arrPosition);
               map.fitBounds(latlngbounds);
               flightRoute = new google.maps.Polyline({
-                path: [depMarker.getPosition(), arrMarker.getPosition()],
+                path: [depPosition, arrPosition],
                 strokeColor: "#009688",
                 strokeOpacity: 1.0,
                 strokeWeight: 3,
                 geodesic: true,
                 map: map
               });
+
+              app.$set(
+                'distance', google.maps.geometry.spherical.computeDistanceBetween(
+                  depPosition,
+                  arrPosition
+                )
+              );
             } else {
               map.setCenter(results[0].geometry.location);
               map.setZoom(12);

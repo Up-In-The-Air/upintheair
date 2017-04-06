@@ -26,6 +26,7 @@
   }
 
   // Optional
+  $distance = $_POST['distance'];
   $flight_number = $_POST['flight_number'];
   $dep_time = $_POST['dep_time'];
   $arr_time = $_POST['arr_time'];
@@ -84,6 +85,10 @@
     array_push($values, 0);
   }
 
+  if ($distance != null) {
+    array_push($schema, 'distance');
+    array_push($values, $distance);
+  }
   if ($flight_number != null) {
     array_push($schema, 'flight_number');
     array_push($values, $flight_number);

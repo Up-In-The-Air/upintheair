@@ -162,13 +162,22 @@ var app = new Vue({
             Materialize.toast(resp.message, 4000);
             return;
           }
-          var increaseJob = setInterval(function() {
+          var increaseFlightJob = setInterval(function() {
             if (_this.totalFlight === parseInt(resp.data.total_flight)) {
-              clearInterval(increaseJob);
+              clearInterval(increaseFlightJob);
             } else {
               _this.totalFlight += 1;
             }
           }, 50);
+          var totalDistance = (resp.data.total_distance * 0.000621371192).toFixed(0);
+          var increaseDistanceJob = setInterval(function() {
+            if (_this.totalDistance > parseInt(totalDistance) - 13) {
+              _this.totalDistance = totalDistance;
+              clearInterval(increaseDistanceJob);
+            } else {
+              _this.totalDistance += 13;
+            }
+          }, 1);
         }
       });
     },

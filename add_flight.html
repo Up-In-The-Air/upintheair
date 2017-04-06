@@ -108,8 +108,21 @@
                 <label for="arr_time">Arrival Time</label>
               </div>
             </div>
+            <div v-if="distance" class="row distance-row">
+              <div class="col s2 offset-s1 center">
+                {{depAirport.city}}
+              </div>
+              <div class="col s6 center">
+                <div class="distance-value">
+                  {{(distance * 0.000621371192).toFixed(0)}} Miles
+                </div>
+              </div>
+              <div class="col s2 center">
+                {{arrAirport.city}}
+              </div>
+            </div>
             <div class="row">
-              <div class="col s12">
+              <div class="col s12 route-map">
                 <div id="route-map"></div>
                 <div class="ribbon"></div>
               </div>

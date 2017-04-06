@@ -11,8 +11,7 @@
 
   $user_id = $_GET['user_id'];
 
-  $sql = "SELECT COUNT(user_id) AS count FROM flight_record WHERE user_id = '$user_id'";
-
+  $sql = "SELECT COUNT(*) AS count, SUM(distance) AS distance FROM flight_record WHERE user_id = '$user_id'";
   $result = $conn->query($sql);
 
   if (!$result) {
@@ -23,10 +22,12 @@
   } else {
     $row = $result->fetch_assoc();
     $total_flight = $row['count'];
+    $total_distance = $row['distance'];
     $resp = [
       'status' => 'success',
       'data' => [
-        'total_flight' => $total_flight
+        'total_flight' => $total_flight,
+        'total_distance' => $total_distance
       ]
     ];
   }
