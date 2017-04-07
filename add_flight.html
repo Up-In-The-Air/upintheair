@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Up in the Air</title>
+  <title>Add Flight - Up in the Air</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
@@ -17,11 +17,13 @@
         <a id="logo-container" href="/" class="brand-logo"><img src="static/images/logo_color.png" /></a>
         <ul class="right hide-on-med-and-down">
           <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li><a href="/chat.html">Chat</a></li>
           <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
           <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li><a href="/chat.html">Chat</a></li>
           <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
