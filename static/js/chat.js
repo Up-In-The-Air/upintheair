@@ -2,7 +2,7 @@
 Vue.config.devtools = true;
 
 // Change to localhost when debugging locally
-var WEB_SOCKET_HOST = 'ws://localhost:12345';
+var WEB_SOCKET_HOST = 'ws://192.17.90.133:12345';
 var OPTIONS = {
   icons: [{
     path: "/static/images/emoji/tieba/",

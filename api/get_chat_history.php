@@ -49,7 +49,7 @@
       array_push($resp['data'], $row);
     }
   }
-
+  
   header('Content-Type: application/json');
   echo json_encode($resp);
   $conn->close();

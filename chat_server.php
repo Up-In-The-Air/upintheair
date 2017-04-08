@@ -33,7 +33,7 @@ class ChatServer extends WebSocket {
         $receiver_socket = $this->sockets_dict[$receiver_id];
         $this->send($receiver_socket, $message);
       } else {
-        $this->send($user->socket, 'Not online, save in DB');
+        return;
       }
     }
   }
@@ -56,4 +56,4 @@ class ChatServer extends WebSocket {
     }
   }
 }
-$master = new ChatServer("localhost", 12345);
+$master = new ChatServer("192.17.90.133", 12345);
