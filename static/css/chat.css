@@ -1,0 +1,9 @@
+#input-area {
+  text-decoration: none;
+  outline: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  resize: none;
+  padding: 5px;
+  height: 100px;
+}

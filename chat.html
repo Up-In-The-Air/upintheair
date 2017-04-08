@@ -6,7 +6,10 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/lib/jquery.mCustomScrollbar.min.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/lib/jquery.emoji.css" type="text/css" rel="stylesheet" />
   <link href="static/css/common.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/chat.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="app">
   <div class="navbar-fixed">
@@ -30,33 +33,52 @@
   </div>
 
   <div class="row content">
-    <div class="col s12 m2">
+    <div class="col s12 m3">
       <ul class="collection">
-        <li class="collection-item avatar active">
-          <i class="material-icons circle green">insert_chart</i>
-          <span class="title">Ted</span>
-        </li>
-        <li class="collection-item avatar">
-          <i class="material-icons circle green">insert_chart</i>
-          <span class="title">Ted</span>
+        <li v-for="contact in contactList"
+          class="collection-item"
+          :class="{'active': receiver === contact.id}"
+          @click="onSelectReceiver(contact.id)">
+          <span>{{contact.first_name}}&nbsp;{{contact.last_name}}</span>
         </li>
       </ul>
     </div>
 
-    <div class="col s12 m10">
+    <div class="col s12 m9">
       <div class="right-pane">
         <div class="row" id="result">
-          Messages list
+          <ul>
+            <li v-for="messageObj in messageObjList">
+              <div v-if="messageObj.send">
+                Send: {{messageObj.content}}
+              </div>
+              <div v-else>
+                Received: {{messageObj.content}}
+              </div>
+            </li>
+          </ul>
         </div>
 
         <div class="divider"></div>
 
         <div class="row">
-          input
+          <div class="col s12">
+            <textarea id="input-area" v-model="message"></textarea>
+          </div>
+          <div class="col s12">
+            <div class="left">
+              <button class="emoji-button"></button>
+            </div>
+            <div class="right">
+              <button class="btn waves-effect waves-light" type="submit" @click="onSendClick">Send</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div id="log"></div>
 
   <footer class="page-footer teal">
     <div class="footer-copyright">
@@ -68,8 +90,10 @@
 
   <script src="static/js/lib/vue.min.js"></script>
   <script src="static/js/lib/jquery.min.js"></script>
+  <script src="static/js/lib/jquery.mousewheel.min.js"></script>
+  <script src="static/js/lib/jquery.mCustomScrollbar.min.js"></script>
+  <script src="static/js/lib/jquery.emoji.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
-  <script src="static/js/lib/echarts.common.min.js"></script>
   <script src="static/js/chat.jq.js"></script>
   <script src="static/js/chat.js"></script>
 </body>
