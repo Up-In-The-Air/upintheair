@@ -1,3 +1,97 @@
+.row.content {
+  height: calc(100vh - 110px);
+  margin: 0;
+}
+.row.content > .col {
+  height: 100%;
+  padding: 0;
+}
+.contact-pane {
+  border-right: 1px solid #e0e0e0;
+}
+.contact-pane .collection {
+  margin: 0;
+  border: none;
+}
+.contact-pane .collection .collection-item {
+  border-bottom: 1px solid #e0e0e0;
+}
+.collection .collection-item {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -o-align-items: center;
+  align-items: center;
+}
+.collection .collection-item:hover {
+  background: #e0e0e0;
+}
+.collection .collection-item.active:hover {
+  background: #26a69a;
+}
+.collection .collection-item .contact-name {
+  padding: 0 15px;
+  font-size: 16px;
+}
+.message-list-pane {
+  height: calc(100vh - 296px);
+  margin: 0 15px;
+  overflow: scroll;
+}
+.message-list-pane ul {
+  margin: 0;
+  overflow: hidden;
+  clear: both;
+}
+.message-list-pane ul li {
+  overflow: hidden;
+  clear: both;
+  margin: 5px 0;
+}
+.message-list-pane ul li .abbrv-avatar {
+  margin: 0 10px;
+}
+.message-list-pane ul li .message-content {
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flex;
+  display: -o-inline-flex;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -o-align-items: center;
+  align-items: center;
+  margin: 10px;
+  padding: 5px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  font-size: 16px;
+  max-width: 350px;
+}
+.message-list-pane ul li .message-content.border-teal {
+  border: 1px solid #80cbc4;
+}
+.message-sender-pane {
+  margin: 20px 0;
+  height: 142px;
+}
+.abbrv-avatar {
+  display: inline-block;
+  background: #9e9e9e;
+  color: #fff;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 24px;
+}
 #input-area {
   text-decoration: none;
   outline: none;
@@ -6,4 +100,7 @@
   resize: none;
   padding: 5px;
   height: 100px;
+}
+.emoji_container {
+  z-index: 2;
 }

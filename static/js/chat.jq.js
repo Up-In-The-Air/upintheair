@@ -2,7 +2,6 @@ $(document).ready(function() {
   $('#input-area').emoji({
     showTab: true,
     animation: 'fade',
-    button: '.emoji-button',
     icons: [{
       name: 'Baidu',
       path: "/static/images/emoji/tieba/",
@@ -10,21 +9,21 @@ $(document).ready(function() {
       file: ".jpg",
       placeholder: ":{alias}:",
       alias: {
-        1: "hehe",
-        2: "haha",
-        3: "tushe",
-        4: "a",
-        5: "ku",
-        6: "lu",
-        7: "kaixin",
-        8: "han",
-        9: "lei",
-        10: "heixian",
-        11: "bishi",
-        12: "bugaoxing",
-        13: "zhenbang",
-        14: "qian",
-        15: "yiwen",
+        1: "smile",
+        2: "lol",
+        3: "naughty",
+        4: "shocked",
+        5: "cool",
+        6: "angry",
+        7: "happy",
+        8: "perspiration",
+        9: "cry",
+        10: "embarrassed",
+        11: "disdain",
+        12: "unhappy",
+        13: "nicejob",
+        14: "money",
+        15: "doubt",
         16: "yinxian",
         17: "tu",
         18: "yi",
@@ -65,7 +64,12 @@ $(document).ready(function() {
         name: "QQ",
         path: "/static/images/emoji/qq/",
         maxNum: 91,
-        file: ".gif"
+        file: ".gif",
+        placeholder: "#qq_{alias}#"
     }]
+  });
+
+  $('.emoji_btn').click(function() {
+    $('.emoji_container').animate({ top: 281 });
   });
 });
