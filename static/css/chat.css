@@ -9,6 +9,30 @@
 .contact-pane {
   border-right: 1px solid #e0e0e0;
 }
+.contact-pane .search-block {
+  height: 60px;
+  position: relative;
+  z-index: 3;
+}
+.contact-pane .search-block .autocomplete-content {
+  margin-top: 0;
+}
+.contact-pane .search-block label {
+  position: absolute;
+  right: 5px;
+  top: 15px;
+}
+.contact-pane .search-block label i {
+  font-size: 30px;
+}
+.contact-pane .search-block input {
+  margin: 0;
+  padding: 0 40px 0 10px;
+  height: 100%;
+  overflow: visible;
+  font-size: 20px;
+  box-sizing: border-box;
+}
 .contact-pane .collection {
   margin: 0;
   border: none;
@@ -27,6 +51,7 @@
   -ms-align-items: center;
   -o-align-items: center;
   align-items: center;
+  position: relative;
 }
 .collection .collection-item:hover {
   background: #e0e0e0;
@@ -37,6 +62,11 @@
 .collection .collection-item .contact-name {
   padding: 0 15px;
   font-size: 16px;
+}
+.collection .collection-item .badge {
+  position: absolute;
+  right: 15px;
+  top: 23.5px;
 }
 .message-list-pane {
   height: calc(100vh - 296px);

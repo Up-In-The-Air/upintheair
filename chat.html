@@ -34,13 +34,18 @@
 
   <div class="row content">
     <div class="col s12 m3 contact-pane">
+      <div class="input field search-block">
+        <input id="search">
+        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+      </div>
       <ul class="collection">
         <li v-for="contact in contactList"
           class="collection-item"
           :class="{'active': receiver.id === contact.id}"
-          @click="onSelectReceiver(contact)">
-          <div class="abbrv-avatar">{{contact.first_name[0]+contact.last_name[0]}}</div>
+          @click="onSelectReceiver(contact, $index)">
+          <div class="abbrv-avatar">{{(contact.first_name[0]+contact.last_name[0]).toUpperCase()}}</div>
           <span class="contact-name">{{contact.first_name}}&nbsp;{{contact.last_name}}</span>
+          <span v-if="newMessageList[$index]" class="new badge red lighten-3">{{newMessageList[$index]}}</span>
         </li>
       </ul>
     </div>
@@ -51,7 +56,7 @@
             <li v-for="messageObj in messageObjList">
               <div v-if="messageObj.send" class="right">
                 <div class="abbrv-avatar teal right">
-                  {{user.firstName[0]+user.lastName[0]}}
+                  {{(user.firstName[0]+user.lastName[0]).toUpperCase()}}
                 </div>
                 <div class="message-content border-teal">
                   {{messageObj.content}}
@@ -59,7 +64,7 @@
               </div>
               <div v-else class="left">
                 <div class="abbrv-avatar left">
-                  {{receiver.firstName[0]+receiver.lastName[0]}}
+                  {{(receiver.firstName[0]+receiver.lastName[0]).toUpperCase()}}
                 </div>
                 <div class="message-content">
                   {{messageObj.content}}
@@ -73,7 +78,7 @@
 
         <div class="row message-sender-pane">
           <div class="col s12">
-            <textarea id="input-area" v-model="message"></textarea>
+            <textarea id="input-area" v-model="message" @keyup.enter="onSendClick"></textarea>
           </div>
           <div class="col s12">
             <div class="right">

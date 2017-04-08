@@ -3,6 +3,7 @@ Vue.config.devtools = true;
 
 // Change to localhost when debugging locally
 var WEB_SOCKET_HOST = 'ws://192.17.90.133:12345';
+// var WEB_SOCKET_HOST = 'ws://localhost:12345';
 var OPTIONS = {
   icons: [{
     path: "/static/images/emoji/tieba/",
@@ -72,7 +73,9 @@ var app = new Vue({
   data: function() {
     return {
       user: {},
+      userList: {},
       contactList: [],
+      newMessageList: [],
       socket: null,
       messageObjList: [],
       receiver: {},
@@ -108,6 +111,7 @@ var app = new Vue({
           };
 
           _this.getInitContactList();
+          _this.getUserList();
         },
         error: function() { location.href = '/'; }
       });
@@ -125,7 +129,31 @@ var app = new Vue({
         this.socket.onopen = function(msg) {};
         this.socket.onclose = function(msg) {};
         this.socket.onmessage = function(msg) {
-          _this.log(msg.data, false);
+          var messageObj = JSON.parse(msg.data);
+          if (_this.receiver.id == messageObj.sender_id) {
+            _this.log(messageObj.message, false);
+          } else {
+            var alreadyInContact = false;
+            for (var i = 0; i < _this.contactList.length; i++) {
+              if (_this.contactList[i].id == messageObj.sender_id) {
+                _this.newMessageList.splice(i, 1, _this.newMessageList[i] + 1);
+                alreadyInContact = true;
+                break;
+              }
+            }
+            if (!alreadyInContact) {
+              for (var name in _this.userList) {
+                if (_this.userList.hasOwnProperty(name) && _this.userList[name] == messageObj.sender_id) {
+                  _this.contactList.unshift({
+                    id: _this.userList[name],
+                    first_name: name.split(' ')[0],
+                    last_name: name.split(' ')[1]
+                  });
+                  _this.newMessageList.unshift(1);
+                }
+              }
+            }
+          }
         };
       } catch (ex) {
         Materialize.toast('Fail to connect to this user!', 4000);
@@ -178,17 +206,70 @@ var app = new Vue({
           }
           _this.contactList = resp.data;
           if (_this.contactList.length > 0) {
-            _this.onSelectReceiver(_this.contactList[0]);
+            _this.onSelectReceiver(_this.contactList[0], 0);
+            _this.newMessageList = [];
+            _this.contactList.forEach(function(contact) {
+              _this.newMessageList.push(0);
+            })
           }
         }
       });
     },
-    onSelectReceiver: function(receiver) {
+    getUserList: function() {
+      var _this = this;
+      $.ajax({
+        method: 'GET',
+        url: 'api/get_user_list.php',
+        data: { user_id: this.user.id },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          var autocompleteData = {};
+          resp.data.forEach(function(user) {
+            var name = user.first_name + ' ' + user.last_name;
+            autocompleteData[name] = null;
+            _this.userList[name] = user.id;
+          });
+          $('input#search').autocomplete({
+            data: autocompleteData,
+            limit: 10,
+            onAutocomplete: function(val) {
+              var alreadyInContact = false;
+              for (var i = 0; i < _this.contactList.length; i++) {
+                if (_this.contactList[i].id == _this.userList[val]) {
+                  _this.onSelectReceiver(_this.contactList[i], i);
+                  alreadyInContact = true;
+                  break;
+                }
+              }
+              if (!alreadyInContact) {
+                _this.contactList.unshift({
+                  id: _this.userList[val],
+                  first_name: val.split(' ')[0],
+                  last_name: val.split(' ')[1]
+                });
+                _this.newMessageList.unshift(0);
+                _this.receiver = {
+                  id: _this.userList[val],
+                  firstName: val.split(' ')[0],
+                  lastName: val.split(' ')[1]
+                };
+                _this.messageObjList = [];
+              }
+            }
+          });
+        }
+      });
+    },
+    onSelectReceiver: function(receiver, index) {
       this.receiver = {
         id: receiver.id,
         firstName: receiver.first_name,
         lastName: receiver.last_name
       };
+      this.newMessageList.splice(index, 1, 0);
       this.messageObjList = [];
       this.getChatHistory(this.receiver.id, 10);
     },

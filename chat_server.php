@@ -8,10 +8,12 @@ class ChatServer extends WebSocket {
    */
   var $sockets_dict = array();
 
+  /**
+   * Override WebSocket process method.
+   * @param  User   $user user object with socket
+   * @param  String $msg  received message, json encoded
+   */
   function process($user, $msg) {
-    $this->say("< ".$msg);
-    $this->log("in process".$user->socket);
-
     // Decode messages
     $json = json_decode($msg);
     if (is_null($json)) { return; }
@@ -21,23 +23,27 @@ class ChatServer extends WebSocket {
     $message = $json->{'msg'};
     // Initialization message
     if (strpos($msg, '[INITIALIZATION_CONFIG]') !== false) {
-      // $this->say("configuration");
       $this->sockets_dict[$sender_id] = $user->socket;
     } else {
       $this->write_to_database($sender_id, $receiver_id, $message);
 
-      foreach ($this->sockets_dict as $key => $value) {
-        $this->say("$key -> $value");
-      }
       if (array_key_exists($receiver_id, $this->sockets_dict)) {
         $receiver_socket = $this->sockets_dict[$receiver_id];
-        $this->send($receiver_socket, $message);
-      } else {
-        return;
+        $message_obj = [
+          'sender_id' => $sender_id,
+          'message' => $message
+        ];
+        $this->send($receiver_socket, json_encode($message_obj));
       }
     }
   }
 
+  /**
+   * Write message to database
+   * @param  String $sender_id
+   * @param  String $receiver_id
+   * @param  String $message
+   */
   function write_to_database($sender_id, $receiver_id, $message) {
     $server_name = '127.0.0.1';
     $username = 'upintheair_admin';
@@ -56,4 +62,7 @@ class ChatServer extends WebSocket {
     }
   }
 }
+
+// Change to localhost when debugging
 $master = new ChatServer("192.17.90.133", 12345);
+// $master = new ChatServer('localhost', 12345);
