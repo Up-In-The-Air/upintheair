@@ -3,6 +3,69 @@ Vue.config.devtools = true;
 
 // Change to localhost when debugging locally
 var WEB_SOCKET_HOST = 'ws://localhost:12345';
+var OPTIONS = {
+  icons: [{
+    path: "/static/images/emoji/tieba/",
+    file: ".jpg",
+    placeholder: ":{alias}:",
+    alias: {
+      1: "smile",
+      2: "lol",
+      3: "naughty",
+      4: "shocked",
+      5: "cool",
+      6: "angry",
+      7: "happy",
+      8: "perspiration",
+      9: "cry",
+      10: "embarrassed",
+      11: "disdain",
+      12: "unhappy",
+      13: "nicejob",
+      14: "money",
+      15: "doubt",
+      16: "yinxian",
+      17: "tu",
+      18: "yi",
+      19: "weiqu",
+      20: "huaxin",
+      21: "hu",
+      22: "xiaonian",
+      23: "neng",
+      24: "taikaixin",
+      25: "huaji",
+      26: "mianqiang",
+      27: "kuanghan",
+      28: "guai",
+      29: "shuijiao",
+      30: "jinku",
+      31: "shengqi",
+      32: "jinya",
+      33: "pen",
+      34: "aixin",
+      35: "xinsui",
+      36: "meigui",
+      37: "liwu",
+      38: "caihong",
+      39: "xxyl",
+      40: "taiyang",
+      41: "qianbi",
+      42: "dnegpao",
+      43: "chabei",
+      44: "dangao",
+      45: "yinyue",
+      46: "haha2",
+      47: "shenli",
+      48: "damuzhi",
+      49: "ruo",
+      50: "OK"
+    }
+  }, {
+      path: "/static/images/emoji/qq/",
+      file: ".gif",
+      placeholder: "#qq_{alias}#"
+  }]
+};
 
 var app = new Vue({
   el: '#app',
@@ -12,7 +75,7 @@ var app = new Vue({
       contactList: [],
       socket: null,
       messageObjList: [],
-      receiver: null,
+      receiver: {},
       message: ''
     }
   },
@@ -72,11 +135,11 @@ var app = new Vue({
         _this.send(null, '[INITIALIZATION_CONFIG]');
       }, 1000);
     },
-    send: function(receiver, msg) {
+    send: function(receiverId, msg) {
       try {
         this.socket.send(JSON.stringify({
           user_id: this.user.id,
-          receiver_id: receiver,
+          receiver_id: receiverId,
           msg: msg
         }));
       } catch (ex) {
@@ -88,12 +151,17 @@ var app = new Vue({
         send: send,
         content: msg
       });
+      Vue.nextTick(function() {
+        // Render emoji and scroll to bottom
+        $('.message-content').emojiParse(OPTIONS);
+        $(".message-list-pane").animate({ scrollTop: $('.message-list-pane').prop("scrollHeight")}, 1000);
+      });
     },
     onSendClick: function() {
       if (!this.message) {
         return;
       }
-      this.send(this.receiver, this.message);
+      this.send(this.receiver.id, this.message);
       this.log(this.message, true);
       this.message = '';
     },
@@ -110,13 +178,52 @@ var app = new Vue({
           }
           _this.contactList = resp.data;
           if (_this.contactList.length > 0) {
-            _this.receiver = _this.contactList[0].id;
+            _this.onSelectReceiver(_this.contactList[0]);
           }
         }
       });
     },
-    onSelectReceiver: function(receiverId) {
-      this.receiver = receiverId;
+    onSelectReceiver: function(receiver) {
+      this.receiver = {
+        id: receiver.id,
+        firstName: receiver.first_name,
+        lastName: receiver.last_name
+      };
+      this.messageObjList = [];
+      this.getChatHistory(this.receiver.id, 10);
+    },
+    getChatHistory: function(receiverId, limit) {
+      var _this = this;
+      var upstreamData = {
+        user_id: this.user.id,
+        receiver_id: receiverId
+      };
+      if (limit) {
+        upstreamData.limit = limit;
+      }
+      $.ajax({
+        method: 'GET',
+        url: 'api/get_chat_history.php',
+        data: upstreamData,
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          var tempList = resp.data.reverse();
+          tempList.forEach(function(item) {
+            _this.messageObjList.push({
+              send: item.sender_id == _this.user.id,
+              content: item.message
+            });
+          });
+          Vue.nextTick(function() {
+            // Render emoji and scroll to bottom
+            $('.message-content').emojiParse(OPTIONS);
+            $(".message-list-pane").animate({ scrollTop: $('.message-list-pane').prop("scrollHeight")}, 1000);
+          });
+        }
+      });
     },
     onLogoutClick: function() {
       $.ajax({
