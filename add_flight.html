@@ -7,6 +7,7 @@
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
   <link href="static/css/lib/materialize.clockpicker.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/lib/rating.css" type="text/css" rel="stylesheet" />
   <link href="static/css/common.css" type="text/css" rel="stylesheet" />
   <link href="static/css/add_flight.css" type="text/css" rel="stylesheet" />
 </head>
@@ -239,11 +240,23 @@
 
           <div id="tab-progress-4" class="col s12">
             <div class="row">
-              <div class="input-field col s12 textarea-input">
-                <i class="material-icons prefix">comment</i>
-                <textarea id="comment" class="materialize-textarea" data-length="300" v-model="comment"></textarea>
-                <label for="comment">Your Comments</label>
-              </div>
+              <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                  <div class="collapsible-header active">Flight:&nbsp;{{depAirport.city}}&nbsp;-&nbsp;{{arrAirport.city}}</div>
+                  <div class="collapsible-body">
+                    <div class="input-field col s12 textarea-input">
+                      <i class="material-icons prefix">comment</i>
+                      <textarea id="comment" class="materialize-textarea" data-length="300" v-model="flightRecordComment"></textarea>
+                      <label for="comment">Your Comments</label>
+                    </div>
+                    <div class="input-field col s12 rating-input">
+                      <i class="material-icons prefix">assignment_turned_in</i>
+                      <div id="rating-flight-record" class="rating"></div>
+                    </div>
+                  </div>
+                </li>
+                <!-- TODO: Two more li for airline and airport -->
+              </ul>
             </div>
             <div class="row progress-btn">
               <a class="left waves-effect waves-light btn teal lighten-3" @click="onJumpTabClick(3)">back</a>
@@ -267,6 +280,7 @@
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
   <script src="static/js/lib/materialize.clockpicker.js"></script>
+  <script src="static/js/lib/rating.min.js"></script>
   <script src="static/js/add_flight.jq.js"></script>
   <script src="static/js/add_flight.js"></script>
 

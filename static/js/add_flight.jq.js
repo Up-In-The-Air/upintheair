@@ -18,6 +18,7 @@ $(document).ready(function() {
     autoclose: false,
     twelvehour: false
   });
+  $('.collapsible').collapsible();
   // Google map
   $('.flight-info-trigger').click(function() {
     if (!mapLoaded) {

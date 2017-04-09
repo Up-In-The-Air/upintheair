@@ -35,7 +35,8 @@ var app = new Vue({
       purpose: '',
       seat: '',
       seatNum: '',
-      comment: ''
+      flightRecordComment: '',
+      flightRecordRate: ''
     }
   },
   ready: function() {
@@ -69,8 +70,27 @@ var app = new Vue({
         error: function() { location.href = '/'; }
       });
     }
+
+    this.initRating();
   },
   methods: {
+    initRating: function() {
+      var _this = this;
+      $('#rating-flight-record').starRating({
+        starSize: 35,
+        starShape: 'rounded',
+        hoverColor: '#80cbc4',
+        starGradient: {
+          start: '#80cbc4',
+          end: '#009688'
+        },
+        disableAfterRate: false,
+        callback: function(currentRating, $el){
+          _this.flightRecordRate = currentRating;
+        }
+      });
+      // TODO: init two more ratings for airline and airport
+    },
     onFlightNumberBlur: function() {
       this.flightNumber = this.flightNumber.toUpperCase();
       var re = /^\d$/;
@@ -192,7 +212,10 @@ var app = new Vue({
           seat_num: this.seatNum,
           purpose: this.purpose,
           aircraft_iata: this.aircraft.iata,
-          airline_iata: this.airline.iata
+          airline_iata: this.airline.iata,
+          flight_record_comment: this.flightRecordComment,
+          flight_record_rate: this.flightRecordRate
+          // TODO: two more for airport and airlines
         },
         success: function(resp) {
           if (!resp || resp.status !== 'success') {
