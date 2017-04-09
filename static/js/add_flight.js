@@ -89,7 +89,7 @@ var app = new Vue({
           _this.flightRecordRate = currentRating;
         }
       });
-      // TODO: init two more ratings for airline and airport
+      // TODO: init three more ratings for airline and dep/arr airport
     },
     onFlightNumberBlur: function() {
       this.flightNumber = this.flightNumber.toUpperCase();
@@ -215,7 +215,13 @@ var app = new Vue({
           airline_iata: this.airline.iata,
           flight_record_comment: this.flightRecordComment,
           flight_record_rate: this.flightRecordRate
-          // TODO: two more for airport and airlines
+          // TODO: comments and rates for airport and airlines
+          // dep_airport_comment:
+          // dep_airport_rate:
+          // arr_airport_comment:
+          // arr_airport_rate:
+          // airline_comment:
+          // airline_rate:
         },
         success: function(resp) {
           if (!resp || resp.status !== 'success') {

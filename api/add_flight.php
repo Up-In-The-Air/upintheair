@@ -80,7 +80,8 @@
   if ($airline_iata != null) {
     $sql3 = "SELECT id FROM airline where iata = '$airline_iata'";
     $row = $conn->query($sql3)->fetch_assoc();
-    array_push($values, $row['id']);
+    $airline_id = $row['id'];
+    array_push($values, $airline_id);
   } else {
     array_push($values, 0);
   }
@@ -121,17 +122,152 @@
   $schema_str = join(", ", $schema);
   $values_str = join("', '", $values);
 
-  // add flights
+  /* add flights */
   $sql = "INSERT INTO flight_record (".$schema_str.") VALUES ('".$values_str."')";
 
   if ($conn->query($sql)) {
-    $resp = [ 'status' => 'success' ];
+    $last_id = $conn->insert_id;
   } else {
     $resp = [
       'status' => 'fail',
       'message' => 'Error: '.$conn->error
     ];
+    header('Content-Type: application/json');
+    echo json_encode($resp);
+    $conn->close();
+    die('Error: '.$conn->error);
   }
+
+  /* add flight comments */
+  $flight_record_comment = $_POST['flight_record_comment'];
+  $flight_record_rate = $_POST['flight_record_rate'];
+
+  $schema = array('user_id', 'flight_record_id');
+  $values = array($user_id, $last_id);
+
+  if (!is_null($flight_record_comment)) {
+    array_push($schema, 'content');
+    array_push($values, $flight_record_comment);
+  }
+  if (!is_null($flight_record_rate)) {
+    array_push($schema, 'rate');
+    array_push($values, $flight_record_rate);
+  }
+  if (!is_null($flight_record_comment) || !is_null($flight_record_rate)) {
+    $schema_str = join(", ", $schema);
+    $values_str = join("', '", $values);
+    $sql = "INSERT INTO flight_comments (".$schema_str.") VALUES ('".$values_str."')";
+
+    if (!$conn->query($sql)) {
+      $resp = [
+        'status' => 'fail',
+        'message' => 'Error: '.$conn->error
+      ];
+      header('Content-Type: application/json');
+      echo json_encode($resp);
+      $conn->close();
+      die('Error: '.$conn->error);
+    }
+  }
+
+  /* add departure airport comments */
+  $dep_airport_comment = $_POST['dep_airport_comment'];
+  $dep_airport_rate = $_POST['dep_airport_rate'];
+
+  $schema = array('user_id', 'flight_record_id');
+  $values = array($user_id, $dep_airport_id);
+
+  if (!is_null($dep_airport_comment)) {
+    array_push($schema, 'content');
+    array_push($values, $dep_airport_comment);
+  }
+  if (!is_null($dep_airport_rate)) {
+    array_push($schema, 'rate');
+    array_push($values, $dep_airport_rate);
+  }
+  if (!is_null($dep_airport_comment) || !is_null($dep_airport_rate)) {
+    $schema_str = join(", ", $schema);
+    $values_str = join("', '", $values);
+    $sql = "INSERT INTO airport_comments (".$schema_str.") VALUES ('".$values_str."')";
+
+    if (!$conn->query($sql)) {
+      $resp = [
+        'status' => 'fail',
+        'message' => 'Error: '.$conn->error
+      ];
+      header('Content-Type: application/json');
+      echo json_encode($resp);
+      $conn->close();
+      die('Error: '.$conn->error);
+    }
+  }
+
+  /* add arrival airport comments */
+  $arr_airport_comment = $_POST['arr_airport_comment'];
+  $arr_airport_rate = $_POST['arr_airport_rate'];
+
+  $schema = array('user_id', 'flight_record_id');
+  $values = array($user_id, $arr_airport_id);
+
+  if (!is_null($arr_airport_comment)) {
+    array_push($schema, 'content');
+    array_push($values, $arr_airport_comment);
+  }
+  if (!is_null($arr_airport_rate)) {
+    array_push($schema, 'rate');
+    array_push($values, $arr_airport_rate);
+  }
+  if (!is_null($arr_airport_comment) || !is_null($arr_airport_rate)) {
+    $schema_str = join(", ", $schema);
+    $values_str = join("', '", $values);
+    $sql = "INSERT INTO airport_comments (".$schema_str.") VALUES ('".$values_str."')";
+
+    if (!$conn->query($sql)) {
+      $resp = [
+        'status' => 'fail',
+        'message' => 'Error: '.$conn->error
+      ];
+      header('Content-Type: application/json');
+      echo json_encode($resp);
+      $conn->close();
+      die('Error: '.$conn->error);
+    }
+  }
+
+  /* add airline comments */
+  $airline_comment = $_POST['airline_comment'];
+  $airline_rate = $_POST['airline_rate'];
+
+  $schema = array('user_id', 'flight_record_id');
+  $values = array($user_id, $airline_id);
+
+  if (!is_null($airline_comment)) {
+    array_push($schema, 'content');
+    array_push($values, $airline_comment);
+  }
+  if (!is_null($airline_rate)) {
+    array_push($schema, 'rate');
+    array_push($values, $airline_rate);
+  }
+  if (!is_null($airline_comment) || !is_null($airline_rate)) {
+    $schema_str = join(", ", $schema);
+    $values_str = join("', '", $values);
+    $sql = "INSERT INTO airline_comments (".$schema_str.") VALUES ('".$values_str."')";
+
+    if (!$conn->query($sql)) {
+      $resp = [
+        'status' => 'fail',
+        'message' => 'Error: '.$conn->error
+      ];
+      header('Content-Type: application/json');
+      echo json_encode($resp);
+      $conn->close();
+      die('Error: '.$conn->error);
+    }
+  }
+
+  $resp = [ 'status' => 'success' ];
+
   header('Content-Type: application/json');
   echo json_encode($resp);
   $conn->close();
