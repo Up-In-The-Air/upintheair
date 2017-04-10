@@ -114,52 +114,53 @@ var app = new Vue({
           if (resp.response && resp.response[0]) {
             _this.depAirport.iata = resp.response[0].departure;
             _this.arrAirport.iata = resp.response[0].arrival;
-            _this.getAirpotDetail(_this.depAirport);
-            _this.getAirpotDetail(_this.arrAirport);
-
-            // Draw route on map
-            if (window.depMarker) { depMarker.setMap(null); }
-            if (window.arrMarker) { arrMarker.setMap(null); }
-            if (window.flightRoute) { flightRoute.setMap(null); }
-            geocoder.geocode( { 'address': resp.response[0].departure }, function(results, status) {
-              if (status === 'OK') {
-                depMarker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location,
-                    animation: google.maps.Animation.DROP
-                });
-                geocoder.geocode( { 'address': resp.response[0].arrival }, function(results, status) {
+            _this.getAirpotDetail(_this.depAirport, function() {
+              _this.getAirpotDetail(_this.arrAirport, function() {
+                // Draw route on map
+                if (window.depMarker) { depMarker.setMap(null); }
+                if (window.arrMarker) { arrMarker.setMap(null); }
+                if (window.flightRoute) { flightRoute.setMap(null); }
+                geocoder.geocode( { 'address': _this.depAirport.name }, function(results, status) {
                   if (status === 'OK') {
-                    arrMarker = new google.maps.Marker({
+                    depMarker = new google.maps.Marker({
                         map: map,
                         position: results[0].geometry.location,
                         animation: google.maps.Animation.DROP
                     });
-                    var latlngbounds = new google.maps.LatLngBounds();
-                    var depPosition = depMarker.getPosition();
-                    var arrPosition = arrMarker.getPosition();
+                    geocoder.geocode( { 'address': _this.arrAirport.name }, function(results, status) {
+                      if (status === 'OK') {
+                        arrMarker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            animation: google.maps.Animation.DROP
+                        });
+                        var latlngbounds = new google.maps.LatLngBounds();
+                        var depPosition = depMarker.getPosition();
+                        var arrPosition = arrMarker.getPosition();
 
-                    latlngbounds.extend(depPosition);
-                    latlngbounds.extend(arrPosition);
-                    map.fitBounds(latlngbounds);
-                    flightRoute = new google.maps.Polyline({
-                      path: [depPosition, arrPosition],
-                      strokeColor: "#009688",
-                      strokeOpacity: 1.0,
-                      strokeWeight: 3,
-                      geodesic: true,
-                      map: map
+                        latlngbounds.extend(depPosition);
+                        latlngbounds.extend(arrPosition);
+                        map.fitBounds(latlngbounds);
+                        flightRoute = new google.maps.Polyline({
+                          path: [depPosition, arrPosition],
+                          strokeColor: "#009688",
+                          strokeOpacity: 1.0,
+                          strokeWeight: 3,
+                          geodesic: true,
+                          map: map
+                        });
+
+                        app.$set(
+                          'distance', google.maps.geometry.spherical.computeDistanceBetween(
+                            depPosition,
+                            arrPosition
+                          )
+                        );
+                      }
                     });
-
-                    app.$set(
-                      'distance', google.maps.geometry.spherical.computeDistanceBetween(
-                        depPosition,
-                        arrPosition
-                      )
-                    );
                   }
                 });
-              }
+              });
             });
           }
         }
@@ -195,34 +196,40 @@ var app = new Vue({
         return;
       }
 
+      var upstreamData = {
+        user_id: this.user.id,
+        date: this.date,
+        dep_airport_iata: this.depAirport.iata,
+        arr_airport_iata: this.arrAirport.iata,
+        distance: this.distance,
+        flight_number: this.flightNumber,
+        dep_time: this.depTime,
+        arr_time: this.arrTime,
+        class: this.class,
+        seat: this.seat,
+        seat_num: this.seatNum,
+        purpose: this.purpose,
+        aircraft_iata: this.aircraft.iata,
+        airline_iata: this.airline.iata,
+      };
+      if (this.flightRecordComment) {
+        upstreamData.flight_record_comment = this.flightRecordComment;
+      }
+      if (this.flightRecordRate) {
+        upstreamData.flight_record_rate = this.flightRecordRate;
+      }
+      // TODO: comments and rates for airport and airlines
+      // dep_airport_comment:
+      // dep_airport_rate:
+      // arr_airport_comment:
+      // arr_airport_rate:
+      // airline_comment:
+      // airline_rate:
+
       $.ajax({
         method: 'POST',
         url: 'api/add_flight.php',
-        data: {
-          user_id: this.user.id,
-          date: this.date,
-          dep_airport_iata: this.depAirport.iata,
-          arr_airport_iata: this.arrAirport.iata,
-          distance: this.distance,
-          flight_number: this.flightNumber,
-          dep_time: this.depTime,
-          arr_time: this.arrTime,
-          class: this.class,
-          seat: this.seat,
-          seat_num: this.seatNum,
-          purpose: this.purpose,
-          aircraft_iata: this.aircraft.iata,
-          airline_iata: this.airline.iata,
-          flight_record_comment: this.flightRecordComment,
-          flight_record_rate: this.flightRecordRate
-          // TODO: comments and rates for airport and airlines
-          // dep_airport_comment:
-          // dep_airport_rate:
-          // arr_airport_comment:
-          // arr_airport_rate:
-          // airline_comment:
-          // airline_rate:
-        },
+        data: upstreamData,
         success: function(resp) {
           if (!resp || resp.status !== 'success') {
             Materialize.toast(resp.message, 4000);
@@ -234,7 +241,7 @@ var app = new Vue({
         }
       });
     },
-    getAirpotDetail: function(airport) {
+    getAirpotDetail: function(airport, callback) {
       var _this = this;
       $.ajax({
         method: 'GET',
@@ -248,6 +255,9 @@ var app = new Vue({
           Vue.nextTick(function() {
             Materialize.updateTextFields();
           });
+          if (callback) {
+            callback();
+          }
         }
       });
     },

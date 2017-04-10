@@ -26,13 +26,7 @@
   $row = $result->fetch_assoc();
   $resp = [
     'status' => 'success',
-    'data' => [
-      'id' => $row['id'],
-      'name' => $row['name'],
-      'city' => $row['city'],
-      'country' => $row['country'],
-      'iata' => $row['iata']
-    ]
+    'data' => $row
   ];
 
   $conn->close();

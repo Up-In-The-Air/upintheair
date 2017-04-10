@@ -171,11 +171,11 @@ var app = new Vue({
           }, 50);
           var totalDistance = (resp.data.total_distance * 0.000621371192).toFixed(0);
           var increaseDistanceJob = setInterval(function() {
-            if (_this.totalDistance > parseInt(totalDistance) - 13) {
+            if (_this.totalDistance > parseInt(totalDistance) - 131) {
               _this.totalDistance = totalDistance;
               clearInterval(increaseDistanceJob);
             } else {
-              _this.totalDistance += 13;
+              _this.totalDistance += 131;
             }
           }, 1);
         }
