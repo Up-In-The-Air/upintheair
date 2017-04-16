@@ -36,7 +36,13 @@ var app = new Vue({
       seat: '',
       seatNum: '',
       flightRecordComment: '',
-      flightRecordRate: ''
+      flightRecordRate: '',
+      airlineComment: '',
+      airlineRate: '',
+      depAirportComment: '',
+      depAirportRate: '',
+      arrAirportComment: '',
+      arrAirportRate: ''
     }
   },
   ready: function() {
@@ -90,7 +96,47 @@ var app = new Vue({
         }
       });
       // TODO: init three more ratings for airline and dep/arr airport
+      $('#rating-airline').starRating({
+        starSize: 35,
+        starShape: 'rounded',
+        hoverColor: '#80cbc4',
+        starGradient: {
+          start: '#80cbc4',
+          end: '#009688'
+        },
+        disableAfterRate: false,
+        callback: function(currentRating, $el){
+          _this.airlineRate = currentRating;
+        }
+      });
+      $('#rating-dep-airport').starRating({
+        starSize: 35,
+        starShape: 'rounded',
+        hoverColor: '#80cbc4',
+        starGradient: {
+          start: '#80cbc4',
+          end: '#009688'
+        },
+        disableAfterRate: false,
+        callback: function(currentRating, $el){
+          _this.depAirportRate = currentRating;
+        }
+      });
+      $('#rating-arr-airport').starRating({
+        starSize: 35,
+        starShape: 'rounded',
+        hoverColor: '#80cbc4',
+        starGradient: {
+          start: '#80cbc4',
+          end: '#009688'
+        },
+        disableAfterRate: false,
+        callback: function(currentRating, $el){
+          _this.arrAirportRate = currentRating;
+        }
+      });
     },
+
     onFlightNumberBlur: function() {
       this.flightNumber = this.flightNumber.toUpperCase();
       var re = /^\d$/;
@@ -217,6 +263,24 @@ var app = new Vue({
       }
       if (this.flightRecordRate) {
         upstreamData.flight_record_rate = this.flightRecordRate;
+      }
+      if (this.airlineComment) {
+        upstreamData.airline_comment = this.airlineComment;
+      }
+      if (this.arlineRate) {
+        upstreamData.airline_rate = this.airlineRate;
+      }
+      if (this.depAirportComment) {
+        upstreamData.dep_airport_comment = this.depAirportComment;
+      }
+      if (this.depAirportRate) {
+        upstreamData.dep_airport_rate = this.depAirportRate;
+      }
+      if (this.arrAirportComment) {
+        upstreamData.arr_airport_comment = this.arrAirportComment;
+      }
+      if (this.arrAirportRate) {
+        upstreamData.arr_airport_rate = this.arrAirportRate;
       }
       // TODO: comments and rates for airport and airlines
       // dep_airport_comment:
