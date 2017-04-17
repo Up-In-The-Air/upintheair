@@ -63,7 +63,7 @@
                 <label for="arr_airport">Arrival Airport</label>
               </div>
               <div class="input-field col s2">
-                <a class="waves-effect waves-light btn">Search</a>
+                <a class="waves-effect waves-light btn" @click="onFlightRouteSearch">Search</a>
               </div>
             </div>
             <div class="row description-row">
@@ -75,7 +75,17 @@
               <span class="places">{{arrAirport.city}}</span>
             </div>
             <div class="row">
-              Comments
+              <ul class="collection">
+                <li v-for="comment in flightRouteComments" class="collection-item">
+                  <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
+                  <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
+                  <div class="title">{{comment.rate}}</div>
+                  <div class="comment-content">
+                    {{comment.content}}
+                  </div>
+                  <span>{{comment.create_time}}</span>
+                </li>
+              </ul>
             </div>
           </div>
           <div id="tab-airline" class="col s12">
@@ -86,20 +96,46 @@
                 <label for="airline">Airline</label>
               </div>
               <div class="input-field col s2">
-                <a class="waves-effect waves-light btn">Search</a>
+                <a class="waves-effect waves-light btn" @click="onAirlineSearch">Search</a>
               </div>
             </div>
-          </div>
-          <div id="tab-airport" class="col offset-s2 s12">
             <div class="row">
-              <div class="input-field col s6">
+              <ul class="collection">
+                <li v-for="comment in airlineComments" class="collection-item">
+                  <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
+                  <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
+                  <div class="title">{{comment.rate}}</div>
+                  <div class="comment-content">
+                    {{comment.content}}
+                  </div>
+                  <span>{{comment.create_time}}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div id="tab-airport" class="col s12">
+            <div class="row">
+              <div class="input-field col offset-s2 s6">
                 <i class="material-icons prefix">flight</i>
                 <input id="aircraft" type="text" class="airport-autocomplete" v-model="airport.name">
                 <label for="aircraft">Airport</label>
               </div>
               <div class="input-field col s2">
-                <a class="waves-effect waves-light btn">Search</a>
+                <a class="waves-effect waves-light btn" @click="onAirportSearch">Search</a>
               </div>
+            </div>
+            <div class="row">
+              <ul class="collection">
+                <li v-for="comment in airportComments" class="collection-item">
+                  <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
+                  <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
+                  <div class="title">{{comment.rate}}</div>
+                  <div class="comment-content">
+                    {{comment.content}}
+                  </div>
+                  <span>{{comment.create_time}}</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

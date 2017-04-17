@@ -26,7 +26,13 @@ var app = new Vue({
         name: '',
         city: '',
         iata: ''
-      }
+      },
+      flightRouteComments: [],
+      averageFlightRouteRate: 0,
+      airlineComments: [],
+      averageAirlineRate: 0,
+      airportComments: [],
+      averageAirportRate: 0
     }
   },
   ready: function() {
@@ -106,6 +112,69 @@ var app = new Vue({
         }
       });
     },
+    onFlightRouteSearch: function() {
+      if (!this.depAirport.iata || !this.arrAirport.iata) {
+        Materialize.toast('Please provide departure or arrival airport', 4000);
+        return;
+      }
+      var _this = this;
+      $.ajax({
+        method: 'GET',
+        url: 'api/explore_routes.php',
+        data: {
+          dep_airport_iata: this.depAirport.iata,
+          arr_airport_iata: this.arrAirport.iata
+        },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          _this.flightRouteComments = resp.data.comments;
+          _this.averageFlightRouteRate = resp.data.average_rate;
+        }
+      });
+    },
+    onAirlineSearch: function() {
+      if (!this.airline.iata) {
+        Materialize.toast('Please provide airline', 4000);
+        return;
+      }
+      var _this = this;
+      $.ajax({
+        method: 'GET',
+        url: 'api/explore_airlines.php',
+        data: { airline_iata: this.airline.iata },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          _this.airlineComments = resp.data.comments;
+          _this.averageAirlineRate = resp.data.average_rate;
+        }
+      });
+    },
+    onAirportSearch: function() {
+      if (!this.airport.iata) {
+        Materialize.toast('Please provide airport', 4000);
+        return;
+      }
+      var _this = this;
+      $.ajax({
+        method: 'GET',
+        url: 'api/explore_airports.php',
+        data: { airport_iata: this.airport.iata },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          _this.airportComments = resp.data.comments;
+          _this.averageAirportRate = resp.data.average_rate;
+        }
+      });
+    },
     onLogoutClick: function() {
       $.ajax({
         method: 'POST',
@@ -149,6 +218,16 @@ var app = new Vue({
         this.getAirpotDetail(this.arrAirport);
       } else {
         this.airportAutocomplete(newVal, 'input.arr-airport-autocomplete');
+      }
+    },
+    'airline.name': function(newVal) {
+      if (!newVal) {
+        this.airline.iata = '';
+      } else if (newVal.includes(' / ')) {
+        var iata = newVal.split(' / ')[0];
+        var name = newVal.split(' / ')[1];
+        this.airline.iata = iata;
+        this.airline.name = name;
       }
     },
     'airport.name': function(newVal) {

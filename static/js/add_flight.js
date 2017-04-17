@@ -95,7 +95,6 @@ var app = new Vue({
           _this.flightRecordRate = currentRating;
         }
       });
-      // TODO: init three more ratings for airline and dep/arr airport
       $('#rating-airline').starRating({
         starSize: 35,
         starShape: 'rounded',
@@ -282,13 +281,6 @@ var app = new Vue({
       if (this.arrAirportRate) {
         upstreamData.arr_airport_rate = this.arrAirportRate;
       }
-      // TODO: comments and rates for airport and airlines
-      // dep_airport_comment:
-      // dep_airport_rate:
-      // arr_airport_comment:
-      // arr_airport_rate:
-      // airline_comment:
-      // airline_rate:
 
       $.ajax({
         method: 'POST',

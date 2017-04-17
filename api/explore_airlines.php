@@ -8,13 +8,25 @@
   if ($conn->connect_error) {
     die('Connection failed: ' . $conn->connect_error);
   }
-  $airline_iata = $_POST['airline_iata'];
-  
-  $sql = "SELECT user_id, rate, content FROM airline_comments WHERE airline_id = (SELECT id FROM airline WHERE iata = '$airline_iata')";
 
-  $sql_avg = "SELECT AVG(rate) FROM airline_comments WHERE airline_id = (SELECT id FROM airline WHERE iata = '$airline_iata') GROUP BY airline_id";
+  $airline_iata = $_GET['airline_iata'];
 
-  $result_avg = $conn->query($sql_avg);
+  if (!$airline_iata) {
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Missing required fields'
+    ];
+    header('Content-Type: application/json');
+    echo json_encode($resp);
+    exit();
+  }
+
+  // Get comments
+  $sql = "SELECT airline_comments.create_timestamp AS create_time, airline_comments.content AS content, airline_comments.rate AS rate, user.first_name AS first_name, user.last_name AS last_name "
+        ."FROM airline_comments, user "
+        ."WHERE airline_comments.airline_id = (SELECT airline.id FROM airline WHERE iata = '$airline_iata') "
+        ."AND user.id = airline_comments.user_id";
+
   $result = $conn->query($sql);
   // check if existed
   if ($result -> num_rows == 0) {
@@ -35,13 +47,33 @@
   } else {
     $resp = [
       'status' => 'success',
-      'data' => [],
-      'avg' => $result_avg -> fetch_assoc()
+      'data' => [
+        'comments' => []
+      ]
     ];
     while ($row = $result->fetch_assoc()) {
-      array_push($resp['data'], $row);
+      array_push($resp['data']['comments'], $row);
     }
   }
+
+  // Get average rate
+  $sql_avg = "SELECT AVG(airline_comments.rate) AS average_rate "
+            ."FROM airline_comments, user "
+            ."WHERE airline_comments.airline_id = (SELECT airline.id FROM airline WHERE iata = '$airline_iata') "
+            ."AND user.id = airline_comments.user_id";
+
+  $result_avg = $conn->query($sql_avg);
+
+  if (!$result_avg) {
+    $resp = [
+      'status' => 'fail',
+      'message' => 'Error: '.$conn->error
+    ];
+  } else {
+    $row = $result_avg->fetch_assoc();
+    $resp['data']['average_rate'] = $row['average_rate'];
+  }
+  
   header('Content-Type: application/json');
   echo json_encode($resp);
   $conn->close();
