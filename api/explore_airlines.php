@@ -28,16 +28,6 @@
         ."AND user.id = airline_comments.user_id";
 
   $result = $conn->query($sql);
-  // check if existed
-  if ($result -> num_rows == 0) {
-    $resp = [
-      'status' => 'fail',
-      'message' => 'Airline does not exist'
-    ];
-    header('Content-Type: application/json');
-    echo json_encode($resp);
-    exit();
-  }
 
   if (!$result) {
     $resp = [
@@ -73,7 +63,7 @@
     $row = $result_avg->fetch_assoc();
     $resp['data']['average_rate'] = $row['average_rate'];
   }
-  
+
   header('Content-Type: application/json');
   echo json_encode($resp);
   $conn->close();

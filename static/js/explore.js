@@ -8,6 +8,7 @@ var app = new Vue({
   data: function() {
     return {
       user: {},
+      flightNumber: '',
       depAirport: {
         name: '',
         city: '',
@@ -27,6 +28,8 @@ var app = new Vue({
         city: '',
         iata: ''
       },
+      flightComments: [],
+      averageFlightRate: 0,
       flightRouteComments: [],
       averageFlightRouteRate: 0,
       airlineComments: [],
@@ -112,6 +115,26 @@ var app = new Vue({
         }
       });
     },
+    onFlightSearch: function() {
+      if (!this.flightNumber) {
+        Materialize.toast('Please provide flight number', 4000);
+        return;
+      }
+      var _this = this;
+      $.ajax({
+        method: 'GET',
+        url: 'api/explore_flights.php',
+        data: { flight_number: this.flightNumber.toUpperCase() },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          _this.flightComments = resp.data.comments;
+          _this.averageFlightRate = parseFloat(resp.data.average_rate);
+        }
+      });
+    },
     onFlightRouteSearch: function() {
       if (!this.depAirport.iata || !this.arrAirport.iata) {
         Materialize.toast('Please provide departure or arrival airport', 4000);
@@ -131,7 +154,7 @@ var app = new Vue({
             return;
           }
           _this.flightRouteComments = resp.data.comments;
-          _this.averageFlightRouteRate = resp.data.average_rate;
+          _this.averageFlightRouteRate = parseFloat(resp.data.average_rate);
         }
       });
     },
@@ -151,7 +174,7 @@ var app = new Vue({
             return;
           }
           _this.airlineComments = resp.data.comments;
-          _this.averageAirlineRate = resp.data.average_rate;
+          _this.averageAirlineRate = parseFloat(resp.data.average_rate);
         }
       });
     },
@@ -171,7 +194,7 @@ var app = new Vue({
             return;
           }
           _this.airportComments = resp.data.comments;
-          _this.averageAirportRate = resp.data.average_rate;
+          _this.averageAirportRate = parseFloat(resp.data.average_rate);
         }
       });
     },
@@ -192,7 +215,13 @@ var app = new Vue({
     }
   },
   watch: {
+    flightNumber: function(newVal) {
+      this.flightComments = [];
+      this.averageFlightRate = 0;
+    },
     'depAirport.name': function(newVal) {
+      this.flightRouteComments = [];
+      this.averageFlightRouteRate = 0;
       if (!newVal) {
         this.depAirport.iata = '';
         this.depAirport.city = '';
@@ -207,6 +236,8 @@ var app = new Vue({
       }
     },
     'arrAirport.name': function(newVal) {
+      this.flightRouteComments = [];
+      this.averageFlightRouteRate = 0;
       if (!newVal) {
         this.arrAirport.iata = '';
         this.arrAirport.city = '';
@@ -221,6 +252,8 @@ var app = new Vue({
       }
     },
     'airline.name': function(newVal) {
+      this.airlineComments = [];
+      this.averageAirlineRate = 0;
       if (!newVal) {
         this.airline.iata = '';
       } else if (newVal.includes(' / ')) {
@@ -231,6 +264,8 @@ var app = new Vue({
       }
     },
     'airport.name': function(newVal) {
+      this.airportComments = [];
+      this.averageAirportRate = 0;
       if (!newVal) {
         this.airport.iata = '';
         this.airport.city = '';

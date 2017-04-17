@@ -32,16 +32,6 @@
         ."AND flight_record.id = flight_comments.flight_record_id";
 
   $result = $conn->query($sql);
-  // check if existed
-  if ($result -> num_rows == 0) {
-    $resp = [
-      'status' => 'fail',
-      'message' => 'Airline does not exist'
-    ];
-    header('Content-Type: application/json');
-    echo json_encode($resp);
-    exit();
-  }
 
   if (!$result) {
     $resp = [
