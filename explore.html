@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Explore - Up in the Air</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/common.css" type="text/css" rel="stylesheet" />
+  <!-- <link href="static/css/explore.css" type="text/css" rel="stylesheet" /> -->
+</head>
+<body id="app">
+  <div class="navbar-fixed">
+    <nav class="grey lighten-5" role="navigation">
+      <div class="nav-wrapper container">
+        <a id="logo-container" href="/" class="brand-logo"><img src="static/images/logo_color.png" /></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li><a href="/chat.html">Chat</a></li>
+          <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+        </ul>
+
+        <ul id="nav-mobile" class="side-nav">
+          <li><a href="javascript:void(0)">{{user.firstName}}</a></li>
+          <li><a href="/chat.html">Chat</a></li>
+          <li><a href="javascript:void(0)" @click="onLogoutClick">Log out</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="row content">
+    <div class="col s12 m2">
+      <div class="collection">
+        <a href="profile.html" class="collection-item">Profile</a>
+        <a href="add_flight.html" class="collection-item">Add Flights</a>
+        <a href="my_flights.html" class="collection-item">My Flights</a>
+        <a href="explore.html" class="collection-item active">Explore</a>
+      </div>
+    </div>
+
+    <div class="col s12 m10">
+      <div class="right-pane">
+        <div class="row">
+          <div class="col s12">
+            <ul class="tabs">
+              <li class="tab col s3"><a class="active" href="#tab-flight">FlIGHT ROUTES</a></li>
+              <li class="tab col s3"><a href="#tab-airline">AIRLINES</a></li>
+              <li class="tab col s3"><a href="#tab-airport">AIRPORTS</a></li>
+            </ul>
+          </div>
+          <div id="tab-flight" class="col s12">
+            <div class="row">
+              <div class="input-field col s5">
+                <i class="material-icons prefix">flight_takeoff</i>
+                <input id="dep_airport" type="text" class="dep-airport-autocomplete" v-model="depAirport.name">
+                <label for="dep_airport">Departure Airport</label>
+              </div>
+              <div class="input-field col s5">
+                <i class="material-icons prefix">flight_land</i>
+                <input id="arr_airport" type="text" class="arr-airport-autocomplete" v-model="arrAirport.name">
+                <label for="arr_airport">Arrival Airport</label>
+              </div>
+              <div class="input-field col s2">
+                <a class="waves-effect waves-light btn">Search</a>
+              </div>
+            </div>
+            <div class="row description-row">
+              Flight comments and rates from
+              <span class="iata">{{depAirport.iata}}</span>
+              <span class="places">{{depAirport.city}}</span>
+              to
+              <span class="iata">{{arrAirport.iata}}</span>
+              <span class="places">{{arrAirport.city}}</span>
+            </div>
+            <div class="row">
+              Comments
+            </div>
+          </div>
+          <div id="tab-airline" class="col s12">
+            <div class="row">
+              <div class="input-field col offset-s2 s6">
+                <i class="material-icons prefix">flight</i>
+                <input id="airline" type="text" class="airline-autocomplete" v-model="airline.name">
+                <label for="airline">Airline</label>
+              </div>
+              <div class="input-field col s2">
+                <a class="waves-effect waves-light btn">Search</a>
+              </div>
+            </div>
+          </div>
+          <div id="tab-airport" class="col offset-s2 s12">
+            <div class="row">
+              <div class="input-field col s6">
+                <i class="material-icons prefix">flight</i>
+                <input id="aircraft" type="text" class="airport-autocomplete" v-model="airport.name">
+                <label for="aircraft">Airport</label>
+              </div>
+              <div class="input-field col s2">
+                <a class="waves-effect waves-light btn">Search</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer teal">
+    <div class="footer-copyright">
+      <div class="container center-align">
+      © 2017 Up in the Air
+      </div>
+    </div>
+  </footer>
+
+  <script src="static/js/lib/vue.min.js"></script>
+  <script src="static/js/lib/jquery.min.js"></script>
+  <script src="static/js/lib/materialize.min.js"></script>
+  <script src="static/js/lib/echarts.common.min.js"></script>
+  <script src="static/js/explore.jq.js"></script>
+  <script src="static/js/explore.js"></script>
+</body>
+</html>
