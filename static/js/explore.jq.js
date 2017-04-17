@@ -17,4 +17,10 @@ $(document).ready(function() {
       }
     }
   });
+  // rating
+  $('.rating-div').starRating({
+    starSize: 25,
+    starShape: 'rounded',
+    readOnly: true
+  });
 });

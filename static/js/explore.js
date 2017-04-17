@@ -132,6 +132,11 @@ var app = new Vue({
           }
           _this.flightComments = resp.data.comments;
           _this.averageFlightRate = parseFloat(resp.data.average_rate);
+          $('#rating-flight').starRating(
+            'setRating',
+            _this.averageFlightRate,
+            true
+          );
         }
       });
     },
@@ -155,6 +160,11 @@ var app = new Vue({
           }
           _this.flightRouteComments = resp.data.comments;
           _this.averageFlightRouteRate = parseFloat(resp.data.average_rate);
+          $('#rating-flight-route').starRating(
+            'setRating',
+            _this.averageFlightRouteRate,
+            true
+          );
         }
       });
     },
@@ -175,6 +185,11 @@ var app = new Vue({
           }
           _this.airlineComments = resp.data.comments;
           _this.averageAirlineRate = parseFloat(resp.data.average_rate);
+          $('#rating-airline').starRating(
+            'setRating',
+            _this.averageAirlineRate,
+            true
+          );
         }
       });
     },
@@ -195,6 +210,11 @@ var app = new Vue({
           }
           _this.airportComments = resp.data.comments;
           _this.averageAirportRate = parseFloat(resp.data.average_rate);
+          $('#rating-airport').starRating(
+            'setRating',
+            _this.averageAirportRate,
+            true
+          );
         }
       });
     },

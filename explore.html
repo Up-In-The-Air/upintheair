@@ -6,8 +6,9 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="static/css/lib/materialize.min.css" type="text/css" rel="stylesheet" />
+  <link href="static/css/lib/rating.css" type="text/css" rel="stylesheet" />
   <link href="static/css/common.css" type="text/css" rel="stylesheet" />
-  <!-- <link href="static/css/explore.css" type="text/css" rel="stylesheet" /> -->
+  <link href="static/css/explore.css" type="text/css" rel="stylesheet" />
 </head>
 <body id="app">
   <div class="navbar-fixed">
@@ -52,7 +53,7 @@
             </ul>
           </div>
           <div id="tab-flight" class="col s12">
-            <div class="row">
+            <div class="row no-autocomplete-search-row">
               <div class="input-field col offset-s2 s6">
                 <i class="material-icons prefix">flight</i>
                 <input id="flight" type="text" class="flight-autocomplete" v-model="flightNumber">
@@ -62,31 +63,36 @@
                 <a class="waves-effect waves-light btn" @click="onFlightSearch">Search</a>
               </div>
             </div>
-            <div v-if="flightComments.length > 0" class="row description-row">
+            <div v-show="flightComments.length > 0" class="row description-row">
               <div class="info-block">
                 Flight:&nbsp;
-                <span class="flight-number">{{flightNumber.toUpperCase()}}</span>
+                <span class="title teal-text">{{flightNumber.toUpperCase()}}</span>
               </div>
               <div class="rate-block">
-                <span class="rate">{{averageFlightRate}}</span>
+                <div id="rating-flight" class="rating-div"></div>
+                <span class="rate red-text text-lighten-1">{{averageFlightRate.toFixed(1)}}</span>
               </div>
             </div>
-            <div v-if="flightComments.length > 0" class="row">
-              <ul class="collection">
+            <div v-show="flightComments.length > 0" class="row">
+              <ul class="collection comment-list">
                 <li v-for="comment in flightComments" class="collection-item">
-                  <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
-                  <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
-                  <div class="title">{{comment.rate}}</div>
-                  <div class="comment-content">
+                  <div class="avatar-name-rate-block">
+                    <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
+                    <div class="name-rate">
+                      <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
+                      <div v-if="comment.rating" class="title">Rating:&nbsp;{{comment.rate}}</div>
+                    </div>
+                  </div>
+                  <div v-if="comment.content" class="comment-content">
                     {{comment.content}}
                   </div>
-                  <span>{{comment.create_time}}</span>
+                  <span class="comment-time grey-text">{{comment.create_time}}</span>
                 </li>
               </ul>
             </div>
           </div>
           <div id="tab-route" class="col s12">
-            <div class="row">
+            <div class="row search-row">
               <div class="input-field col s5">
                 <i class="material-icons prefix">flight_takeoff</i>
                 <input id="dep_airport" type="text" class="dep-airport-autocomplete" v-model="depAirport.name">
@@ -101,34 +107,40 @@
                 <a class="waves-effect waves-light btn" @click="onFlightRouteSearch">Search</a>
               </div>
             </div>
-            <div v-if="flightRouteComments.length > 0" class="row description-row">
+            <div v-show="flightRouteComments.length > 0" class="row description-row">
               <div class="info-block">
-                <span class="iata">{{depAirport.iata}}</span>
-                <span class="places">{{depAirport.city}}</span>
+                Route:&nbsp;
+                <span class="title teal-text">{{depAirport.iata}}</span>
+                <span class="places text-grey">({{depAirport.city}})</span>
                 <i class="material-icons prefix">arrow_forward</i>
-                <span class="iata">{{arrAirport.iata}}</span>
-                <span class="places">{{arrAirport.city}}</span>
+                <span class="title teal-text">{{arrAirport.iata}}</span>
+                <span class="places text-grey">({{arrAirport.city}})</span>
               </div>
               <div class="rate-block">
-                <span class="rate">{{averageFlightRouteRate}}</span>
+                <div id="rating-flight-route" class="rating-div"></div>
+                <span class="rate red-text text-lighten-1">{{averageFlightRouteRate.toFixed(1)}}</span>
               </div>
             </div>
-            <div v-if="flightRouteComments.length > 0" class="row">
-              <ul class="collection">
+            <div v-show="flightRouteComments.length > 0" class="row">
+              <ul class="collection comment-list">
                 <li v-for="comment in flightRouteComments" class="collection-item">
-                  <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
-                  <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
-                  <div class="title">{{comment.rate}}</div>
-                  <div class="comment-content">
+                  <div class="avatar-name-rate-block">
+                    <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
+                    <div class="name-rate">
+                      <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
+                      <div v-if="comment.rating" class="title">Rating:&nbsp;{{comment.rate}}</div>
+                    </div>
+                  </div>
+                  <div v-if="comment.content" class="comment-content">
                     {{comment.content}}
                   </div>
-                  <span>{{comment.create_time}}</span>
+                  <span class="comment-time grey-text">{{comment.create_time}}</span>
                 </li>
               </ul>
             </div>
           </div>
           <div id="tab-airline" class="col s12">
-            <div class="row">
+            <div class="row search-row">
               <div class="input-field col offset-s2 s6">
                 <i class="material-icons prefix">flight</i>
                 <input id="airline" type="text" class="airline-autocomplete" v-model="airline.name">
@@ -138,31 +150,36 @@
                 <a class="waves-effect waves-light btn" @click="onAirlineSearch">Search</a>
               </div>
             </div>
-            <div v-if="airlineComments.length > 0" class="row description-row">
+            <div v-show="airlineComments.length > 0" class="row description-row">
               <div class="info-block">
                 Airline:&nbsp;
-                <span class="flight-number">{{airline.name}}</span>
+                <span class="title teal-text">{{airline.name}}</span>
               </div>
               <div class="rate-block">
-                <span class="rate">{{averageAirlineRate}}</span>
+                <div id="rating-airline" class="rating-div"></div>
+                <span class="rate red-text text-lighten-1">{{averageAirlineRate.toFixed(1)}}</span>
               </div>
             </div>
-            <div v-if="airlineComments.length > 0" class="row">
-              <ul class="collection">
+            <div v-show="airlineComments.length > 0" class="row">
+              <ul class="collection comment-list">
                 <li v-for="comment in airlineComments" class="collection-item">
-                  <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
-                  <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
-                  <div class="title">{{comment.rate}}</div>
-                  <div class="comment-content">
+                  <div class="avatar-name-rate-block">
+                    <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
+                    <div class="name-rate">
+                      <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
+                      <div v-if="comment.rating" class="title">Rating:&nbsp;{{comment.rate}}</div>
+                    </div>
+                  </div>
+                  <div v-if="comment.content" class="comment-content">
                     {{comment.content}}
                   </div>
-                  <span>{{comment.create_time}}</span>
+                  <span class="comment-time grey-text">{{comment.create_time}}</span>
                 </li>
               </ul>
             </div>
           </div>
           <div id="tab-airport" class="col s12">
-            <div class="row">
+            <div class="row search-row">
               <div class="input-field col offset-s2 s6">
                 <i class="material-icons prefix">flight</i>
                 <input id="airport" type="text" class="airport-autocomplete" v-model="airport.name">
@@ -172,26 +189,30 @@
                 <a class="waves-effect waves-light btn" @click="onAirportSearch">Search</a>
               </div>
             </div>
-            <div v-if="airportComments.length > 0" class="row description-row">
+            <div v-show="airportComments.length > 0" class="row description-row">
               <div class="info-block">
                 Airport:&nbsp;
-                <span class="flight-number">{{airport.name}}</span>
-                <span class="iata">{{airport.iata}}</span>
+                <span class="title teal-text">{{airport.iata}}</span>
               </div>
               <div class="rate-block">
-                <span class="rate">{{averageAirportRate}}</span>
+                <div id="rating-airport" class="rating-div"></div>
+                <span class="rate red-text text-lighten-1">{{averageAirportRate.toFixed(1)}}</span>
               </div>
             </div>
-            <div v-if="airportComments.length > 0" class="row">
-              <ul class="collection">
+            <div v-show="airportComments.length > 0" class="row">
+              <ul class="collection comment-list">
                 <li v-for="comment in airportComments" class="collection-item">
-                  <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
-                  <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
-                  <div class="title">{{comment.rate}}</div>
-                  <div class="comment-content">
+                  <div class="avatar-name-rate-block">
+                    <div class="abbrv-avatar">{{(comment.first_name[0]+comment.last_name[0]).toUpperCase()}}</div>
+                    <div class="name-rate">
+                      <div class="contact-name">{{comment.first_name}}&nbsp;{{comment.last_name}}</div>
+                      <div v-if="comment.rating" class="title">Rating:&nbsp;{{comment.rate}}</div>
+                    </div>
+                  </div>
+                  <div v-if="comment.content" class="comment-content">
                     {{comment.content}}
                   </div>
-                  <span>{{comment.create_time}}</span>
+                  <span class="comment-time grey-text">{{comment.create_time}}</span>
                 </li>
               </ul>
             </div>
@@ -213,6 +234,7 @@
   <script src="static/js/lib/jquery.min.js"></script>
   <script src="static/js/lib/materialize.min.js"></script>
   <script src="static/js/lib/echarts.common.min.js"></script>
+  <script src="static/js/lib/rating.min.js"></script>
   <script src="static/js/explore.jq.js"></script>
   <script src="static/js/explore.js"></script>
 </body>
