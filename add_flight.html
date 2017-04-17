@@ -243,7 +243,7 @@
             <div class="row">
               <ul class="collapsible popout" data-collapsible="accordion">
                 <li>
-                  <div class="collapsible-header active">Flight:&nbsp;{{depAirport.city}}&nbsp;-&nbsp;{{arrAirport.city}}</div>
+                  <div v-if="flightNumber!=''" class="collapsible-header active">Flight:&nbsp;{{depAirport.city}}&nbsp;-&nbsp;{{arrAirport.city}}</div>
                   <div class="collapsible-body">
                     <div class="input-field col s12 textarea-input">
                       <i class="material-icons prefix">comment</i>
@@ -257,7 +257,7 @@
                   </div>
                 </li>
                 <li>
-                  <div class="collapsible-header active">Departure Airport:&nbsp;{{depAirport.name}}</div>
+                  <div v-if="depAirport.name!=''" class="collapsible-header active">Departure Airport:&nbsp;{{depAirport.name}}</div>
                   <div class="collapsible-body">
                     <div class="input-field col s12 textarea-input">
                       <i class="material-icons prefix">comment</i>
@@ -271,7 +271,7 @@
                   </div>
                 </li>
                 <li>
-                  <div class="collapsible-header active">Arrival Airport:&nbsp;{{arrAirport.name}}</div>
+                  <div v-if="arrAirport.name!=''" class="collapsible-header active">Arrival Airport:&nbsp;{{arrAirport.name}}</div>
                   <div class="collapsible-body">
                     <div class="input-field col s12 textarea-input">
                       <i class="material-icons prefix">comment</i>
@@ -285,7 +285,7 @@
                   </div>
                 </li>
                 <li>
-                  <div class="collapsible-header active">Airline:&nbsp;{{airline.name}}</div>
+                  <div v-if="airline.name!=''" class="collapsible-header active">Airline:&nbsp;{{airline.name}}</div>
                   <div class="collapsible-body">
                     <div class="input-field col s12 textarea-input">
                       <i class="material-icons prefix">comment</i>
