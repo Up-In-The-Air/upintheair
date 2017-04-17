@@ -28,11 +28,11 @@ var BAR_CHART_OPTION = {
     bottom: '3%',
     containLabel: true
   },
-  xAxis: {
+  yAxis: {
     type: 'value',
     boundaryGap: [0, 0.01]
   },
-  yAxis: {
+  xAxis: {
     type: 'category',
     data: []
   },
@@ -43,7 +43,7 @@ var BAR_CHART_OPTION = {
   }],
   itemStyle: {
     normal: {
-      color: '#009688',
+      color: '#26a69a',
       shadowBlur: 200,
       shadowColor: 'rgba(0, 0, 0, 0.2)'
     }
@@ -215,7 +215,7 @@ var app = new Vue({
         url: 'api/get_' + name + '_ranking.php',
         data: {
           user_id: this.user.id,
-          limit: 5
+          limit: 10
         },
         success: function(resp) {
           if (!resp || resp.status !== 'success') {
@@ -230,7 +230,7 @@ var app = new Vue({
             categories.push(row.iata)
             frequencies.push(row.frequency)
           });
-          BAR_CHART_OPTION.yAxis.data = categories.reverse();
+          BAR_CHART_OPTION.xAxis.data = categories.reverse();
           BAR_CHART_OPTION.series[0].data = frequencies.reverse();
           var myChart = echarts.init(document.getElementById(name + '-chart'));
           myChart.setOption(BAR_CHART_OPTION);
