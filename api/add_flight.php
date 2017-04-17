@@ -174,7 +174,7 @@
   $dep_airport_comment = $_POST['dep_airport_comment'];
   $dep_airport_rate = $_POST['dep_airport_rate'];
 
-  $schema = array('user_id', 'flight_record_id');
+  $schema = array('user_id', 'airport_id');
   $values = array($user_id, $dep_airport_id);
 
   if (!is_null($dep_airport_comment)) {
@@ -206,7 +206,7 @@
   $arr_airport_comment = $_POST['arr_airport_comment'];
   $arr_airport_rate = $_POST['arr_airport_rate'];
 
-  $schema = array('user_id', 'flight_record_id');
+  $schema = array('user_id', 'airport_id');
   $values = array($user_id, $arr_airport_id);
 
   if (!is_null($arr_airport_comment)) {
@@ -238,7 +238,7 @@
   $airline_comment = $_POST['airline_comment'];
   $airline_rate = $_POST['airline_rate'];
 
-  $schema = array('user_id', 'flight_record_id');
+  $schema = array('user_id', 'airline_id');
   $values = array($user_id, $airline_id);
 
   if (!is_null($airline_comment)) {

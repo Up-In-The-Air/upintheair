@@ -267,7 +267,7 @@ var app = new Vue({
       if (this.airlineComment) {
         upstreamData.airline_comment = this.airlineComment;
       }
-      if (this.arlineRate) {
+      if (this.airlineRate) {
         upstreamData.airline_rate = this.airlineRate;
       }
       if (this.depAirportComment) {

@@ -256,29 +256,8 @@
                     </div>
                   </div>
                 </li>
-                <!-- TODO: Three more li for airline and dep/arr airport -->
-              </ul>
-
-              <ul class="collapsible popout" data-collapsible="accordion">
                 <li>
-                  <div class="collapsible-header active">Airline:&nbsp;{{depAirport.city}}&nbsp;-&nbsp;{{arrAirport.city}}</div>
-                  <div class="collapsible-body">
-                    <div class="input-field col s12 textarea-input">
-                      <i class="material-icons prefix">comment</i>
-                      <textarea id="comment" class="materialize-textarea" data-length="300" v-model="airlineComment"></textarea>
-                      <label for="comment">Your Comments</label>
-                    </div>
-                    <div class="input-field col s12 rating-input">
-                      <i class="material-icons prefix">assignment_turned_in</i>
-                      <div id="rating-airline" class="rating"></div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-
-              <ul class="collapsible popout" data-collapsible="accordion">
-                <li>
-                  <div class="collapsible-header active">Departure Airport:&nbsp;{{depAirport.city}}&nbsp;-&nbsp;{{arrAirport.city}}</div>
+                  <div class="collapsible-header active">Departure Airport:&nbsp;{{depAirport.name}}</div>
                   <div class="collapsible-body">
                     <div class="input-field col s12 textarea-input">
                       <i class="material-icons prefix">comment</i>
@@ -291,10 +270,8 @@
                     </div>
                   </div>
                 </li>
-              </ul>
-              <ul class="collapsible popout" data-collapsible="accordion">
                 <li>
-                  <div class="collapsible-header active">Arrival Airport:&nbsp;{{depAirport.city}}&nbsp;-&nbsp;{{arrAirport.city}}</div>
+                  <div class="collapsible-header active">Arrival Airport:&nbsp;{{arrAirport.name}}</div>
                   <div class="collapsible-body">
                     <div class="input-field col s12 textarea-input">
                       <i class="material-icons prefix">comment</i>
@@ -304,6 +281,20 @@
                     <div class="input-field col s12 rating-input">
                       <i class="material-icons prefix">assignment_turned_in</i>
                       <div id="rating-arr-airport" class="rating"></div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="collapsible-header active">Airline:&nbsp;{{airline.name}}</div>
+                  <div class="collapsible-body">
+                    <div class="input-field col s12 textarea-input">
+                      <i class="material-icons prefix">comment</i>
+                      <textarea id="comment" class="materialize-textarea" data-length="300" v-model="airlineComment"></textarea>
+                      <label for="comment">Your Comments</label>
+                    </div>
+                    <div class="input-field col s12 rating-input">
+                      <i class="material-icons prefix">assignment_turned_in</i>
+                      <div id="rating-airline" class="rating"></div>
                     </div>
                   </div>
                 </li>
