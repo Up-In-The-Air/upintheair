@@ -43,7 +43,7 @@ var BAR_CHART_OPTION = {
   }],
   itemStyle: {
     normal: {
-      color: '#26a69a',
+      color: '#ffb74d',
       shadowBlur: 200,
       shadowColor: 'rgba(0, 0, 0, 0.2)'
     }
@@ -85,7 +85,7 @@ var PIE_CHART_OPTION = {
     },
     itemStyle: {
       normal: {
-        color: '#009688',
+        color: '#00bcd4',
         shadowBlur: 200,
         shadowColor: 'rgba(0, 0, 0, 0.5)'
       }
@@ -93,6 +93,30 @@ var PIE_CHART_OPTION = {
     animationType: 'scale',
     animationEasing: 'elasticOut',
     animationDelay: function (idx) { return Math.random() * 200; }
+  }]
+};
+
+var LINE_CHART_OPTION = {
+  title: { text: '' },
+  tooltip: { trigger: 'axis' },
+  xAxis:  {
+    type: 'category',
+    data: []
+  },
+  yAxis: { type: 'value' },
+  series: [{
+    name: '',
+    type: 'line',
+    data: [],
+    markPoint: {
+      data: [
+        {type: 'max', name: 'Maximum'},
+        {type: 'min', name: 'Minimum'}
+      ]
+    },
+    markLine: {
+      data: [{type: 'average', name: 'Average'}]
+    }
   }]
 };
 
@@ -145,6 +169,8 @@ var app = new Vue({
           _this.drawRankingChart('airport');
           _this.drawRankingChart('airline');
           _this.drawRankingChart('aircraft');
+
+          _this.drawFlightPerYear();
         },
         error: function() { location.href = '/'; }
       });
@@ -191,7 +217,7 @@ var app = new Vue({
             Materialize.toast(resp.message, 4000);
             return;
           }
-          PIE_CHART_OPTION.title.text = name[0].toUpperCase() + name.substring(1);
+          PIE_CHART_OPTION.title.text = name.toUpperCase();
           PIE_CHART_OPTION.series[0].name = name[0].toUpperCase() + name.substring(1);
           var chartData = [];
           var count = 0;
@@ -222,7 +248,7 @@ var app = new Vue({
             Materialize.toast(resp.message, 4000);
             return;
           }
-          BAR_CHART_OPTION.title.text = name[0].toUpperCase() + name.substring(1) + ' Ranking';
+          BAR_CHART_OPTION.title.text = name.toUpperCase() + ' RANKING';
           BAR_CHART_OPTION.series[0].name = 'Frequency';
           var categories = [];
           var frequencies = []
@@ -234,6 +260,40 @@ var app = new Vue({
           BAR_CHART_OPTION.series[0].data = frequencies.reverse();
           var myChart = echarts.init(document.getElementById(name + '-chart'));
           myChart.setOption(BAR_CHART_OPTION);
+        }
+      });
+    },
+    drawFlightPerYear: function() {
+      $.ajax({
+        method: 'GET',
+        url: 'api/get_flight_per_year.php',
+        data: {
+          user_id: this.user.id,
+          limit: 10
+        },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          LINE_CHART_OPTION.title.text = 'FLIGHT PER YEAR';
+          LINE_CHART_OPTION.series[0].name = 'Flights';
+          var categories = [];
+          var flights = []
+          for (var i = 0; i < resp.data.length; i++) {
+            categories.push(resp.data[i].category);
+            flights.push(resp.data[i].count);
+            while (i + 1 < resp.data.length && parseInt(resp.data[i+1].category) != parseInt(categories[categories.length-1]) + 1) {
+              categories.push((parseInt(categories[categories.length-1]) + 1).toString());
+              flights.push('0');
+            }
+          }
+          categories = categories.slice(Math.max(categories.length - 10, 1))
+          flights = flights.slice(Math.max(flights.length - 10, 1))
+          LINE_CHART_OPTION.xAxis.data = categories;
+          LINE_CHART_OPTION.series[0].data = flights;
+          var myChart = echarts.init(document.getElementById('flight-year-chart'));
+          myChart.setOption(LINE_CHART_OPTION);
         }
       });
     },

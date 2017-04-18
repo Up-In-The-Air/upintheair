@@ -25,4 +25,9 @@
 }
 .bar-chart-container {
   height: 300px;
+  margin: 10px 0 20px;
+}
+.line-chart-container {
+  height: 300px;
+  margin: 10px 0 20px;
 }
