@@ -198,14 +198,33 @@ var app = new Vue({
                         latlngbounds.extend(depPosition);
                         latlngbounds.extend(arrPosition);
                         map.fitBounds(latlngbounds);
-                        flightRoute = new google.maps.Polyline({
-                          path: [depPosition, arrPosition],
-                          strokeColor: "#009688",
-                          strokeOpacity: 1.0,
-                          strokeWeight: 2,
-                          geodesic: true,
-                          map: map
+
+                        var planeMarker = new google.maps.Marker({
+                          map: map,
+                          icon: {
+                            url: '/static/images/airplane.png',
+                            origin: new google.maps.Point(0, -20)
+                          },
+                          zIndex: 99999999,
+                          position: depPosition
                         });
+                        var count = 0;
+                        interval = setInterval(function() {
+                          count++;
+                          var newPosition = google.maps.geometry.spherical.interpolate(depPosition, arrPosition, count / 100);
+                          planeMarker.setPosition(newPosition);
+                          flightRoute = new google.maps.Polyline({
+                            path: [depPosition, newPosition],
+                            strokeColor: "#009688",
+                            strokeOpacity: 1.0,
+                            strokeWeight: 2,
+                            geodesic: true,
+                            map: map
+                          });
+                          if (count >= 100) {
+                            clearInterval(interval);
+                          }
+                        }, 25);
 
                         app.$set(
                           'distance', google.maps.geometry.spherical.computeDistanceBetween(
@@ -410,14 +429,33 @@ var app = new Vue({
               latlngbounds.extend(depPosition);
               latlngbounds.extend(arrPosition);
               map.fitBounds(latlngbounds);
-              flightRoute = new google.maps.Polyline({
-                path: [depPosition, arrPosition],
-                strokeColor: "#009688",
-                strokeOpacity: 1.0,
-                strokeWeight: 2,
-                geodesic: true,
-                map: map
+
+              var planeMarker = new google.maps.Marker({
+                map: map,
+                icon: {
+                  url: '/static/images/airplane.png',
+                  origin: new google.maps.Point(0, -20)
+                },
+                zIndex: 99999999,
+                position: depPosition
               });
+              var count = 0;
+              interval = setInterval(function() {
+                count++;
+                var newPosition = google.maps.geometry.spherical.interpolate(depPosition, arrPosition, count / 100);
+                planeMarker.setPosition(newPosition);
+                flightRoute = new google.maps.Polyline({
+                  path: [depPosition, newPosition],
+                  strokeColor: "#009688",
+                  strokeOpacity: 1.0,
+                  strokeWeight: 2,
+                  geodesic: true,
+                  map: map
+                });
+                if (count >= 100) {
+                  clearInterval(interval);
+                }
+              }, 25);
 
               app.$set(
                 'distance', google.maps.geometry.spherical.computeDistanceBetween(
@@ -475,14 +513,33 @@ var app = new Vue({
               latlngbounds.extend(depPosition);
               latlngbounds.extend(arrPosition);
               map.fitBounds(latlngbounds);
-              flightRoute = new google.maps.Polyline({
-                path: [depPosition, arrPosition],
-                strokeColor: "#009688",
-                strokeOpacity: 1.0,
-                strokeWeight: 2,
-                geodesic: true,
-                map: map
+
+              var planeMarker = new google.maps.Marker({
+                map: map,
+                icon: {
+                  url: '/static/images/airplane.png',
+                  origin: new google.maps.Point(0, -20)
+                },
+                zIndex: 99999999,
+                position: depPosition
               });
+              var count = 0;
+              interval = setInterval(function() {
+                count++;
+                var newPosition = google.maps.geometry.spherical.interpolate(depPosition, arrPosition, count / 100);
+                planeMarker.setPosition(newPosition);
+                flightRoute = new google.maps.Polyline({
+                  path: [depPosition, newPosition],
+                  strokeColor: "#009688",
+                  strokeOpacity: 1.0,
+                  strokeWeight: 2,
+                  geodesic: true,
+                  map: map
+                });
+                if (count >= 100) {
+                  clearInterval(interval);
+                }
+              }, 25);
 
               app.$set(
                 'distance', google.maps.geometry.spherical.computeDistanceBetween(
