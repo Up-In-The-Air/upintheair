@@ -1,5 +1,5 @@
 .parallax-container {
-  min-height: 350px;
+  min-height: 375px;
   line-height: 0;
   height: auto;
   color: rgba(255,255,255,.9);
@@ -19,11 +19,47 @@
 footer.page-footer {
   padding-top: 20px !important;
 }
-
-#background-map {
+.background-blur {
   filter: brightness(75%) blur(2px);
 }
-
+.avatar-part {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -o-align-items: center;
+  align-items: center;
+}
+.avatar-part .person-block {
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  -o-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  flex-direction: column;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -o-align-items: center;
+  align-items: center;
+}
+.avatar-part .person-block img {
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
 .input-field label {
   width: 100%;
 }
