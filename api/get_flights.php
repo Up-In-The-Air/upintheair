@@ -14,6 +14,7 @@
   $sql = "SELECT DISTINCT flight_record.*, "
         ."a.name AS dep_airport_name, a.city AS dep_airport_city, a.country AS dep_airport_country, a.iata AS dep_airport_iata, "
         ."b.name AS arr_airport_name, b.city AS arr_airport_city, b.country AS arr_airport_country, b.iata AS arr_airport_iata, "
+        ."a.latitude AS dep_latitude, a.longitude AS dep_longitude, b.latitude AS arr_latitude, b.longitude AS arr_longitude, "
         ."airline.name AS airline_name, airline.iata AS airline_iata, "
         ."aircraft.name AS aircraft_name, aircraft.iata AS aircraft_iata "
         ."FROM flight_record, airport a, airport b, airline, aircraft "

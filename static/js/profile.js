@@ -1,3 +1,13 @@
+var MAP_IMAGE = {
+  url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+  // This marker is 20 pixels wide by 32 pixels high.
+  size: new google.maps.Size(20, 32),
+  // The origin for this image is (0, 0).
+  origin: new google.maps.Point(0, 0),
+  // The anchor for this image is the base of the flagpole at (0, 32).
+  anchor: new google.maps.Point(0, 32)
+};
+
 var CLASS_MAP = {
   0: 'Economy',
   1: 'Economy+',
@@ -162,6 +172,8 @@ var app = new Vue({
 
           _this.getDashboardStat();
 
+          _this.drawMapRoutes();
+
           _this.drawDistributionChart('class', CLASS_MAP);
           _this.drawDistributionChart('seat', SEAT_MAP);
           _this.drawDistributionChart('purpose', PURPOSE_MAP);
@@ -204,6 +216,54 @@ var app = new Vue({
               _this.totalDistance += 131;
             }
           }, 1);
+        }
+      });
+    },
+    drawMapRoutes: function() {
+      var _this = this;
+      $.ajax({
+        method: 'GET',
+        url: 'api/get_flights.php',
+        data: { user_id: this.user.id },
+        success: function(resp) {
+          if (!resp || resp.status !== 'success') {
+            Materialize.toast(resp.message, 4000);
+            return;
+          }
+          var routeList = resp.data;
+          var latlngbounds = new google.maps.LatLngBounds();
+
+          for (var i = 0; i < routeList.length; i++) {
+            var depPosition = new google.maps.LatLng({
+              lat: parseInt(routeList[i].dep_latitude),
+              lng: parseInt(routeList[i].dep_longitude)
+            });
+            var arrPosition = new google.maps.LatLng({
+              lat: parseInt(routeList[i].arr_latitude),
+              lng: parseInt(routeList[i].arr_longitude)
+            });
+            var depMarker = new google.maps.Marker({
+                map: map,
+                icon: MAP_IMAGE,
+                position: depPosition
+            });
+            var arrMarker = new google.maps.Marker({
+                map: map,
+                icon: MAP_IMAGE,
+                position: arrPosition
+            });
+            latlngbounds.extend(depPosition);
+            latlngbounds.extend(arrPosition);
+            map.fitBounds(latlngbounds);
+            var flightRoute = new google.maps.Polyline({
+              path: [depPosition, arrPosition],
+              strokeColor: "#ef5350",
+              strokeOpacity: 1.0,
+              strokeWeight: 2,
+              geodesic: true,
+              map: map
+            });
+          }
         }
       });
     },

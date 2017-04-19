@@ -169,6 +169,12 @@ var app = new Vue({
                   if (status === 'OK') {
                     depMarker = new google.maps.Marker({
                         map: map,
+                        icon: {
+                          url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                          size: new google.maps.Size(20, 32),
+                          origin: new google.maps.Point(0, 0),
+                          anchor: new google.maps.Point(0, 32)
+                        },
                         position: results[0].geometry.location,
                         animation: google.maps.Animation.DROP
                     });
@@ -176,6 +182,12 @@ var app = new Vue({
                       if (status === 'OK') {
                         arrMarker = new google.maps.Marker({
                             map: map,
+                            icon: {
+                              url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                              size: new google.maps.Size(20, 32),
+                              origin: new google.maps.Point(0, 0),
+                              anchor: new google.maps.Point(0, 32)
+                            },
                             position: results[0].geometry.location,
                             animation: google.maps.Animation.DROP
                         });
@@ -190,7 +202,7 @@ var app = new Vue({
                           path: [depPosition, arrPosition],
                           strokeColor: "#009688",
                           strokeOpacity: 1.0,
-                          strokeWeight: 3,
+                          strokeWeight: 2,
                           geodesic: true,
                           map: map
                         });
@@ -381,6 +393,12 @@ var app = new Vue({
           if (status === 'OK') {
             depMarker = new google.maps.Marker({
                 map: map,
+                icon: {
+                  url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                  size: new google.maps.Size(20, 32),
+                  origin: new google.maps.Point(0, 0),
+                  anchor: new google.maps.Point(0, 32)
+                },
                 position: results[0].geometry.location,
                 animation: google.maps.Animation.DROP
             });
@@ -396,7 +414,7 @@ var app = new Vue({
                 path: [depPosition, arrPosition],
                 strokeColor: "#009688",
                 strokeOpacity: 1.0,
-                strokeWeight: 3,
+                strokeWeight: 2,
                 geodesic: true,
                 map: map
               });
@@ -440,6 +458,12 @@ var app = new Vue({
           if (status === 'OK') {
             arrMarker = new google.maps.Marker({
                 map: map,
+                icon: {
+                  url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                  size: new google.maps.Size(20, 32),
+                  origin: new google.maps.Point(0, 0),
+                  anchor: new google.maps.Point(0, 32)
+                },
                 position: results[0].geometry.location,
                 animation: google.maps.Animation.DROP
             });
@@ -455,7 +479,7 @@ var app = new Vue({
                 path: [depPosition, arrPosition],
                 strokeColor: "#009688",
                 strokeOpacity: 1.0,
-                strokeWeight: 3,
+                strokeWeight: 2,
                 geodesic: true,
                 map: map
               });

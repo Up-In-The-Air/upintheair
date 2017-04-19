@@ -1,5 +1,5 @@
 .row.dashboard-row {
-  height: 150px;
+  height: 130px;
 }
 .dashboard-row .col {
   height: 100%;
@@ -30,4 +30,27 @@
 .line-chart-container {
   height: 300px;
   margin: 10px 0 20px;
+}
+.map-row {
+  margin-top: 20px;
+}
+#route-map { height: 400px; }
+.route-map {
+  position: relative;
+  margin-top: 20px;
+}
+#route-map {
+  border: 5px solid #f6b2b5;
+}
+.ribbon {
+  position: absolute;
+  width: 150px;
+  left: 50%;
+  height: 40px;
+  top: -20px;
+  margin-left: -75px;
+  background: -webkit-gradient(linear, 555% 20%, 0% 92%, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.0)), color-stop(.1,rgba(0, 0, 0, 0.2)));
+  border-left: 1px dashed rgba(0, 0, 0, 0.1);
+  border-right: 1px dashed rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
 }
