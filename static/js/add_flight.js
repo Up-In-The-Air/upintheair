@@ -199,7 +199,7 @@ var app = new Vue({
                         latlngbounds.extend(arrPosition);
                         map.fitBounds(latlngbounds);
 
-                        var planeMarker = new google.maps.Marker({
+                        planeMarker = new google.maps.Marker({
                           map: map,
                           icon: {
                             url: '/static/images/airplane.png',
@@ -208,19 +208,20 @@ var app = new Vue({
                           zIndex: 99999999,
                           position: depPosition
                         });
+                        flightRoute = new google.maps.Polyline({
+                          path: [depPosition, depPosition],
+                          strokeColor: "#009688",
+                          strokeOpacity: 1.0,
+                          strokeWeight: 2,
+                          geodesic: true,
+                          map: map
+                        });
                         var count = 0;
                         interval = setInterval(function() {
                           count++;
                           var newPosition = google.maps.geometry.spherical.interpolate(depPosition, arrPosition, count / 100);
                           planeMarker.setPosition(newPosition);
-                          flightRoute = new google.maps.Polyline({
-                            path: [depPosition, newPosition],
-                            strokeColor: "#009688",
-                            strokeOpacity: 1.0,
-                            strokeWeight: 2,
-                            geodesic: true,
-                            map: map
-                          });
+                          flightRoute.setPath([depPosition, newPosition]);
                           if (count >= 100) {
                             clearInterval(interval);
                           }
@@ -394,9 +395,10 @@ var app = new Vue({
         this.depAirport.iata = '';
         this.depAirport.city = '';
 
-        // Remove map marker, route and distance
-        if (window.depMarker) { depMarker.setMap(null); }
+        // Remove map marker, route, plane and distance
+        if (window.arrMarker) { arrMarker.setMap(null); }
         if (window.flightRoute) { flightRoute.setMap(null); }
+        if (window.planeMarker) { planeMarker.setMap(null); }
         this.distance = '';
       } else if (newVal.includes(' / ')) {
         var iata = newVal.split(' / ')[0];
@@ -430,7 +432,7 @@ var app = new Vue({
               latlngbounds.extend(arrPosition);
               map.fitBounds(latlngbounds);
 
-              var planeMarker = new google.maps.Marker({
+              planeMarker = new google.maps.Marker({
                 map: map,
                 icon: {
                   url: '/static/images/airplane.png',
@@ -439,19 +441,20 @@ var app = new Vue({
                 zIndex: 99999999,
                 position: depPosition
               });
+              flightRoute = new google.maps.Polyline({
+                path: [depPosition, depPosition],
+                strokeColor: "#009688",
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                geodesic: true,
+                map: map
+              });
               var count = 0;
               interval = setInterval(function() {
                 count++;
                 var newPosition = google.maps.geometry.spherical.interpolate(depPosition, arrPosition, count / 100);
                 planeMarker.setPosition(newPosition);
-                flightRoute = new google.maps.Polyline({
-                  path: [depPosition, newPosition],
-                  strokeColor: "#009688",
-                  strokeOpacity: 1.0,
-                  strokeWeight: 2,
-                  geodesic: true,
-                  map: map
-                });
+                flightRoute.setPath([depPosition, newPosition]);
                 if (count >= 100) {
                   clearInterval(interval);
                 }
@@ -478,9 +481,10 @@ var app = new Vue({
         this.arrAirport.iata = '';
         this.arrAirport.city = '';
 
-        // Remove map marker, route and distance
+        // Remove map marker, route, plane and distance
         if (window.arrMarker) { arrMarker.setMap(null); }
         if (window.flightRoute) { flightRoute.setMap(null); }
+        if (window.planeMarker) { planeMarker.setMap(null); }
         this.distance = '';
       } else if (newVal.includes(' / ')) {
         var iata = newVal.split(' / ')[0];
@@ -514,7 +518,7 @@ var app = new Vue({
               latlngbounds.extend(arrPosition);
               map.fitBounds(latlngbounds);
 
-              var planeMarker = new google.maps.Marker({
+              planeMarker = new google.maps.Marker({
                 map: map,
                 icon: {
                   url: '/static/images/airplane.png',
@@ -523,19 +527,20 @@ var app = new Vue({
                 zIndex: 99999999,
                 position: depPosition
               });
+              flightRoute = new google.maps.Polyline({
+                path: [depPosition, depPosition],
+                strokeColor: "#009688",
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                geodesic: true,
+                map: map
+              });
               var count = 0;
               interval = setInterval(function() {
                 count++;
                 var newPosition = google.maps.geometry.spherical.interpolate(depPosition, arrPosition, count / 100);
                 planeMarker.setPosition(newPosition);
-                flightRoute = new google.maps.Polyline({
-                  path: [depPosition, newPosition],
-                  strokeColor: "#009688",
-                  strokeOpacity: 1.0,
-                  strokeWeight: 2,
-                  geodesic: true,
-                  map: map
-                });
+                flightRoute.setPath([depPosition, newPosition]);
                 if (count >= 100) {
                   clearInterval(interval);
                 }
