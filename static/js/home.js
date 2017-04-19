@@ -131,7 +131,7 @@ var app = new Vue({
           }
           $('#modal-login').modal('close');
           // Set cookie
-          if (_this.autoLogin && resp.data.cookie) {
+          if (resp.data.cookie) {
             document.cookie = 'upintheairAuth=' + JSON.stringify({ id: resp.data.cookie.id, key: resp.data.cookie.key }) + ' ; expires=' + new Date(resp.data.cookie.expires * 1000);
           }
           Materialize.toast('Log in successfully! Redirecting...', 3000, '', function() {

@@ -11,7 +11,8 @@
 
   $post_email = $_POST['email'];
   $post_password = $_POST['password'];
-  $autologin = $_POST['auto_login'];
+  // $autologin = $_POST['auto_login'];
+  $autologin = true;
 
   $sql = "SELECT * FROM user WHERE email = '".$post_email."'";
 
