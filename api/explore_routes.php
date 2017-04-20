@@ -26,7 +26,7 @@
         ."flight_comments.content AS content, flight_comments.rate AS rate, "
         ."user.first_name AS first_name, user.last_name AS last_name "
         ."FROM flight_comments, flight_record, user "
-        ."WHERE flight_record.dep_airport_id = (SELECT airport.id FROM airport WHERE iata = '$dep_airport_iata') "
+        ."WHERE flight_record.dep_airport_id IN (SELECT airport.id FROM airport WHERE iata = '$dep_airport_iata') "
         ."AND flight_record.arr_airport_id = (SELECT airport.id FROM airport WHERE iata = '$arr_airport_iata') "
         ."AND user.id = flight_record.user_id "
         ."AND flight_record.id = flight_comments.flight_record_id";

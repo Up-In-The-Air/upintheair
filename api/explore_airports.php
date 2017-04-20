@@ -24,7 +24,7 @@
   // Get comments
   $sql = "SELECT airport_comments.create_timestamp AS create_time, airport_comments.content AS content, airport_comments.rate AS rate, user.first_name AS first_name, user.last_name AS last_name "
         ."FROM airport_comments, user "
-        ."WHERE airport_comments.airport_id = (SELECT airport.id FROM airport WHERE iata = '$airport_iata') "
+        ."WHERE airport_comments.airport_id IN (SELECT airport.id FROM airport WHERE iata = '$airport_iata') "
         ."AND user.id = airport_comments.user_id";
 
   $result = $conn->query($sql);

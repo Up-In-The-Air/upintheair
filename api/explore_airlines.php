@@ -49,7 +49,7 @@
   // Get average rate
   $sql_avg = "SELECT AVG(airline_comments.rate) AS average_rate "
             ."FROM airline_comments, user "
-            ."WHERE airline_comments.airline_id = (SELECT airline.id FROM airline WHERE iata = '$airline_iata') "
+            ."WHERE airline_comments.airline_id IN (SELECT airline.id FROM airline WHERE iata = '$airline_iata') "
             ."AND user.id = airline_comments.user_id";
 
   $result_avg = $conn->query($sql_avg);
