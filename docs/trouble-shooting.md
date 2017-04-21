@@ -5,5 +5,5 @@
     This may be caused by permissions on cPanel. Apply the following command on the file that returns error code 500.
     
     ```bash
-    $ chmod 755 somefile.php
+    $ chmod 755 *.php
     ```
