@@ -11,6 +11,7 @@ Here we listed the tech stacks we have chosen. Further code style and API docume
 - [Vue.js](https://vuejs.org/) for view-model
 - [Materialize](http://materializecss.com/) for UI
 - [Google Map JavaScript API](https://developers.google.com/maps/documentation/javascript/) for map-related events
+
 - [ECharts](http://echarts.baidu.com/) for data visualization
 
 ### Back-End
