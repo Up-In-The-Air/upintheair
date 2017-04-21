@@ -10,16 +10,29 @@ Here we listed the tech stacks we have chosen. Further code style and API docume
 - [jQuery](https://jquery.com/) for DOM manipulation
 - [Vue.js](https://vuejs.org/) for view-model
 - [Materialize](http://materializecss.com/) for UI
+- [Google Map JavaScript API](https://developers.google.com/maps/documentation/javascript/) for map-related events
 - [ECharts](http://echarts.baidu.com/) for data visualization
 
 ### Back-End
 
-- [PHP](http://php.net/) for REST API
+- [PHP](http://php.net/) for REST API and WebSocket Server
 - [Postman](https://www.getpostman.com/) for debugging
 
 ### Database
 
 - [MySQL](https://www.mysql.com/) for data storage and management
+- [phpMyAdmin](https://www.phpmyadmin.net/) for remote database GUI manamgement
+- [Sequel Pro](https://www.sequelpro.com/) for local database GUI management
+
+### Web Server / Host
+
+- [cPanel UIUC](https://it.engineering.illinois.edu/user-guides/serviceswebsite-services/linux-based-hosting-cpanel) for web server and hosting.
+
+### API and Datasource
+
+- [IATA Codes Database](http://iatacodes.org/) for IATA related API
+- [The Airline Codes Website](http://www.airlinecodes.co.uk/arctypes.asp) for aircraft data source
+- [OpenFlights](http://openflights.org/data.html) for airline and airport data source
 
 ## Related Readings
 
