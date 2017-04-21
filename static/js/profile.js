@@ -139,7 +139,15 @@ var app = new Vue({
     return {
       user: {},
       totalFlight: 0,
-      totalDistance: 0
+      totalDistance: 0,
+      routeList: [],
+      depPositionList: [],
+      arrPositionList: [],
+      flightRouteList: [],
+      curRouteIndex: 0,
+      planeMarker: null,
+      latlngbounds: null,
+      animationCount: 0
     }
   },
   ready: function() {
@@ -230,10 +238,10 @@ var app = new Vue({
             Materialize.toast(resp.message, 4000);
             return;
           }
-          var routeList = resp.data;
-          var latlngbounds = new google.maps.LatLngBounds();
+          _this.routeList = resp.data;
+          _this.latlngbounds = new google.maps.LatLngBounds();
 
-          planeMarker = new google.maps.Marker({
+          _this.planeMarker = new google.maps.Marker({
             map: map,
             icon: {
               url: '/static/images/airplane.png',
@@ -241,89 +249,74 @@ var app = new Vue({
             },
             zIndex: 99999999
           });
-          var i = 0;
-          bigInterval = setInterval(function() {
-            console.log(i);
-            var depPosition = new google.maps.LatLng({
-              lat: parseInt(routeList[i].dep_latitude),
-              lng: parseInt(routeList[i].dep_longitude)
-            });
-            var arrPosition = new google.maps.LatLng({
-              lat: parseInt(routeList[i].arr_latitude),
-              lng: parseInt(routeList[i].arr_longitude)
-            });
-            console.log(depPosition, arrPosition);
-            var depMarker = new google.maps.Marker({
-                map: map,
-                icon: MAP_IMAGE,
-                position: depPosition
-            });
-            latlngbounds.extend(depPosition);
-            latlngbounds.extend(arrPosition);
-            map.fitBounds(latlngbounds);
 
-            var flightRoute = new google.maps.Polyline({
-              path: [depPosition, depPosition],
+          for (var i = 0; i < _this.routeList.length; i++) {
+            var tempDepPosition = new google.maps.LatLng({
+              lat: parseFloat(_this.routeList[i].dep_latitude),
+              lng: parseFloat(_this.routeList[i].dep_longitude)
+            });
+            var tempArrPosition = new google.maps.LatLng({
+              lat: parseFloat(_this.routeList[i].arr_latitude),
+              lng: parseFloat(_this.routeList[i].arr_longitude)
+            });
+            _this.depPositionList.push(tempDepPosition);
+            _this.arrPositionList.push(tempArrPosition);
+            _this.latlngbounds.extend(tempDepPosition);
+            _this.latlngbounds.extend(tempArrPosition);
+            var tempFlightRoute = new google.maps.Polyline({
+              path: [tempDepPosition, tempDepPosition],
               strokeColor: "#009688",
               strokeOpacity: 1.0,
               strokeWeight: 2,
               geodesic: true,
               map: map
             });
-            var count = 0;
-            interval = setInterval(function() {
-              count++;
-              var newPosition = google.maps.geometry.spherical.interpolate(depPosition, arrPosition, count / 50);
-              planeMarker.setPosition(newPosition);
-              flightRoute.setPath([depPosition, newPosition]);
-              if (count >= 50) {
-                clearInterval(interval);
-                var arrMarker = new google.maps.Marker({
+            _this.flightRouteList.push(tempFlightRoute);
+          }
+
+          map.fitBounds(_this.latlngbounds);
+
+          new google.maps.Marker({
+              map: map,
+              icon: MAP_IMAGE,
+              position: _this.depPositionList[_this.curRouteIndex]
+          });
+
+          window.routeInterval = function() {
+            _this.animationCount += 1;
+            var newPosition = google.maps.geometry.spherical.interpolate(
+              _this.depPositionList[_this.curRouteIndex],
+              _this.arrPositionList[_this.curRouteIndex],
+              _this.animationCount / 100
+            );
+            _this.planeMarker.setPosition(newPosition);
+            _this.flightRouteList[_this.curRouteIndex].setPath([
+              _this.depPositionList[_this.curRouteIndex],
+              newPosition
+            ]);
+            if (_this.animationCount >= 100) {
+              _this.animationCount = 0;
+              clearInterval(window.interval);
+              new google.maps.Marker({
+                  map: map,
+                  icon: MAP_IMAGE,
+                  position: _this.arrPositionList[_this.curRouteIndex]
+              });
+
+              _this.curRouteIndex += 1;
+              if (_this.curRouteIndex < _this.routeList.length) {
+                new google.maps.Marker({
                     map: map,
                     icon: MAP_IMAGE,
-                    position: arrPosition
+                    position: _this.depPositionList[_this.curRouteIndex]
                 });
+                window.interval = setInterval(window.routeInterval, 5);
+              } else {
+                _this.planeMarker.setMap(null);
               }
-            }, 5);
-
-            i++;
-            if (i >= routeList.length) {
-              clearInterval(bigInterval);
-              planeMarker.setMap(null);
             }
-          }, 1500);
-
-          // for (var i = 0; i < routeList.length; i++) {
-          //   var depPosition = new google.maps.LatLng({
-          //     lat: parseInt(routeList[i].dep_latitude),
-          //     lng: parseInt(routeList[i].dep_longitude)
-          //   });
-          //   var arrPosition = new google.maps.LatLng({
-          //     lat: parseInt(routeList[i].arr_latitude),
-          //     lng: parseInt(routeList[i].arr_longitude)
-          //   });
-          //   var depMarker = new google.maps.Marker({
-          //       map: map,
-          //       icon: MAP_IMAGE,
-          //       position: depPosition
-          //   });
-          //   var arrMarker = new google.maps.Marker({
-          //       map: map,
-          //       icon: MAP_IMAGE,
-          //       position: arrPosition
-          //   });
-          //   latlngbounds.extend(depPosition);
-          //   latlngbounds.extend(arrPosition);
-          //   map.fitBounds(latlngbounds);
-          //   var flightRoute = new google.maps.Polyline({
-          //     path: [depPosition, arrPosition],
-          //     strokeColor: "#ef5350",
-          //     strokeOpacity: 1.0,
-          //     strokeWeight: 2,
-          //     geodesic: true,
-          //     map: map
-          //   });
-          // }
+          };
+          window.interval = setInterval(window.routeInterval, 5);
         }
       });
     },
